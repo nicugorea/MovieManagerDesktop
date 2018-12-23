@@ -5,9 +5,9 @@
 	<parent>
 		<groupId>MMDesktop</groupId>
 		<artifactId>MovieManagerDesktop</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.0.1</version>
 	</parent>
-	<artifactId>Presentation</artifactId>
-	<name>Movie Manager Presentation Module</name>
 
+	<artifactId>CommonModule</artifactId>
+	<name>Common Module</name>
 </project>
