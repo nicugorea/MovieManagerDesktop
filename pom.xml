@@ -27,6 +27,7 @@
 	<modules>
 		<module>CommonModule</module>
 		<module>PresentationModule</module>
+		<module>UtilModule</module>
 	</modules>
 	
 	<build>

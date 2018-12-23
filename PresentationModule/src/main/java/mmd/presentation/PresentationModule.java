@@ -5,14 +5,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import mmd.common.interfaces.Dsad;
+import mmd.util.logging.LogLevel;
+import mmd.util.logging.LoggingUtil;
 
-public class Main extends Application
+public class PresentationModule extends Application
 {
 
     public static void main(final String args[])
     {
 	launch();
+	LoggingUtil.getLogger().log(LogLevel.CONFIG, "launch()");
     }
 
     @Override
@@ -21,7 +23,9 @@ public class Main extends Application
 	Label label = new Label();
 	VBox parent = new VBox();
 	parent.getChildren().add(label);
-	label.setText(Dsad.s());
+	LoggingUtil.getLogger().log(LogLevel.DEBUG, "start");
+	label.setText("dasd");
+	LoggingUtil.getLogger().log(LogLevel.FINEST, "dasd");
 	Scene scene = new Scene(parent);
 	primaryStage.setScene(scene);
 	primaryStage.show();

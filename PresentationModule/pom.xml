@@ -9,13 +9,19 @@
 	</parent>
 	<artifactId>PresentationModule</artifactId>
 
-<dependencies>
-	<dependency>
-	<groupId>MMDesktop</groupId>
-	<artifactId>CommonModule</artifactId>
-	<version>0.0.1</version>
-	</dependency>
-</dependencies>
+	<dependencies>
+		<dependency>
+			<groupId>MMDesktop</groupId>
+			<artifactId>CommonModule</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>MMDesktop</groupId>
+			<artifactId>UtilModule</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<plugins>
