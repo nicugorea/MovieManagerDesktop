@@ -1,10 +1,9 @@
 package mmd.presentation;
 
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import mmd.presentation.scenes.SceneManager;
+import mmd.presentation.scenes.SceneName;
 import mmd.util.logging.LogLevel;
 import mmd.util.logging.LoggingUtil;
 
@@ -13,23 +12,16 @@ public class PresentationModule extends Application
 
     public static void main(final String args[])
     {
+	LoggingUtil.getLogger().log(LogLevel.DEBUG, "Begin Presentation Launch");
 	launch();
-	LoggingUtil.getLogger().log(LogLevel.CONFIG, "launch()");
+	LoggingUtil.getLogger().log(LogLevel.DEBUG, "Finish Presentation Launch");
     }
 
     @Override
     public void start(final Stage primaryStage) throws Exception
     {
-	Label label = new Label();
-	VBox parent = new VBox();
-	parent.getChildren().add(label);
-	LoggingUtil.getLogger().log(LogLevel.DEBUG, "start");
-	label.setText("dasd");
-	LoggingUtil.getLogger().log(LogLevel.FINEST, "dasd");
-	Scene scene = new Scene(parent);
-	primaryStage.setScene(scene);
-	primaryStage.show();
-
+	SceneManager.init(primaryStage);
+	SceneManager.changeScene(SceneName.LoginScreen);
     }
 
 }
