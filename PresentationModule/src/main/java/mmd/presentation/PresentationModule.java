@@ -21,7 +21,7 @@ public class PresentationModule extends Application
     public void start(final Stage primaryStage) throws Exception
     {
 	SceneManager.init(primaryStage);
-	SceneManager.changeScene(SceneName.LoginScreen);
+	SceneManager.changeScene(SceneName.MainScreen);
     }
 
 }

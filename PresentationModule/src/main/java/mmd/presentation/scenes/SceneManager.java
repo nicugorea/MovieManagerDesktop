@@ -27,6 +27,14 @@ public class SceneManager
 	}
     }
 
+    public static Parent getParentFromFile(final String fileName) throws IOException
+    {
+	String scenePath = "views/".concat(fileName).concat(".fxml");
+	Parent parent = FXMLLoader
+	        .load(PresentationModule.class.getResource(scenePath));
+	return parent;
+    }
+
     public static void init(final Stage stage)
     {
 	window = stage;
@@ -37,10 +45,8 @@ public class SceneManager
 
     private static Scene getScene(final String name) throws IOException
     {
-	String scenePath = "views/".concat(name).concat(".fxml");
-	Parent parent = FXMLLoader
-	        .load(PresentationModule.class.getResource(scenePath));
-	Scene result = new Scene(parent);
+
+	Scene result = new Scene(getParentFromFile(name));
 	return result;
     }
 }
