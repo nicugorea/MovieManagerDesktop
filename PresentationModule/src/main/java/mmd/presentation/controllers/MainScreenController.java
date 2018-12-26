@@ -25,30 +25,23 @@ public class MainScreenController implements Initializable
     @Override
     public void initialize(final URL location, final ResourceBundle resources)
     {
-//	this.mainTilePane.getScene().widthProperty().addListener(new ChangeListener<Number>()
-//	{
-//
-//	    @Override
-//	    public void changed(final ObservableValue<? extends Number> observable, final Number oldValue,
-//	            final Number newValue)
-//	    {
-//		MainScreenController.this.mainTilePane.setPrefColumns((int) Math.ceil(newValue.doubleValue() / 200));
-//	    }
-//
-//	});
 
 	this.mainTilePane.setPrefColumns(100);
 
-	for (int i = 0; i < 2223; i++)
+	for (int i = 0; i < 23; i++)
 	{
 	    VBox tile = new MovieTileVBox();
 	    this.mainTilePane.getChildren().add(tile);
 	}
+
 	TreeItem<String> root = new TreeItem<String>("All");
+
 	this.categoryTreeView.setRoot(root);
+
 	root.getChildren().add(new TreeItem("Anime"));
 	root.getChildren().add(new TreeItem("SF"));
 	root.getChildren().add(new TreeItem("Fighting"));
+
     }
 
     @FXML
