@@ -48,6 +48,8 @@ public class Property
 	return this.Value;
     }
 
+    public boolean haveChildren() {return this.Children!=null;}
+
     public void setName(final String name)
     {
 	this.Name = name;

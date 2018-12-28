@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.TilePane;
@@ -26,11 +27,18 @@ public class MainScreenController implements Initializable
     public void initialize(final URL location, final ResourceBundle resources)
     {
 
+	this.mainTilePane.setAlignment(Pos.CENTER);
 	this.mainTilePane.setPrefColumns(100);
 
-	for (int i = 0; i < 23; i++)
+	/*
+	 * TODO: Tile clone and change only parameters
+	 * like @title, @description, @image, @categories , etc
+	 * 
+	 */
+	VBox tile = null;
+	for (int i = 0; i < 1; i++)
 	{
-	    VBox tile = new MovieTileVBox();
+	    tile = new MovieTileVBox();
 	    this.mainTilePane.getChildren().add(tile);
 	}
 

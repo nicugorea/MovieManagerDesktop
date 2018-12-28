@@ -21,6 +21,11 @@
 			<artifactId>UtilModule</artifactId>
 			<version>0.0.1</version>
 		</dependency>
+		<dependency>
+			<groupId>MMDesktop</groupId>
+			<artifactId>PersistenceModule</artifactId>
+			<version>0.0.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>

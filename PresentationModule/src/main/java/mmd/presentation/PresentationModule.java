@@ -1,7 +1,11 @@
 package mmd.presentation;
 
+import java.util.LinkedList;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
+import mmd.common.models.MovieDM;
+import mmd.persistence.io.PropertyIO;
 import mmd.presentation.scenes.SceneManager;
 import mmd.presentation.scenes.SceneName;
 import mmd.util.logging.LogLevel;
@@ -22,6 +26,34 @@ public class PresentationModule extends Application
     {
 	SceneManager.init(primaryStage);
 	SceneManager.changeScene(SceneName.MainScreen);
+	MovieDM dm = new MovieDM();
+
+	dm.setTitle("Movie title");
+	dm.setDescription("A description right here");
+	dm.setIMDbID("adasdasd-a-d12-e1d");
+	dm.setImgPath("");
+	dm.setScore(9.5f);
+	LinkedList<String> list = new LinkedList<String>();
+	list.add("SF");
+	list.add("Fighting");
+	list.add("Anime");
+	dm.setCategories(list);
+
+	PropertyIO.saveDMDefinition(dm, System.getProperty("user.dir") + "/movies.xml", "Movies");
+
+	MovieDM newd=new MovieDM();
+	System.out.println(newd.getTitle());
+	System.out.println(newd.getDescription());
+	System.out.println(newd.getIMDbID());
+	System.out.println(newd.getImgPath());
+	System.out.println(newd.getScore());
+	newd.getFromProperties(dm.getProperties());
+	System.out.println(newd.getTitle());
+	System.out.println(newd.getDescription());
+	System.out.println(newd.getIMDbID());
+	System.out.println(newd.getImgPath());
+	System.out.println(newd.getScore());
+
     }
 
 }

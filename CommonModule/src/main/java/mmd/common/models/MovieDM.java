@@ -1,11 +1,10 @@
 package mmd.common.models;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import mmd.common.interfaces.DMDefinition;
 
-public class MovieDM implements DMDefinition
+public class MovieDM implements DMDefinition<MovieDM>
 {
     private List<String> Categories;
     private String Description;
@@ -14,11 +13,11 @@ public class MovieDM implements DMDefinition
     private float Score;
     private String Title;
 
-
     public List<String> getCategories()
     {
 	return this.Categories;
     }
+
     public String getDescription()
     {
 	return this.Description;
@@ -35,17 +34,9 @@ public class MovieDM implements DMDefinition
     }
 
     @Override
-    public ArrayList<Property> getProperties()
+    public String getName()
     {
-	ArrayList<Property> result = new ArrayList<Property>();
-
-	result.add(new Property("Title", this.Title));
-	result.add(new Property("Description", this.Description));
-	result.add(new Property("Score", Float.toString(this.Score)));
-	result.add(new Property("ImgPath", this.ImgPath));
-	result.add(new Property("IMDbID", this.IMDbID));
-	result.add(new Property("Categories", "Category", this.Categories));
-	return result;
+	return "Movie";
     }
 
     public float getScore()

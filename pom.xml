@@ -28,6 +28,7 @@
 		<module>CommonModule</module>
 		<module>PresentationModule</module>
 		<module>UtilModule</module>
+		<module>PersistenceModule</module>
 	</modules>
 	
 	<build>

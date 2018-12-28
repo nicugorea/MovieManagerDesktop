@@ -95,9 +95,7 @@ public final class IOHelper
 	DOMSource domSource = new DOMSource(document);
 
 	File file = new File(path);
-	if(!file.exists()) {
-	    file.getParentFile().mkdirs();
-	}
+
 	StreamResult streamResult = new StreamResult(file);
 
 
