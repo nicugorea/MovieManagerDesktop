@@ -1,99 +1,87 @@
-package mmd.common.interfaces;
+package mmd.common.definitions;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 import mmd.common.models.Property;
+import mmd.util.errorhandling.ErrorHandlerUtil;
 
-public interface DMDefinition<T>
+public abstract class DMDefinition<T>
 {
 
-    @SuppressWarnings("unchecked")
-    default T getFromProperties(final List<Property> properties)
+
+
+    public T getFromProperties(final List<Property> properties)
     {
-	for (Property property : properties)
+	try
 	{
-	    Field field = null;
-	    try
+	    for (Property property : properties)
 	    {
+		Field field = null;
+
 		field = this.getClass().getDeclaredField(property.getName());
-	    }
-	    catch (NoSuchFieldException e)
-	    {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	    }
-	    catch (SecurityException e)
-	    {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	    }
-	    if(field != null)
-	    {
-		if(property.getValue() != null)
+		if(field != null)
 		{
-		    boolean old = field.isAccessible();
-		    field.setAccessible(true);
-		    Object value =null;
-		    String typeName = field.getType().getName();
-		    if(typeName.equals(String.class.getTypeName()))
+		    if(property.getValue() != null)
 		    {
-			value=property.getValue();
+			boolean old = field.isAccessible();
+			field.setAccessible(true);
+			Object value = null;
+			String typeName = field.getType().getName();
+			if(typeName.equals(String.class.getTypeName()))
+			{
+			    value = property.getValue();
+			}
+			else if(typeName.equals(float.class.getTypeName()))
+			{
+			    value = Float.parseFloat(property.getValue());
+			}
+			field.set(this, value);
+			field.setAccessible(old);
 		    }
-		    else if(typeName.equals(float.class.getTypeName()))
-		    {
-			value=Float.parseFloat(property.getValue());
+		    else if(property.getChildren()!=null){
 		    }
-		    try
-		    {
-			field.set(this,value);
-		    }
-		    catch (IllegalArgumentException | IllegalAccessException e)
-		    {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		    }
-		    field.setAccessible(old);
 		}
 	    }
+	}
+	catch (Throwable e)
+	{
+	    ErrorHandlerUtil.handleThrowable(e);
 	}
 
 	return (T) this;
     }
 
-    String getName();
+    public abstract String getName();
 
-    default ArrayList<Property> getProperties(){
+    public ArrayList<Property> getProperties()
+    {
 	ArrayList<Property> result = new ArrayList<>();
-
-
-	for(Field field : this.getClass().getDeclaredFields())
+	try
 	{
-	    boolean old = field.isAccessible();
-	    field.setAccessible(true);
-	    try
+	    for (Field field : this.getClass().getDeclaredFields())
 	    {
-		if(!field.get(this).getClass().isArray()) {
-
-		    result.add(new Property(field.getName(), field.get(this).toString()));
-		}else {
-		    result.add(new Property(field.getName(), field.getName()+"Item",(List<T>) field.get(this)));
+		boolean old = field.isAccessible();
+		field.setAccessible(true);
+		if(List.class.isInstance((field.get(this))))
+		{
+		    result.add(new Property(field.getName(), field.getName() + "Item", (List<?>)field.get(this),this.getClass()));
 		}
+		else
+		{
+		    result.add(new Property(field.getName(), field.get(this).toString(),this.getClass()));
+		}
+		field.setAccessible(old);
 	    }
-	    catch (IllegalArgumentException e)
-	    {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	    }
-	    catch (IllegalAccessException e)
-	    {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	    }
-	    field.setAccessible(old);
+	}
+	catch (Throwable e)
+	{
+	    ErrorHandlerUtil.handleThrowable(e);
 	}
 
 	return result;
     }
+
 }
+

@@ -7,11 +7,4 @@
   </parent>
   <artifactId>UtilModule</artifactId>
   
-  <dependencies>
-  	<dependency>
-  		<groupId>MMDesktop</groupId>
-  		<artifactId>CommonModule</artifactId>
-  		<version>0.0.1</version>
-  	</dependency>
-  </dependencies>
 </project>

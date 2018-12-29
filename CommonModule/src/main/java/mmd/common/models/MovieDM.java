@@ -2,9 +2,9 @@ package mmd.common.models;
 
 import java.util.List;
 
-import mmd.common.interfaces.DMDefinition;
+import mmd.common.definitions.DMDefinition;
 
-public class MovieDM implements DMDefinition<MovieDM>
+public class MovieDM extends DMDefinition<MovieDM>
 {
     private List<String> Categories;
     private String Description;

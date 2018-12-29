@@ -6,14 +6,14 @@ import java.util.List;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import mmd.common.interfaces.DMDefinition;
+import mmd.common.definitions.DMDefinition;
 import mmd.common.models.Property;
 import mmd.persistence.util.IOHelper;
 
 public class PropertyIO
 {
 
-    public static void saveDMDefinition(final DMDefinition dm, final String filePath, final String rootElement)
+    public static void saveDMDefinition(final DMDefinition<?> dm, final String filePath, final String rootElement)
     {
 	File file = new File(filePath);
 

@@ -7,7 +7,15 @@
 		<artifactId>MovieManagerDesktop</artifactId>
 		<version>0.0.1</version>
 	</parent>
-
+	
+<dependencies>
+  	<dependency>
+  		<groupId>MMDesktop</groupId>
+  		<artifactId>UtilModule</artifactId>
+  		<version>0.0.1</version>
+  	</dependency>
+  </dependencies>
+  
 	<artifactId>CommonModule</artifactId>
 	<name>Common Module</name>
 </project>

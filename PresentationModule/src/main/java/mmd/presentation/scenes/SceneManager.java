@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import mmd.presentation.PresentationModule;
+import mmd.util.errorhandling.ErrorHandlerUtil;
 
 public class SceneManager
 {
@@ -21,9 +22,9 @@ public class SceneManager
 	    window.setScene(getScene(scenePath.get(name)));
 	    window.show();
 	}
-	catch (IOException e)
+	catch (Throwable e)
 	{
-
+	    ErrorHandlerUtil.handleThrowable(e);
 	}
     }
 
@@ -31,7 +32,7 @@ public class SceneManager
     {
 	String scenePath = "views/".concat(fileName).concat(".fxml");
 	Parent parent = FXMLLoader
-	        .load(PresentationModule.class.getResource(scenePath));
+		.load(PresentationModule.class.getResource(scenePath));
 	return parent;
     }
 
