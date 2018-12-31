@@ -1,6 +1,7 @@
 package mmd.common.models;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,11 +16,21 @@ public class Property
 	this.parentClass = parentClass;
     }
 
-    public Property(final String name, final String childName, final List<?> values, final Class<?> parentClass)
+    public Property(final String name, final String childName, final LinkedList<Property> values, final Class<?> parentClass)
     {
 	this.Name = name;
 	this.Value = null;
-	this.parentClass = parentClass;
+	this.propertyClass = List.class;
+	this.parentClass=parentClass;
+	this.Children=values;
+    }
+
+    public Property(final String name, final String childName, final List<?> values,final Class<?> parentClass)
+    {
+	this.Name = name;
+	this.Value = null;
+	this.propertyClass = List.class;
+	this.parentClass=parentClass;
 	for (Object item : values)
 	{
 	    Property property = new Property(childName, item.toString(), item.getClass());
@@ -73,7 +84,7 @@ public class Property
 	}
     }
 
-    private LinkedList<Property> Children = null;
+    private List<Property> Children = null;
 
     private String Name;
     private Class<?> parentClass;
@@ -89,7 +100,7 @@ public class Property
 	this.Children.add(property);
     }
 
-    public LinkedList<Property> getChildren()
+    public List<Property> getChildren()
     {
 	return this.Children;
     }
@@ -160,6 +171,9 @@ public class Property
 		List<Object> list = new LinkedList<Object>();
 		for (Property property : this.getChildren())
 		{
+		    ParameterizedType itemType = (ParameterizedType) field.getGenericType();
+		    Class<?> itemClass = (Class<?>) itemType.getActualTypeArguments()[0];
+		    property.setPropertyClass(itemClass);
 		    list.add(property.toObjectFromItem());
 		}
 		object = list;

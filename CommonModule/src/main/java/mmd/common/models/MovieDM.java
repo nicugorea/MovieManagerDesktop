@@ -2,9 +2,9 @@ package mmd.common.models;
 
 import java.util.List;
 
-import mmd.common.definitions.DMDefinition;
+import mmd.common.bases.DMBase;
 
-public class MovieDM extends DMDefinition<MovieDM>
+public class MovieDM extends DMBase<MovieDM>
 {
     private List<String> Categories;
     private String Description;

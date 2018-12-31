@@ -1,11 +1,10 @@
 package mmd.presentation;
 
-import java.util.LinkedList;
+import java.util.List;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
 import mmd.common.models.MovieDM;
-import mmd.common.models.Property;
 import mmd.persistence.io.PropertyIO;
 import mmd.presentation.scenes.SceneManager;
 import mmd.presentation.scenes.SceneName;
@@ -30,38 +29,22 @@ public class PresentationModule extends Application
 
 	    SceneManager.init(primaryStage);
 	    SceneManager.changeScene(SceneName.MainScreen);
-	    MovieDM dm = new MovieDM();
+	    List<MovieDM> dms = PropertyIO.getDMDefinitionFromFile(System.getProperty("user.dir") + "/movies.xml", MovieDM.class);
 
-	    dm.setTitle("Movie title");
-	    dm.setDescription("A description right here");
-	    dm.setIMDbID("adasdasd-a-d12-e1d");
-	    dm.setImgPath("");
-	    dm.setScore(9.5f);
-	    LinkedList<String> list = new LinkedList<String>();
-	    list.add("SF");
-	    list.add("Fighting");
-	    list.add("Anime");
-	    dm.setCategories(list);
-
-	    PropertyIO.saveDMDefinition(dm, System.getProperty("user.dir") + "/movies.xml", "Movies");
-
-	    MovieDM newd=new MovieDM();
-	    System.out.println(newd.getTitle());
-	    System.out.println(newd.getDescription());
-	    System.out.println(newd.getIMDbID());
-	    System.out.println(newd.getImgPath());
-	    System.out.println(newd.getScore());
-
-	    newd= Property.getObjectFromProperties(dm.getProperties());
-	    System.out.println(newd.getTitle());
-	    System.out.println(newd.getDescription());
-	    System.out.println(newd.getIMDbID());
-	    System.out.println(newd.getImgPath());
-	    System.out.println(newd.getScore());
-	    for (String string : newd.getCategories())
+	    for (MovieDM movieDM : dms)
 	    {
-		System.out.println(string);
+		System.out.println(movieDM.getTitle());
+		System.out.println(movieDM.getDescription());
+		System.out.println(movieDM.getIMDbID());
+		System.out.println(movieDM.getScore());
+		System.out.println(movieDM.getImgPath());
+		for (String category : movieDM.getCategories())
+		{
+
+		    System.out.println("\t"+category);
+		}
 	    }
+
 
 	}
 	catch (Throwable e) {
