@@ -3,6 +3,8 @@ package mmd.presentation.scenes;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -11,13 +13,24 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import mmd.common.models.MovieDM;
 import mmd.util.errorhandling.ErrorHandlerUtil;
 
 public class MovieTileVBox extends VBox
 {
     public MovieTileVBox()
     {
+	this(new MovieDM());
+	this.dm.setTitle("Movie Title");
+	this.dm.addCategory("Category");
+	this.dm.setDescription("Movie description here.");
+	this.dm.setImgPath("movieThumbnail.png");
+    }
+
+    public MovieTileVBox(final MovieDM dm)
+    {
 	super();
+	this.dm = dm;
 	this.createMainVBox();
 	super.getChildren().add(this.createPrimaryRegion());
 	super.getChildren().add(this.createActionBar());
@@ -25,6 +38,9 @@ public class MovieTileVBox extends VBox
     }
 
     private final int CONTENT_MARGIN = 6;
+    private final String DFAULT_IMG = "movieThumbnail.png";
+
+    private MovieDM dm;
 
     private final int SHADOW_OFFSET = 3;
 
@@ -66,9 +82,7 @@ public class MovieTileVBox extends VBox
     {
 	VBox element = new VBox();
 	element.setAlignment(Pos.TOP_LEFT);
-	Text description = new Text();
-	description.setText(
-		"Suspendisse eget purus vel eros pellentesque egestas. In ac feugiat purus.");
+	Text description = new Text(this.dm.getDescription());
 
 	description.setWrappingWidth(this.TILE_WIDTH - 2 * this.CONTENT_MARGIN);
 	description.setFont(Font.font("Roboto", FontWeight.NORMAL, 14));
@@ -102,8 +116,7 @@ public class MovieTileVBox extends VBox
 	VBox element = new VBox();
 	element.setAlignment(Pos.TOP_CENTER);
 
-	Text title = new Text();
-	title.setText("Movie Title");
+	Text title = new Text(this.dm.getTitle());
 	title.setWrappingWidth(this.TILE_WIDTH - 2 * this.CONTENT_MARGIN);
 	title.setFont(Font.font("Seagoe UI Light", FontWeight.MEDIUM, 20));
 	title.setFill(Paint.valueOf("#000000"));
@@ -122,26 +135,33 @@ public class MovieTileVBox extends VBox
 
     private VBox createThumbnail()
     {
+
 	VBox thumbnail = new VBox();
 
 	try
 	{
 
-	    thumbnail.setPrefSize(this.TILE_WIDTH, this.TILE_HEIGHT / 2);
-	    thumbnail.setMinSize(thumbnail.getPrefWidth(), thumbnail.getPrefHeight());
-	    thumbnail.setMaxSize(thumbnail.getPrefWidth(), thumbnail.getPrefHeight());
+	    thumbnail.setPrefWidth(this.TILE_WIDTH);
+	    thumbnail.setMinWidth(thumbnail.getPrefWidth());
+	    thumbnail.setMaxWidth(thumbnail.getPrefWidth());
+	    thumbnail.setAlignment(Pos.CENTER);
+	    String imgPath = (this.dm.getImgPath() == null) ? this.DFAULT_IMG : this.dm.getImgPath();
+	    Image image = new Image(this.getClass().getClassLoader()
+		    .getResource("mmd/presentation/img/movies/" + imgPath).openStream());
+	    ImageView imageView = new ImageView(image);
+	    imageView.setPreserveRatio(true);
+	    imageView.setFitWidth(this.TILE_WIDTH);
+	    imageView.setFitHeight(this.TILE_HEIGHT/2);
 
-	    thumbnail.setStyle(
-		    "-fx-background-image: url(\"" + this.getClass().getResource("bg.jpg").toExternalForm() + "\");" +
-			    "-fx-shape:\""
-			    + this.getPathForRoundedRect(this.TILE_WIDTH, this.TILE_HEIGHT, this.TILE_RADIUS,
-				    this.TILE_RADIUS, 0,
-				    0)
-			    + "\";"
-			    +
-			    "-fx-border-radius: 20;" +
-			    "-fx-border-width:5;" +
-		    "-fx-background-size:cover");
+	    String styles = "-fx-shape:\""
+		    + this.getPathForRoundedRect(this.TILE_WIDTH, this.TILE_HEIGHT, this.TILE_RADIUS,
+			    this.TILE_RADIUS, 0,
+			    0)
+		    + "\";";
+	    imageView.setStyle(styles);
+	    thumbnail.getChildren().add(imageView);
+
+	    thumbnail.setStyle(styles);
 
 	}
 	catch (Throwable e)

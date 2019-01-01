@@ -5,8 +5,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import mmd.common.enums.SceneNameEnum;
 import mmd.presentation.scenes.SceneManager;
-import mmd.presentation.scenes.SceneName;
 
 public class RegisterScreenController
 {
@@ -68,7 +68,7 @@ public class RegisterScreenController
     @FXML
     private void onLoginBtnClicked(final MouseEvent e)
     {
-	SceneManager.changeScene(SceneName.LoginScreen);
+	SceneManager.changeScene(SceneNameEnum.LoginScreen);
     }
 
     @FXML

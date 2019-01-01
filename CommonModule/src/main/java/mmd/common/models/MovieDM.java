@@ -1,5 +1,6 @@
 package mmd.common.models;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import mmd.common.bases.DMBase;
@@ -12,6 +13,14 @@ public class MovieDM extends DMBase<MovieDM>
     private String ImgPath;
     private float Score;
     private String Title;
+
+    public void addCategory(final String category) {
+	if(this.Categories==null)
+	{
+	    this.Categories=new LinkedList<String>();
+	}
+	this.Categories.add(category);
+    }
 
     public List<String> getCategories()
     {

@@ -1,6 +1,7 @@
 package mmd.presentation.controllers;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
@@ -10,10 +11,11 @@ import javafx.geometry.Pos;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
+import mmd.common.enums.SceneNameEnum;
+import mmd.common.models.MovieDM;
+import mmd.persistence.io.PropertyIO;
 import mmd.presentation.scenes.MovieTileVBox;
 import mmd.presentation.scenes.SceneManager;
-import mmd.presentation.scenes.SceneName;
 
 public class MainScreenController implements Initializable
 {
@@ -30,17 +32,7 @@ public class MainScreenController implements Initializable
 	this.mainTilePane.setAlignment(Pos.CENTER);
 	this.mainTilePane.setPrefColumns(100);
 
-	/*
-	 * TODO: Tile clone and change only parameters
-	 * like @title, @description, @image, @categories , etc
-	 * 
-	 */
-	VBox tile = null;
-	for (int i = 0; i < 1; i++)
-	{
-	    tile = new MovieTileVBox();
-	    this.mainTilePane.getChildren().add(tile);
-	}
+	this.refreshMovieList();
 
 	TreeItem<String> root = new TreeItem<String>("All");
 
@@ -55,7 +47,21 @@ public class MainScreenController implements Initializable
     @FXML
     private void onLogoutMenuItemAction(final ActionEvent e)
     {
-	SceneManager.changeScene(SceneName.LoginScreen);
+	SceneManager.changeScene(SceneNameEnum.LoginScreen);
+    }
+
+    private void refreshMovieList() {
+	/*
+	 * TODO: Tile clone and change only parameters
+	 * like @title, @description, @image, @categories , etc
+	 * 
+	 */
+	List<MovieDM> dms = PropertyIO.getDMDefinitionFromFile(System.getProperty("user.dir") + "/movies.xml", MovieDM.class);
+	for (int i = 0; i < dms.size(); i++)
+	{
+	    this.mainTilePane.getChildren().add(new MovieTileVBox(dms.get(i)));
+	}
+
     }
 
 }

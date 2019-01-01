@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Movies>
-<Movie>
-<Categories>
-<CategoriesItem>SF</CategoriesItem>
-<CategoriesItem>Fighting</CategoriesItem>
-<CategoriesItem>Anime</CategoriesItem>
-</Categories>
-<Description>A description right here</Description>
-<IMDbID>adasdasd-a-d12-e1d</IMDbID>
-<ImgPath/>
-<Score>9.5</Score>
-<Title>Movie title</Title>
-</Movie>
-<Movie>
-<Categories>
-<CategoriesItem>SF</CategoriesItem>
-<CategoriesItem>Fighting</CategoriesItem>
-<CategoriesItem>Anime</CategoriesItem>
-</Categories>
-<Description>2A description right here</Description>
-<IMDbID>2adasdasd-a-d12-e1d</IMDbID>
-<ImgPath/>
-<Score>7.5</Score>
-<Title>Movie title 2</Title>
-</Movie>
+	<Movie>
+		<Categories>
+			<CategoriesItem>SF</CategoriesItem>
+			<CategoriesItem>Fighting</CategoriesItem>
+			<CategoriesItem>Anime</CategoriesItem>
+		</Categories>
+		<Description>A description right here</Description>
+		<IMDbID>adasdasd-a-d12-e1d</IMDbID>
+		<ImgPath />
+		<Score>9.5</Score>
+		<Title>Movie title</Title>
+	</Movie>
+	<Movie>
+		<Categories>
+			<CategoriesItem>SF</CategoriesItem>
+			<CategoriesItem>Fighting</CategoriesItem>
+			<CategoriesItem>Anime</CategoriesItem>
+		</Categories>
+		<Description>Another description right here</Description>
+		<IMDbID>2adasdasd-a-d12-e1d</IMDbID>
+		<ImgPath />
+		<Score>7.5</Score>
+		<Title>Second Movie title</Title>
+	</Movie>
 </Movies>
