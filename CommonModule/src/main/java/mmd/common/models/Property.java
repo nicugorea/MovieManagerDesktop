@@ -31,6 +31,7 @@ public class Property
 	this.Value = null;
 	this.propertyClass = List.class;
 	this.parentClass=parentClass;
+	this.Children=new LinkedList<Property>();
 	for (Object item : values)
 	{
 	    Property property = new Property(childName, item.toString(), item.getClass());

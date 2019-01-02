@@ -2,6 +2,7 @@ package mmd.presentation.controllers;
 
 import java.io.File;
 import java.net.URL;
+import java.util.LinkedList;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
@@ -20,10 +21,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import mmd.common.MagicValues;
 import mmd.common.enums.FileTypeEnum;
+import mmd.common.models.MovieDM;
+import mmd.persistence.io.PropertyIO;
 import mmd.presentation.scenes.SceneManager;
 
-public class AddMovieController implements Initializable {
+public class AddMovieController implements Initializable
+{
 
     @FXML
     private Button addCategoryButton;
@@ -63,7 +68,7 @@ public class AddMovieController implements Initializable {
     @FXML
     private TextField titleField;
 
-    private File tmpThumbnail =null;
+    private File tmpThumbnail = null;
 
     @Override
     public void initialize(final URL location, final ResourceBundle resources)
@@ -72,16 +77,44 @@ public class AddMovieController implements Initializable {
 	this.scoreVBox.getChildren().add(this.scoreSpinner);
 	this.titleField.setText("dasdasd");
 
+    }
+
+    @FXML
+    void addClicked(final MouseEvent event)
+    {
 
     }
 
     @FXML
-    void openClicked(final MouseEvent event) {
+    void cancelClicked(final MouseEvent event)
+    {
+
+    }
+
+    @FXML
+    void openClicked(final MouseEvent event)
+    {
 	File file = SceneManager.openFile(FileTypeEnum.Image);
 	this.thumbnailTextFlow.getChildren().clear();
 	this.thumbnailTextFlow.getChildren().add(new Text(file.getName()));
 	this.thumbnailImageView.setImage(new Image(file.toURI().toString()));
-	this.tmpThumbnail=file;
+	this.tmpThumbnail = file;
+
+    }
+
+    @FXML
+    void saveClicked(final MouseEvent event)
+    {
+
+	MovieDM dm = new MovieDM();
+	dm.setTitle(this.titleField.getText());
+	dm.setDescription(this.descriptionField.getText());
+	dm.setIMDbID(this.IMDbIDField.getText());
+	dm.setScore(10.0f);
+	dm.setCategories(new LinkedList<String>());
+	dm.setImgPath("");
+
+	PropertyIO.saveDMDefinitionToFile(dm, MagicValues.MovieDMPath, MagicValues.MoviesTagName);
     }
 
 }

@@ -1,8 +1,11 @@
 package mmd.presentation;
 
 import javafx.application.Application;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import mmd.common.enums.SceneNameEnum;
+import mmd.common.enums.StageNameEnum;
+import mmd.persistence.PersistenceModule;
 import mmd.presentation.scenes.SceneManager;
 import mmd.util.errorhandling.ErrorHandlerUtil;
 import mmd.util.logging.LogLevel;
@@ -22,9 +25,10 @@ public class PresentationModule extends Application
     public void start(final Stage primaryStage) throws Exception
     {
 	try {
-
+	    PersistenceModule.init();
 	    SceneManager.init(primaryStage);
-	    SceneManager.changeScene(SceneNameEnum.AddMovie);
+	    SceneManager.changeScene(SceneNameEnum.MainScreen);
+	    SceneManager.showStage(StageNameEnum.AddMovie, Modality.APPLICATION_MODAL);
 
 
 
