@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -23,11 +22,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import mmd.common.bases.ControllerBase;
 import mmd.common.enums.FileTypeEnum;
+import mmd.common.enums.StageNameEnum;
 import mmd.common.models.MovieDM;
+import mmd.common.types.Tuple;
 import mmd.presentation.stages.StageManager;
 import mmd.util.errorhandling.ErrorHandlerUtil;
-public class AddMovieController implements Initializable
+public class AddMovieController extends ControllerBase
 {
 
     @FXML
@@ -79,6 +81,13 @@ public class AddMovieController implements Initializable
 	this.categoryList.setCellFactory(TextFieldListCell.forListView());
     }
 
+    @Override
+    protected void initName()
+    {
+	this.stageName=StageNameEnum.AddMovie;
+
+    }
+
     @FXML
     void addClicked(final MouseEvent event)
     {
@@ -122,7 +131,7 @@ public class AddMovieController implements Initializable
 	dm.setScore(10.0f);
 	dm.setCategories(new LinkedList<String>());
 	dm.setImgPath("");
-
+	StageManager.setStageData(this.getName(), new Tuple<Object, Class<?>>(dm, dm.getClass()));
 	StageManager.closeParentStage((Node) event.getSource());
     }
 

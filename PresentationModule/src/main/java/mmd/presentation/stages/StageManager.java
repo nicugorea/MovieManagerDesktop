@@ -13,9 +13,12 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import mmd.common.bases.ControllerBase;
 import mmd.common.enums.FileTypeEnum;
 import mmd.common.enums.StageNameEnum;
 import mmd.common.types.Tuple;
+import mmd.presentation.controllers.AddMovieController;
+import mmd.presentation.controllers.MainScreenController;
 import mmd.presentation.scenes.SceneManager;
 import mmd.util.errorhandling.ErrorHandlerUtil;
 
@@ -23,23 +26,40 @@ public class StageManager
 {
     private static Stage mainWindow = null;
 
+    private static HashMap<StageNameEnum, Class<?>> stageControllerList = null;
 
-    private static HashMap<StageNameEnum, String> stagePath = null;
+    private static HashMap<StageNameEnum, ControllerBase> stageControllerMap = null;
 
-    private static Stack<Tuple<StageNameEnum, Stage>> windows = null;
+    private static HashMap<StageNameEnum, String> stagePathMap = null;
 
-    public static void closeParentStage(final Node element) {
-	((Stage)element.getScene().getWindow()).close();
+    private static Stack<StageNameEnum> windows = null;
+
+    public static void closeParentStage(final Node element)
+    {
+	((Stage) element.getScene().getWindow()).close();
+    }
+
+    public static Tuple<Object, Class<?>> getStageData(final StageNameEnum stageName)
+    {
+	Tuple<Object, Class<?>> stageData = null;
+	if(stageControllerMap.containsKey(stageName))
+	{
+	    stageData = stageControllerMap.get(stageName).getStageData();
+	}
+	return stageData;
     }
 
     public static void init(final Stage stage)
     {
 
 	mainWindow = stage;
-	windows = new Stack<Tuple<StageNameEnum, Stage>>();
-	windows.push(new Tuple<StageNameEnum, Stage>(StageNameEnum.MainWindow, mainWindow));
-	stagePath = new HashMap<StageNameEnum, String>();
+	windows = new Stack<StageNameEnum>();
+	stageControllerList = new HashMap<>();
+	stageControllerMap = new HashMap<>();
+	stagePathMap = new HashMap<StageNameEnum, String>();
 	registerPaths();
+	registerStages();
+	addWindowToStack(StageNameEnum.MainWindow);
     }
 
     public static File openFile(final FileTypeEnum fileType)
@@ -69,6 +89,14 @@ public class StageManager
 	return fc.showOpenDialog(mainWindow);
     }
 
+    public static void setStageData(final StageNameEnum stageName, final Tuple<Object, Class<?>> stageData)
+    {
+	if(stageControllerMap.containsKey(stageName))
+	{
+	    stageControllerMap.get(stageName).setStageData(stageData);
+	}
+    }
+
     public static void showStage(final StageNameEnum stageName)
     {
 	showStage(stageName, Modality.APPLICATION_MODAL, null);
@@ -84,21 +112,42 @@ public class StageManager
     {
 	try
 	{
-	    Stage stage = getStage(stagePath.get(stageName));
+	    Stage stage = getStage(stagePathMap.get(stageName));
 	    stage.initModality(modality);
 	    stage.initOwner(mainWindow);
-	    windows.push(new Tuple<StageNameEnum, Stage>(stageName, stage));
+	    addWindowToStack(stageName);
 	    if(function != null)
 	    {
-		stage.setOnCloseRequest(function);
+		stage.setOnHiding(function);
 	    }
 	    stage.show();
-
 	}
 	catch (Throwable e)
 	{
 	    ErrorHandlerUtil.handleThrowable(e);
 	}
+    }
+
+    private static void addWindowToStack(final StageNameEnum stageName)
+    {
+	windows.push(stageName);
+	try
+	{
+	    if(stageControllerList.containsKey(stageName))
+	    {
+		stageControllerMap.put(stageName, (ControllerBase) stageControllerList.get(stageName).newInstance());
+	    }
+	    else
+	    {
+		ErrorHandlerUtil
+		.handleThrowable(new Throwable("stageControllerList have no entry -> " + stageName.toString()));
+	    }
+	}
+	catch (Throwable e)
+	{
+	    ErrorHandlerUtil.handleThrowable(e);
+	}
+
     }
 
     private static Stage getStage(final String name) throws IOException
@@ -111,7 +160,14 @@ public class StageManager
 
     private static void registerPaths()
     {
-	stagePath.put(StageNameEnum.AddMovie, "AddMovieStage");
+	stagePathMap.put(StageNameEnum.AddMovie, "AddMovieStage");
+	stagePathMap.put(StageNameEnum.MainWindow, "MainScreenScene");
 
+    }
+
+    private static void registerStages()
+    {
+	stageControllerList.put(StageNameEnum.AddMovie, AddMovieController.class);
+	stageControllerList.put(StageNameEnum.MainWindow, MainScreenController.class);
     }
 }

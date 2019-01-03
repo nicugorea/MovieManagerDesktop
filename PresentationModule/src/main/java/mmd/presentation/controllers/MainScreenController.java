@@ -5,12 +5,15 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.TilePane;
+import javafx.stage.WindowEvent;
+import mmd.common.MagicValues;
+import mmd.common.bases.ControllerBase;
 import mmd.common.enums.SceneNameEnum;
 import mmd.common.enums.StageNameEnum;
 import mmd.common.models.MovieDM;
@@ -19,7 +22,7 @@ import mmd.presentation.scenes.MovieTileVBox;
 import mmd.presentation.scenes.SceneManager;
 import mmd.presentation.stages.StageManager;
 
-public class MainScreenController implements Initializable
+public class MainScreenController extends ControllerBase
 {
     @FXML
     private TreeView<String> categoryTreeView;
@@ -32,7 +35,7 @@ public class MainScreenController implements Initializable
     @Override
     public void initialize(final URL location, final ResourceBundle resources)
     {
-	this.movies = PropertyIO.getDMDefinitionFromFile(System.getProperty("user.dir") + "/movies.xml", MovieDM.class);
+	this.movies = PropertyIO.getDMDefinitionFromFile(MagicValues.MovieDMPath, MovieDM.class);
 	this.mainTilePane.setAlignment(Pos.CENTER);
 	this.mainTilePane.setPrefColumns(100);
 
@@ -48,8 +51,16 @@ public class MainScreenController implements Initializable
 
     }
 
+    @Override
+    protected void initName()
+    {
+	this.stageName=StageNameEnum.MainWindow;
+    }
+
     private void addNewMovieDm() {
-	//	PropertyIO.saveDMDefinitionToFile(dm, MagicValues.MovieDMPath, MagicValues.MoviesTagName);
+	MovieDM dm = (MovieDM) StageManager.getStageData(StageNameEnum.AddMovie).getFirst();
+	PropertyIO.saveDMDefinitionToFile(dm, MagicValues.MovieDMPath, MagicValues.MoviesTagName);
+	this.movies.add(dm);
 	this.refreshMovieList();
     }
 
@@ -62,8 +73,14 @@ public class MainScreenController implements Initializable
     @FXML
     private void onNewMovieMenuAction(final ActionEvent e)
     {
-	StageManager.showStage(StageNameEnum.AddMovie, (WindowEvent)->{
-	    this.addNewMovieDm();
+	StageManager.showStage(StageNameEnum.AddMovie, new EventHandler<WindowEvent>()
+	{
+
+	    @Override
+	    public void handle(final WindowEvent event)
+	    {
+		MainScreenController.this.addNewMovieDm();
+	    }
 	});
 
 
