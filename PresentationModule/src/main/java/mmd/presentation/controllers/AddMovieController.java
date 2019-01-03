@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
@@ -14,6 +15,7 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -21,12 +23,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-import mmd.common.MagicValues;
 import mmd.common.enums.FileTypeEnum;
 import mmd.common.models.MovieDM;
-import mmd.persistence.io.PropertyIO;
-import mmd.presentation.scenes.SceneManager;
-
+import mmd.presentation.stages.StageManager;
+import mmd.util.errorhandling.ErrorHandlerUtil;
 public class AddMovieController implements Initializable
 {
 
@@ -37,7 +37,7 @@ public class AddMovieController implements Initializable
     private TextField categoryField;
 
     @FXML
-    private ListView<?> categoryList;
+    private ListView<String> categoryList;
 
     @FXML
     private TextArea descriptionField;
@@ -76,25 +76,34 @@ public class AddMovieController implements Initializable
 	this.scoreSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0, 10.0, 0.0));
 	this.scoreVBox.getChildren().add(this.scoreSpinner);
 	this.titleField.setText("dasdasd");
-
+	this.categoryList.setCellFactory(TextFieldListCell.forListView());
     }
 
     @FXML
     void addClicked(final MouseEvent event)
     {
+	try
+	{
 
+	    this.categoryList.getItems().add(this.categoryField.getText());
+	}
+	catch (Exception e)
+	{
+	    ErrorHandlerUtil.handleThrowable(e);
+	}
     }
 
     @FXML
     void cancelClicked(final MouseEvent event)
     {
 
+	StageManager.closeParentStage((Node) event.getSource());
     }
 
     @FXML
     void openClicked(final MouseEvent event)
     {
-	File file = SceneManager.openFile(FileTypeEnum.Image);
+	File file = StageManager.openFile(FileTypeEnum.Image);
 	this.thumbnailTextFlow.getChildren().clear();
 	this.thumbnailTextFlow.getChildren().add(new Text(file.getName()));
 	this.thumbnailImageView.setImage(new Image(file.toURI().toString()));
@@ -114,7 +123,7 @@ public class AddMovieController implements Initializable
 	dm.setCategories(new LinkedList<String>());
 	dm.setImgPath("");
 
-	PropertyIO.saveDMDefinitionToFile(dm, MagicValues.MovieDMPath, MagicValues.MoviesTagName);
+	StageManager.closeParentStage((Node) event.getSource());
     }
 
 }

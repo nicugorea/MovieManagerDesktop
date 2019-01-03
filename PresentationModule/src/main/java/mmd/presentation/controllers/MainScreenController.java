@@ -12,10 +12,12 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.TilePane;
 import mmd.common.enums.SceneNameEnum;
+import mmd.common.enums.StageNameEnum;
 import mmd.common.models.MovieDM;
 import mmd.persistence.io.PropertyIO;
 import mmd.presentation.scenes.MovieTileVBox;
 import mmd.presentation.scenes.SceneManager;
+import mmd.presentation.stages.StageManager;
 
 public class MainScreenController implements Initializable
 {
@@ -24,11 +26,13 @@ public class MainScreenController implements Initializable
 
     @FXML
     private TilePane mainTilePane;
+    private List<MovieDM> movies=null;
+
 
     @Override
     public void initialize(final URL location, final ResourceBundle resources)
     {
-
+	this.movies = PropertyIO.getDMDefinitionFromFile(System.getProperty("user.dir") + "/movies.xml", MovieDM.class);
 	this.mainTilePane.setAlignment(Pos.CENTER);
 	this.mainTilePane.setPrefColumns(100);
 
@@ -44,22 +48,33 @@ public class MainScreenController implements Initializable
 
     }
 
+    private void addNewMovieDm() {
+	//	PropertyIO.saveDMDefinitionToFile(dm, MagicValues.MovieDMPath, MagicValues.MoviesTagName);
+	this.refreshMovieList();
+    }
+
     @FXML
-    private void onLogoutMenuItemAction(final ActionEvent e)
+    private void onLogoutAccountMenuItemAction(final ActionEvent e)
     {
 	SceneManager.changeScene(SceneNameEnum.LoginScreen);
     }
 
+    @FXML
+    private void onNewMovieMenuAction(final ActionEvent e)
+    {
+	StageManager.showStage(StageNameEnum.AddMovie, (WindowEvent)->{
+	    this.addNewMovieDm();
+	});
+
+
+    }
+
     private void refreshMovieList() {
-	/*
-	 * TODO: Tile clone and change only parameters
-	 * like @title, @description, @image, @categories , etc
-	 * 
-	 */
-	List<MovieDM> dms = PropertyIO.getDMDefinitionFromFile(System.getProperty("user.dir") + "/movies.xml", MovieDM.class);
-	for (int i = 0; i < dms.size(); i++)
+
+	this.mainTilePane.getChildren().clear();
+	for (int i = 0; i < this.movies.size(); i++)
 	{
-	    this.mainTilePane.getChildren().add(new MovieTileVBox(dms.get(i)));
+	    this.mainTilePane.getChildren().add(new MovieTileVBox(this.movies.get(i)));
 	}
 
     }

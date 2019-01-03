@@ -27,7 +27,12 @@
         </Menu>
             <Menu mnemonicParsing="false" text="Account">
                <items>
-                  <MenuItem mnemonicParsing="false" onAction="#onLogoutMenuItemAction" text="Logout" />
+                  <MenuItem mnemonicParsing="false" onAction="#onLogoutAccountMenuItemAction" text="Logout" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Movie">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#onNewMovieMenuAction" text="New" />
                </items>
             </Menu>
         <Menu mnemonicParsing="false" text="Help">
