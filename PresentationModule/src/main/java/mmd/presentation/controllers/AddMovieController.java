@@ -28,6 +28,7 @@ import mmd.common.enums.StageNameEnum;
 import mmd.common.models.MovieDM;
 import mmd.common.types.Tuple;
 import mmd.presentation.stages.StageManager;
+import mmd.util.MagicValues;
 import mmd.util.errorhandling.ErrorHandlerUtil;
 public class AddMovieController extends ControllerBase
 {
@@ -77,8 +78,8 @@ public class AddMovieController extends ControllerBase
     {
 	this.scoreSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0, 10.0, 0.0));
 	this.scoreVBox.getChildren().add(this.scoreSpinner);
-	this.titleField.setText("dasdasd");
 	this.categoryList.setCellFactory(TextFieldListCell.forListView());
+	this.thumbnailImageView.setImage(new Image(MagicValues.MovieThumbnailPath+"/"+MagicValues.MovieDefaultThumbnail));
     }
 
     @Override
@@ -86,6 +87,34 @@ public class AddMovieController extends ControllerBase
     {
 	this.stageName=StageNameEnum.AddMovie;
 
+    }
+
+    private MovieDM getDMFromContext() {
+	MovieDM dm = new MovieDM().newInstance();
+
+	if(!this.titleField.getText().isEmpty())
+	{
+	    dm.setTitle(this.titleField.getText());
+	}
+
+	if(!this.descriptionField.getText().isEmpty())
+	{
+	    dm.setDescription(this.descriptionField.getText());
+	}
+	if(!this.IMDbIDField.getText().isEmpty())
+	{
+	    dm.setIMDbID(this.IMDbIDField.getText());
+	}
+	dm.setScore(10.0f);
+	if(this.categoryList.getChildrenUnmodifiable().size()>0)
+	{
+	    dm.setCategories(new LinkedList<String>());
+	}
+	if(this.tmpThumbnail!=null)
+	{
+	    dm.setImgPath(this.tmpThumbnail.getName());
+	}
+	return dm;
     }
 
     @FXML
@@ -119,20 +148,12 @@ public class AddMovieController extends ControllerBase
 	this.tmpThumbnail = file;
 
     }
-
     @FXML
     void saveClicked(final MouseEvent event)
     {
 
-	MovieDM dm = new MovieDM();
-	dm.setTitle(this.titleField.getText());
-	dm.setDescription(this.descriptionField.getText());
-	dm.setIMDbID(this.IMDbIDField.getText());
-	dm.setScore(10.0f);
-	dm.setCategories(new LinkedList<String>());
-	dm.setImgPath("");
+	MovieDM dm = this.getDMFromContext();
 	StageManager.setStageData(this.getName(), new Tuple<Object, Class<?>>(dm, dm.getClass()));
 	StageManager.closeParentStage((Node) event.getSource());
     }
-
 }

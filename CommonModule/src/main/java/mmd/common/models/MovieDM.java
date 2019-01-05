@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import mmd.common.bases.DMBase;
+import mmd.util.MagicValues;
 
 public class MovieDM extends DMBase<MovieDM>
 {
@@ -56,6 +57,18 @@ public class MovieDM extends DMBase<MovieDM>
     public String getTitle()
     {
 	return this.Title;
+    }
+
+    @Override
+    public MovieDM newInstance() {
+	MovieDM dm = new MovieDM();
+	dm.setTitle("Unknown title");
+	dm.setDescription("Unknown description");
+	dm.setIMDbID("Unknown id");
+	dm.setScore(0.0f);
+	dm.setCategories(new LinkedList<String>());
+	dm.setImgPath(MagicValues.MovieDefaultThumbnail);
+	return dm;
     }
 
     public void setCategories(final List<String> categories)

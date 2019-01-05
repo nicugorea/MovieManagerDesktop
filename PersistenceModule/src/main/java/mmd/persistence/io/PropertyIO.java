@@ -12,8 +12,8 @@ import org.w3c.dom.NodeList;
 
 import mmd.common.definitions.DMDefinition;
 import mmd.common.models.Property;
-import mmd.persistence.util.IOHelper;
 import mmd.util.errorhandling.ErrorHandlerUtil;
+import mmd.util.io.IOUtil;
 
 public class PropertyIO
 {
@@ -25,7 +25,7 @@ public class PropertyIO
 	try
 	{
 
-	    Document document = IOHelper.createDOMDocumentFromXMLFile(filePath);
+	    Document document = IOUtil.createDOMDocumentFromXMLFile(filePath);
 
 	    Element root = document.getDocumentElement();
 
@@ -56,13 +56,13 @@ public class PropertyIO
 	if(!file.exists())
 	{
 	    file.getParentFile().mkdirs();
-	    document = IOHelper.createEmptyDOMDocument();
+	    document = IOUtil.createEmptyDOMDocument();
 	    root = document.createElement(rootElement);
 	    document.appendChild(root);
 	}
 	else
 	{
-	    document = IOHelper.createDOMDocumentFromXMLFile(filePath);
+	    document = IOUtil.createDOMDocumentFromXMLFile(filePath);
 	    root = document.getDocumentElement();
 	}
 
@@ -70,7 +70,7 @@ public class PropertyIO
 
 	root.appendChild(element);
 
-	IOHelper.saveDOMDocumentToXMLFile(document, filePath);
+	IOUtil.saveDOMDocumentToXMLFile(document, filePath);
     }
 
     private static Element getElementFromPropertyList(final Document root, final String name,

@@ -14,7 +14,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import mmd.common.models.MovieDM;
+import mmd.util.MagicValues;
 import mmd.util.errorhandling.ErrorHandlerUtil;
+import mmd.util.io.IOUtil;
 
 public class MovieTileVBox extends VBox
 {
@@ -24,7 +26,7 @@ public class MovieTileVBox extends VBox
 	this.dm.setTitle("Movie Title");
 	this.dm.addCategory("Category");
 	this.dm.setDescription("Movie description here.");
-	this.dm.setImgPath("movieThumbnail.png");
+	this.dm.setImgPath(MagicValues.MovieDefaultThumbnail);
     }
 
     public MovieTileVBox(final MovieDM dm)
@@ -38,8 +40,6 @@ public class MovieTileVBox extends VBox
     }
 
     private final int CONTENT_MARGIN = 6;
-    private final String DFAULT_IMG = "movieThumbnail.png";
-
     private MovieDM dm;
 
     private final int SHADOW_OFFSET = 3;
@@ -145,9 +145,12 @@ public class MovieTileVBox extends VBox
 	    thumbnail.setMinWidth(thumbnail.getPrefWidth());
 	    thumbnail.setMaxWidth(thumbnail.getPrefWidth());
 	    thumbnail.setAlignment(Pos.CENTER);
-	    String imgPath = (this.dm.getImgPath() == null) ? this.DFAULT_IMG : this.dm.getImgPath();
-	    Image image = new Image(this.getClass().getClassLoader()
-		    .getResource("mmd/presentation/img/movies/" + imgPath).openStream());
+	    String imgPath = this.dm.getImgPath();
+	    if(!IOUtil.existFile(IOUtil.getImagePath(imgPath))){
+		imgPath=MagicValues.MovieDefaultThumbnail;
+	    }
+
+	    Image image = new Image(IOUtil.getStringURLOfPath(IOUtil.getImagePath(imgPath)));
 	    ImageView imageView = new ImageView(image);
 	    imageView.setPreserveRatio(true);
 	    imageView.setFitWidth(this.TILE_WIDTH);
