@@ -11,7 +11,8 @@ public interface DMDefinition<T>
 
     ArrayList<Property> getProperties();
 
-    T newInstance();
+    T newInstance(Object object);
+
 
 
 

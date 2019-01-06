@@ -58,7 +58,7 @@ public class DMBase<T> implements DMDefinition<T>
 
 
     @Override
-    public T newInstance()
+    public T newInstance(final Object object)
     {
 	try
 	{
@@ -66,7 +66,7 @@ public class DMBase<T> implements DMDefinition<T>
 	}
 	catch (Throwable e)
 	{
-	  ErrorHandlerUtil.handleThrowable(e);
+	    ErrorHandlerUtil.handleThrowable(e);
 	}
 	return null;
     }

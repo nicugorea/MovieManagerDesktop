@@ -13,7 +13,10 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import mmd.common.enums.StageNameEnum;
 import mmd.common.models.MovieDM;
+import mmd.common.types.Tuple;
+import mmd.presentation.stages.StageManager;
 import mmd.util.MagicValues;
 import mmd.util.errorhandling.ErrorHandlerUtil;
 import mmd.util.io.IOUtil;
@@ -36,6 +39,9 @@ public class MovieTileVBox extends VBox
 	this.createMainVBox();
 	super.getChildren().add(this.createPrimaryRegion());
 	super.getChildren().add(this.createActionBar());
+	this.setOnMouseClicked((e)->{
+	    StageManager.showStage(StageNameEnum.MovieDetails, new Tuple(dm,MovieDM.class));
+	});
 
     }
 
@@ -122,7 +128,7 @@ public class MovieTileVBox extends VBox
 	title.setFill(Paint.valueOf("#000000"));
 
 	Text categories = new Text();
-	categories.setText("Holiday, Fighting, Comedy");
+	categories.setText(this.dm.getCategoriesString());
 	categories.setWrappingWidth(this.TILE_WIDTH - 2 * this.CONTENT_MARGIN);
 	categories.setFont(Font.font("Seagoe UI Light", FontWeight.MEDIUM, 14));
 	categories.setFill(Paint.valueOf("#0000008a"));

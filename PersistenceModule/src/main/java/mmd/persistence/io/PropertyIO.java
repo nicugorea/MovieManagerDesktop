@@ -33,9 +33,9 @@ public class PropertyIO
 
 	    for (int i = 0; i < moviesNodes.getLength(); i++)
 	    {
-		DMDefinition<T> object = (DMDefinition<T>) type.newInstance();
+		DMDefinition<T> object = (DMDefinition<T>) ((DMDefinition<T>) type.newInstance()).newInstance(
+			Property.getObjectFromProperties(getPropertyListFromNode(moviesNodes.item(i), type)));
 
-		object = Property.getObjectFromProperties(getPropertyListFromNode(moviesNodes.item(i), type));
 		list.add((T) object);
 	    }
 
@@ -116,14 +116,16 @@ public class PropertyIO
 		if(fieldNode.getChildNodes().getLength() == 1
 			&& fieldNode.getChildNodes().item(0).getNodeType() == Node.TEXT_NODE)
 		{
-		    properties.add(new Property(field.getName(), fieldNode.getChildNodes().item(0).getTextContent(), type));
+		    properties.add(
+			    new Property(field.getName(), fieldNode.getChildNodes().item(0).getTextContent(), type));
 		}
 		else if(fieldNode.getChildNodes().getLength() >= 1
 			&& fieldNode.getChildNodes().item(0).getNodeType() != Node.ELEMENT_NODE)
 		{
-		    properties.add(new Property(field.getName(),fieldNode.getChildNodes().item(0).getNodeName(),
-			    getPropertyListFromNodeList(fieldNode.getChildNodes()),type));
+		    properties.add(new Property(field.getName(), fieldNode.getChildNodes().item(0).getNodeName(),
+			    getPropertyListFromNodeList(fieldNode.getChildNodes()), type));
 		}
+
 	    }
 	}
 	catch (Throwable e)

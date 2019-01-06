@@ -94,7 +94,7 @@ public class MainScreenController extends ControllerBase
 	    {
 		MainScreenController.this.addNewMovieDm();
 	    }
-	});
+	},null);
 
     }
 

@@ -28,6 +28,21 @@ public class MovieDM extends DMBase<MovieDM>
 	return this.Categories;
     }
 
+    public String getCategoriesString()
+    {
+	if(this.Categories.size()>0) {
+
+	    StringBuilder categoriesSB = new StringBuilder();
+	    for (String category : this.Categories)
+	    {
+		categoriesSB.append(category+", ");
+	    }
+	    return categoriesSB.substring(0,categoriesSB.length()-3).toString();
+	}
+
+	return "";
+    }
+
     public String getDescription()
     {
 	return this.Description;
@@ -60,14 +75,30 @@ public class MovieDM extends DMBase<MovieDM>
     }
 
     @Override
-    public MovieDM newInstance() {
-	MovieDM dm = new MovieDM();
-	dm.setTitle("Unknown title");
-	dm.setDescription("Unknown description");
-	dm.setIMDbID("Unknown id");
+    public MovieDM newInstance(final Object object) {
+	MovieDM obj = (MovieDM)object;
+	MovieDM dm = obj;
+	if(obj.Title.isEmpty())
+	{
+	    dm.setTitle("Unknown title");
+	}
+	if(obj.Description.isEmpty())
+	{
+	    dm.setDescription("Unknown description");
+	}
+	if(obj.IMDbID.isEmpty())
+	{
+	    dm.setIMDbID("Unknown id");
+	}
 	dm.setScore(0.0f);
-	dm.setCategories(new LinkedList<String>());
-	dm.setImgPath(MagicValues.MovieDefaultThumbnail);
+	if(obj.Categories==null)
+	{
+	    dm.setCategories(new LinkedList<String>());
+	}
+	if(obj.ImgPath.isEmpty())
+	{
+	    dm.setImgPath(MagicValues.MovieDefaultThumbnail);
+	}
 	return dm;
     }
 

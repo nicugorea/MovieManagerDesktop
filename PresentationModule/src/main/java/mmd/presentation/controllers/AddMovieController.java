@@ -28,7 +28,6 @@ import mmd.common.enums.StageNameEnum;
 import mmd.common.models.MovieDM;
 import mmd.common.types.Tuple;
 import mmd.presentation.stages.StageManager;
-import mmd.util.MagicValues;
 import mmd.util.errorhandling.ErrorHandlerUtil;
 public class AddMovieController extends ControllerBase
 {
@@ -79,7 +78,7 @@ public class AddMovieController extends ControllerBase
 	this.scoreSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0, 10.0, 0.0));
 	this.scoreVBox.getChildren().add(this.scoreSpinner);
 	this.categoryList.setCellFactory(TextFieldListCell.forListView());
-	this.thumbnailImageView.setImage(new Image(MagicValues.MovieThumbnailPath+"/"+MagicValues.MovieDefaultThumbnail));
+	//	this.thumbnailImageView.setImage(new Image(MagicValues.MovieThumbnailPath+"/"+MagicValues.MovieDefaultThumbnail));
     }
 
     @Override
@@ -90,7 +89,7 @@ public class AddMovieController extends ControllerBase
     }
 
     private MovieDM getDMFromContext() {
-	MovieDM dm = new MovieDM().newInstance();
+	MovieDM dm = new MovieDM().newInstance(new MovieDM());
 
 	if(!this.titleField.getText().isEmpty())
 	{

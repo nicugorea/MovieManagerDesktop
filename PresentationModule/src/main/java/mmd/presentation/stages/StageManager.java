@@ -19,6 +19,7 @@ import mmd.common.enums.StageNameEnum;
 import mmd.common.types.Tuple;
 import mmd.presentation.controllers.AddMovieController;
 import mmd.presentation.controllers.MainScreenController;
+import mmd.presentation.controllers.MovieDetailsController;
 import mmd.presentation.scenes.SceneManager;
 import mmd.util.errorhandling.ErrorHandlerUtil;
 
@@ -41,12 +42,14 @@ public class StageManager
 
     public static Tuple<Object, Class<?>> getStageData(final StageNameEnum stageName)
     {
-	Tuple<Object, Class<?>> stageData = null;
 	if(stageControllerMap.containsKey(stageName))
 	{
-	    stageData = stageControllerMap.get(stageName).getStageData();
+	    return stageControllerMap.get(stageName).getStageData();
 	}
-	return stageData;
+	else
+	{
+	    throw new NullPointerException();
+	}
     }
 
     public static void init(final Stage stage)
@@ -99,26 +102,28 @@ public class StageManager
 
     public static void showStage(final StageNameEnum stageName)
     {
-	showStage(stageName, Modality.APPLICATION_MODAL, null);
+	showStage(stageName, Modality.APPLICATION_MODAL, null, null);
     }
 
-    public static void showStage(final StageNameEnum stageName, final EventHandler<WindowEvent> function)
+    public static void showStage(final StageNameEnum stageName, final EventHandler<WindowEvent> function,
+	    final Tuple<Object, Class<?>> data)
     {
-	showStage(stageName, Modality.APPLICATION_MODAL, function);
+	showStage(stageName, Modality.APPLICATION_MODAL, function, data);
     }
 
     public static void showStage(final StageNameEnum stageName, final Modality modality,
-	    final EventHandler<WindowEvent> function)
+	    final EventHandler<WindowEvent> event, final Tuple<Object, Class<?>> data)
     {
 	try
 	{
+	    addWindowToStack(stageName);
+	    setStageData(stageName, data);
 	    Stage stage = getStage(stagePathMap.get(stageName));
 	    stage.initModality(modality);
 	    stage.initOwner(mainWindow);
-	    addWindowToStack(stageName);
-	    if(function != null)
+	    if(event != null)
 	    {
-		stage.setOnHiding(function);
+		stage.setOnHiding(event);
 	    }
 	    stage.show();
 	}
@@ -126,6 +131,11 @@ public class StageManager
 	{
 	    ErrorHandlerUtil.handleThrowable(e);
 	}
+    }
+
+    public static void showStage(final StageNameEnum stageName, final Tuple<Object, Class<?>> data)
+    {
+	showStage(stageName, Modality.APPLICATION_MODAL, null, data);
     }
 
     private static void addWindowToStack(final StageNameEnum stageName)
@@ -162,6 +172,7 @@ public class StageManager
     {
 	stagePathMap.put(StageNameEnum.AddMovie, "AddMovieStage");
 	stagePathMap.put(StageNameEnum.MainWindow, "MainScreenScene");
+	stagePathMap.put(StageNameEnum.MovieDetails, "MovieDetailsStage");
 
     }
 
@@ -169,5 +180,6 @@ public class StageManager
     {
 	stageControllerList.put(StageNameEnum.AddMovie, AddMovieController.class);
 	stageControllerList.put(StageNameEnum.MainWindow, MainScreenController.class);
+	stageControllerList.put(StageNameEnum.MovieDetails, MovieDetailsController.class);
     }
 }

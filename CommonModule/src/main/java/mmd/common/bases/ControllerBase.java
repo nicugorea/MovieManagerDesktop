@@ -1,5 +1,6 @@
 package mmd.common.bases;
 
+import javafx.event.Event;
 import javafx.fxml.Initializable;
 import mmd.common.enums.StageNameEnum;
 import mmd.common.types.Tuple;
@@ -19,6 +20,9 @@ public abstract class ControllerBase implements Initializable
 
     public Tuple<Object, Class<?>> getStageData(){return this.stageData;}
     public void setStageData(final Tuple<Object, Class<?>> stageData){this.stageData=stageData;}
+
+    public void shutdown(final Event event) {
+    }
 
     protected abstract void initName();
 }

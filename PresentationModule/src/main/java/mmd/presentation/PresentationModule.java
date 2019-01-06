@@ -30,7 +30,6 @@ public class PresentationModule extends Application
 	    SceneManager.changeScene(SceneNameEnum.MainScreen);
 
 
-
 	}
 	catch (Throwable e) {
 	    ErrorHandlerUtil.handleThrowable(e);

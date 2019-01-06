@@ -108,9 +108,9 @@ public class IOUtil
 		.getResource(name);
     }
 
-    public static String getStringURLOfPath(final String imagePath) throws MalformedURLException
+    public static String getStringURLOfPath(final String path) throws MalformedURLException
     {
-	return new File(imagePath).toURI().toURL().toString();
+	return new File(path).toURI().toURL().toString();
     }
 
     public static void saveDOMDocumentToXMLFile(final Document document, final String path)
