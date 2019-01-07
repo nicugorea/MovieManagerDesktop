@@ -76,26 +76,25 @@ public class MovieDM extends DMBase<MovieDM>
 
     @Override
     public MovieDM newInstance(final Object object) {
-	MovieDM obj = (MovieDM)object;
-	MovieDM dm = obj;
-	if(obj.Title.isEmpty())
+	MovieDM dm = (MovieDM) object;
+	if(dm.Title==null)
 	{
 	    dm.setTitle("Unknown title");
 	}
-	if(obj.Description.isEmpty())
+	if(dm.Description==null)
 	{
 	    dm.setDescription("Unknown description");
 	}
-	if(obj.IMDbID.isEmpty())
+	if(dm.IMDbID == null)
 	{
 	    dm.setIMDbID("Unknown id");
 	}
 	dm.setScore(0.0f);
-	if(obj.Categories==null)
+	if(dm.Categories==null)
 	{
 	    dm.setCategories(new LinkedList<String>());
 	}
-	if(obj.ImgPath.isEmpty())
+	if(dm.ImgPath==null)
 	{
 	    dm.setImgPath(MagicValues.MovieDefaultThumbnail);
 	}

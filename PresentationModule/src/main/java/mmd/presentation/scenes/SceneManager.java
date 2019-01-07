@@ -43,6 +43,14 @@ public class SceneManager
 	return parent;
     }
 
+    public static FXMLLoader getFXMLLoaderFromFile(final String fileName) throws IOException
+    {
+	String scenePath = "views/".concat(fileName).concat(".fxml");
+	FXMLLoader result = new FXMLLoader(PresentationModule.class.getResource(scenePath));
+	return result	;
+    }
+
+    
     public static void init(final Stage stage)
     {
 	window = stage;

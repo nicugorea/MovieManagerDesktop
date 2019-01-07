@@ -1,6 +1,7 @@
 package mmd.presentation.controllers;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.event.Event;
@@ -16,6 +17,7 @@ import javafx.scene.text.TextFlow;
 import mmd.common.bases.ControllerBase;
 import mmd.common.enums.StageNameEnum;
 import mmd.common.models.MovieDM;
+import mmd.common.types.Tuple;
 import mmd.presentation.stages.StageManager;
 import mmd.util.errorhandling.ErrorHandlerUtil;
 import mmd.util.io.IOUtil;
@@ -84,6 +86,15 @@ public class MovieDetailsController extends ControllerBase
     @FXML
     void okClicked(final MouseEvent event)
     {
+	this.shutdown(event);
+    }
+    
+
+    @FXML
+    void deleteClicked(final MouseEvent event)
+    {
+    	Tuple<Object, Class<?>> data = StageManager.getStageData(StageNameEnum.MainWindow);
+    	((List<MovieDM>)data.getFirst()).remove(dm);
 	this.shutdown(event);
     }
 
