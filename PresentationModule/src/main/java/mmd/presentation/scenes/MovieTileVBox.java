@@ -13,10 +13,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import mmd.common.enums.StageNameEnum;
 import mmd.common.models.MovieDM;
-import mmd.common.types.Tuple;
-import mmd.presentation.stages.StageManager;
 import mmd.util.MagicValues;
 import mmd.util.errorhandling.ErrorHandlerUtil;
 import mmd.util.io.IOUtil;
@@ -39,9 +36,6 @@ public class MovieTileVBox extends VBox
 	this.createMainVBox();
 	super.getChildren().add(this.createPrimaryRegion());
 	super.getChildren().add(this.createActionBar());
-	this.setOnMouseClicked((e)->{
-	    StageManager.showStage(StageNameEnum.MovieDetails, new Tuple(dm,MovieDM.class));
-	});
 
     }
 
@@ -55,6 +49,8 @@ public class MovieTileVBox extends VBox
     private final int TILE_RADIUS = 8;
 
     private final int TILE_WIDTH = 240;
+
+    public MovieDM getMovieDM() {return this.dm;}
 
     private HBox createActionBar()
     {

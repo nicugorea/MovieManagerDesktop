@@ -3,14 +3,14 @@ package mmd.common.bases;
 import javafx.event.Event;
 import javafx.fxml.Initializable;
 import mmd.common.enums.StageNameEnum;
-import mmd.common.types.Tuple;
+import mmd.common.types.GenericData;
 
 public abstract class ControllerBase implements Initializable
 {
     public ControllerBase() {
 	this.initName();
     }
-    protected Tuple<Object, Class<?>> stageData;
+    protected GenericData stageData;
     protected StageNameEnum stageName;
 
 
@@ -18,8 +18,8 @@ public abstract class ControllerBase implements Initializable
 	return this.stageName;
     }
 
-    public Tuple<Object, Class<?>> getStageData(){return this.stageData;}
-    public void setStageData(final Tuple<Object, Class<?>> stageData){this.stageData=stageData;}
+    public GenericData getStageData(){return this.stageData;}
+    public void setStageData(final GenericData stageData){this.stageData=stageData;}
 
     public void shutdown(final Event event) {
     }

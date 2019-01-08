@@ -26,7 +26,7 @@ import mmd.common.bases.ControllerBase;
 import mmd.common.enums.FileTypeEnum;
 import mmd.common.enums.StageNameEnum;
 import mmd.common.models.MovieDM;
-import mmd.common.types.Tuple;
+import mmd.common.types.GenericData;
 import mmd.presentation.stages.StageManager;
 import mmd.util.errorhandling.ErrorHandlerUtil;
 public class AddMovieController extends ControllerBase
@@ -152,7 +152,7 @@ public class AddMovieController extends ControllerBase
     {
 
 	MovieDM dm = this.getDMFromContext();
-	StageManager.setStageData(this.getName(), new Tuple<Object, Class<?>>(dm, dm.getClass()));
+	StageManager.setStageData(this.getName(), new GenericData(dm, dm.getClass()));
 	StageManager.closeParentStage((Node) event.getSource());
     }
 }

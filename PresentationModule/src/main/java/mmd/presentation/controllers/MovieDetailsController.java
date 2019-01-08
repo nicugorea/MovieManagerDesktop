@@ -17,7 +17,7 @@ import javafx.scene.text.TextFlow;
 import mmd.common.bases.ControllerBase;
 import mmd.common.enums.StageNameEnum;
 import mmd.common.models.MovieDM;
-import mmd.common.types.Tuple;
+import mmd.common.types.GenericData;
 import mmd.presentation.stages.StageManager;
 import mmd.util.errorhandling.ErrorHandlerUtil;
 import mmd.util.io.IOUtil;
@@ -53,7 +53,7 @@ public class MovieDetailsController extends ControllerBase
     {
 	try {
 
-	    this.dm=(MovieDM) StageManager.getStageData(StageNameEnum.MovieDetails).getFirst();
+	    this.dm=(MovieDM) StageManager.getStageData(StageNameEnum.MovieDetails).getDataValue();
 	    this.titleText.setText(this.dm.getTitle());
 	    this.descriptionText.getChildren().add(new Text(this.dm.getDescription()));
 	    this.scoreText.setText(Float.toString(this.dm.getScore()));
@@ -84,17 +84,17 @@ public class MovieDetailsController extends ControllerBase
     }
 
     @FXML
-    void okClicked(final MouseEvent event)
-    {
-	this.shutdown(event);
-    }
-    
-
-    @FXML
     void deleteClicked(final MouseEvent event)
     {
-    	Tuple<Object, Class<?>> data = StageManager.getStageData(StageNameEnum.MainWindow);
-    	((List<MovieDM>)data.getFirst()).remove(dm);
+	GenericData data = StageManager.getStageData(StageNameEnum.MainWindow);
+	((List<MovieDM>)data.getDataValue()).remove(this.dm);
+	this.shutdown(event);
+    }
+
+
+    @FXML
+    void okClicked(final MouseEvent event)
+    {
 	this.shutdown(event);
     }
 

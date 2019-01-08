@@ -28,8 +28,7 @@ public class PresentationModule extends Application
 	    SceneManager.init(primaryStage);
 	    StageManager.init(primaryStage);
 	    SceneManager.changeScene(SceneNameEnum.MainScreen);
-
-
+	    primaryStage.show();
 	}
 	catch (Throwable e) {
 	    ErrorHandlerUtil.handleThrowable(e);
