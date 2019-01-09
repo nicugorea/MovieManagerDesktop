@@ -2,7 +2,7 @@ package mmd.common.bases;
 
 import javafx.event.Event;
 import javafx.fxml.Initializable;
-import mmd.common.enums.StageNameEnum;
+import mmd.common.enums.SceneNameEnum;
 import mmd.common.types.GenericData;
 
 public abstract class ControllerBase implements Initializable
@@ -11,10 +11,10 @@ public abstract class ControllerBase implements Initializable
 	this.initName();
     }
     protected GenericData stageData;
-    protected StageNameEnum stageName;
+    protected SceneNameEnum stageName;
 
 
-    public StageNameEnum getName() {
+    public SceneNameEnum getName() {
 	return this.stageName;
     }
 

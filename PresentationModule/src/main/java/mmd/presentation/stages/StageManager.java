@@ -1,6 +1,7 @@
 package mmd.presentation.stages;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Stack;
 
@@ -15,19 +16,28 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mmd.common.bases.ControllerBase;
 import mmd.common.enums.FileTypeEnum;
-import mmd.common.enums.StageNameEnum;
+import mmd.common.enums.SceneNameEnum;
 import mmd.common.types.GenericData;
 import mmd.common.types.Tuple;
-import mmd.presentation.scenes.SceneManager;
+import mmd.presentation.PresentationModule;
 import mmd.util.errorhandling.ErrorHandlerUtil;
 
 public class StageManager
 {
     private static Stage mainWindow = null;
 
-    private static HashMap<StageNameEnum, String> stagePathMap = null;
+    private static HashMap<SceneNameEnum, String> scenePathMap = null;
 
-    private static Stack<Tuple<StageNameEnum, GenericData>> windows = null;
+    private static Stack<Tuple<SceneNameEnum, GenericData>> windows = null;
+
+    public static void changeScene(final Stage stage, final SceneNameEnum sceneName) throws Exception
+    {
+	if(!scenePathMap.containsKey(sceneName))
+	{
+	    throw new Exception("Scene path for " + sceneName.toString() + " do not exist");
+	}
+	stage.setScene(new Scene(getFXMLLoaderFromFile(scenePathMap.get(sceneName)).load()));
+    }
 
     public static void closeParentStage(final Node element)
     {
@@ -39,10 +49,10 @@ public class StageManager
 
     }
 
-    public static boolean existWindow(final StageNameEnum stageName)
+    public static boolean existWindow(final SceneNameEnum stageName)
     {
 
-	for (Tuple<StageNameEnum, GenericData> tuple : windows)
+	for (Tuple<SceneNameEnum, GenericData> tuple : windows)
 	{
 	    if(tuple.getFirst().equals(stageName))
 	    {
@@ -52,7 +62,19 @@ public class StageManager
 	return false;
     }
 
-    public static GenericData getStageData(final StageNameEnum stageName)
+    public static FXMLLoader getFXMLLoaderFromFile(final String fileName) throws IOException
+    {
+	String scenePath = "views/".concat(fileName).concat(".fxml");
+	FXMLLoader result = new FXMLLoader(PresentationModule.class.getResource(scenePath));
+	return result;
+    }
+
+    public static Stage getMainStage()
+    {
+	return mainWindow;
+    }
+
+    public static GenericData getStageData(final SceneNameEnum stageName)
     {
 	GenericData result = null;
 	try
@@ -74,12 +96,12 @@ public class StageManager
 
     }
 
-    public static Tuple<StageNameEnum, GenericData> getWindow(final StageNameEnum stageName)
+    public static Tuple<SceneNameEnum, GenericData> getWindow(final SceneNameEnum stageName)
     {
-	Tuple<StageNameEnum, GenericData> result = null;
+	Tuple<SceneNameEnum, GenericData> result = null;
 	if(existWindow(stageName))
 	{
-	    for (Tuple<StageNameEnum, GenericData> tuple : windows)
+	    for (Tuple<SceneNameEnum, GenericData> tuple : windows)
 	    {
 		if(tuple.getFirst().equals(stageName))
 		{
@@ -95,13 +117,11 @@ public class StageManager
 	return result;
     }
 
-    public static void init(final Stage stage)
+    public static void init()
     {
-	mainWindow = stage;
-	windows = new Stack<Tuple<StageNameEnum, GenericData>>();
-	stagePathMap = new HashMap<StageNameEnum, String>();
+	windows = new Stack<Tuple<SceneNameEnum, GenericData>>();
+	scenePathMap = new HashMap<SceneNameEnum, String>();
 	registerPaths();
-	addWindowToStack(StageNameEnum.MainWindow, null);
     }
 
     public static File openFile(final FileTypeEnum fileType)
@@ -131,7 +151,11 @@ public class StageManager
 	return fc.showOpenDialog(mainWindow);
     }
 
-    public static void setStageData(final StageNameEnum stageName, final GenericData stageData)
+    public static void setMainWindow(final Stage stage) {
+	mainWindow=stage;
+    }
+
+    public static void setStageData(final SceneNameEnum stageName, final GenericData stageData)
     {
 	try
 	{
@@ -151,28 +175,30 @@ public class StageManager
 
     }
 
-    public static void showStage(final StageNameEnum stageName)
+    public static Stage showStage(final SceneNameEnum stageName)
     {
-	showStage(stageName, Modality.APPLICATION_MODAL, null, null);
+	return showStage(stageName, Modality.APPLICATION_MODAL, null, null);
     }
 
-    public static void showStage(final StageNameEnum stageName, final EventHandler<WindowEvent> function,
+
+    public static Stage showStage(final SceneNameEnum stageName, final EventHandler<WindowEvent> function,
 	    final GenericData data)
     {
-	showStage(stageName, Modality.APPLICATION_MODAL, function, data);
+	return showStage(stageName, Modality.APPLICATION_MODAL, function, data);
     }
 
-    public static void showStage(final StageNameEnum stageName, final GenericData data)
+    public static Stage showStage(final SceneNameEnum stageName, final GenericData data)
     {
-	showStage(stageName, Modality.APPLICATION_MODAL, null, data);
+	return showStage(stageName, Modality.APPLICATION_MODAL, null, data);
     }
 
-    public static void showStage(final StageNameEnum stageName, final Modality modality,
+    public static Stage showStage(final SceneNameEnum stageName, final Modality modality,
 	    final EventHandler<WindowEvent> event, final GenericData data)
     {
+	Stage result = null;
 	try
 	{
-	    FXMLLoader loader = SceneManager.getFXMLLoaderFromFile(stagePathMap.get(stageName));
+	    FXMLLoader loader = getFXMLLoaderFromFile(scenePathMap.get(stageName));
 	    addWindowToStack(stageName, data);
 	    Stage stage = new Stage();
 	    stage.setScene(new Scene(loader.load()));
@@ -184,19 +210,20 @@ public class StageManager
 		stage.setOnHiding(event);
 	    }
 	    stage.show();
-
+	    result = stage;
 	}
 	catch (Throwable e)
 	{
 	    ErrorHandlerUtil.handleThrowable(e);
 	}
+	return result;
     }
 
-    private static void addWindowToStack(final StageNameEnum stageName, final GenericData data)
+    private static void addWindowToStack(final SceneNameEnum stageName, final GenericData data)
     {
 	try
 	{
-	    windows.push(new Tuple<StageNameEnum, GenericData>(stageName, data));
+	    windows.push(new Tuple<SceneNameEnum, GenericData>(stageName, data));
 	}
 	catch (Throwable e)
 	{
@@ -207,9 +234,11 @@ public class StageManager
 
     private static void registerPaths()
     {
-	stagePathMap.put(StageNameEnum.AddMovie, "AddMovieStage");
-	stagePathMap.put(StageNameEnum.MainWindow, "MainScreenScene");
-	stagePathMap.put(StageNameEnum.MovieDetails, "MovieDetailsStage");
+	scenePathMap.put(SceneNameEnum.AddMovie, "AddMovieStage");
+	scenePathMap.put(SceneNameEnum.MainScreen, "MainScreenScene");
+	scenePathMap.put(SceneNameEnum.MovieDetails, "MovieDetailsStage");
+	scenePathMap.put(SceneNameEnum.Login, "LoginScreenScene");
+	scenePathMap.put(SceneNameEnum.Register, "RegisterScreenScene");
 
     }
 }

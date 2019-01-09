@@ -24,7 +24,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import mmd.common.bases.ControllerBase;
 import mmd.common.enums.FileTypeEnum;
-import mmd.common.enums.StageNameEnum;
+import mmd.common.enums.SceneNameEnum;
 import mmd.common.models.MovieDM;
 import mmd.common.types.GenericData;
 import mmd.presentation.stages.StageManager;
@@ -84,7 +84,7 @@ public class AddMovieController extends ControllerBase
     @Override
     protected void initName()
     {
-	this.stageName=StageNameEnum.AddMovie;
+	this.stageName=SceneNameEnum.AddMovie;
 
     }
 

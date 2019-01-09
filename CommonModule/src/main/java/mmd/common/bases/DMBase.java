@@ -42,7 +42,9 @@ public class DMBase<T> implements DMDefinition<T>
 		}
 		else
 		{
-		    result.add(new Property(field.getName(), field.get(this).toString(),this.getClass()));
+		    Object value = field.get(this);
+		    String val=(value!=null)? value.toString():"";
+		    result.add(new Property(field.getName(), val,this.getClass()));
 		}
 		field.setAccessible(old);
 	    }

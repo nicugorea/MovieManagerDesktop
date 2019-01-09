@@ -12,24 +12,43 @@ public class PersistenceModule
 	createPaths();
     }
 
+
+    private static void createMovieDMPath() {
+	File MovieDMPath=new File(MagicValues.MovieDMPath);
+	if(!MovieDMPath.exists()) {
+	    MovieDMPath.getParentFile().mkdirs();
+	    IOUtil.saveDOMDocumentToXMLFile(IOUtil.createEmptyDOMDocumetWithParentTag(MagicValues.MoviesTagName), MovieDMPath.getAbsolutePath());
+	}
+    }
+
+    private static void createMovieDMThumbnailPath() {
+	File MovieThumbnailPath=new File(MagicValues.MovieThumbnailPath+"/"+MagicValues.MovieDefaultThumbnail);
+	if(!MovieThumbnailPath.exists()) {
+	    MovieThumbnailPath.getParentFile().mkdirs();
+	    URL defaultThumbnail =PersistenceModule.class.getClassLoader().getResource("mmd/presentation/img/movies/"+MagicValues.MovieDefaultThumbnail);
+	    IOUtil.copyFile(new File(defaultThumbnail.getFile()).getAbsolutePath(),MagicValues.MovieThumbnailPath+"/"+MagicValues.MovieDefaultThumbnail );
+	}
+    }
+
     private static void createPaths()
     {
 	try {
+	    createMovieDMPath();
+	    createUserDMPath();
+	    createMovieDMThumbnailPath();
 
-	    File MovieDMPath=new File(MagicValues.MovieDMPath);
-	    if(!MovieDMPath.exists()) {
-		MovieDMPath.getParentFile().mkdirs();
-		IOUtil.saveDOMDocumentToXMLFile(IOUtil.createEmptyDOMDocumetWithParentTag(MagicValues.MoviesTagName), MovieDMPath.getAbsolutePath());
-	    }
-	    File MovieThumbnailPath=new File(MagicValues.MovieThumbnailPath+"/"+MagicValues.MovieDefaultThumbnail);
-	    if(!MovieThumbnailPath.exists()) {
-		MovieThumbnailPath.getParentFile().mkdirs();
-		URL defaultThumbnail =PersistenceModule.class.getClassLoader().getResource("mmd/presentation/img/movies/"+MagicValues.MovieDefaultThumbnail);
-		IOUtil.copyFile(new File(defaultThumbnail.getFile()).getAbsolutePath(),MagicValues.MovieThumbnailPath+"/"+MagicValues.MovieDefaultThumbnail );
-	    }
+
 	}
 	catch (Exception e) {
 	    ErrorHandlerUtil.handleThrowable(e);
+	}
+    }
+
+    private static void createUserDMPath() {
+	File UserDMPath=new File(MagicValues.UserDMPath);
+	if(!UserDMPath.exists()) {
+	    UserDMPath.getParentFile().mkdirs();
+	    IOUtil.saveDOMDocumentToXMLFile(IOUtil.createEmptyDOMDocumetWithParentTag(MagicValues.UsersTagName), UserDMPath.getAbsolutePath());
 	}
     }
 }

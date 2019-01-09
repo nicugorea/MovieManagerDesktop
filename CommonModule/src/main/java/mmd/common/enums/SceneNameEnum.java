@@ -2,7 +2,9 @@ package mmd.common.enums;
 
 public enum SceneNameEnum
 {
-    LoginScreen,
+    AddMovie,
+    Login,
     MainScreen,
-    RegisterScreen
+    MovieDetails,
+    Register
 }

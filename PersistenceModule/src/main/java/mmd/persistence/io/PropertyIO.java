@@ -11,12 +11,39 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import mmd.common.definitions.DMDefinition;
+import mmd.common.models.MovieDM;
 import mmd.common.models.Property;
 import mmd.util.errorhandling.ErrorHandlerUtil;
 import mmd.util.io.IOUtil;
 
 public class PropertyIO
 {
+
+    public static void addDMDefinitionToFile(final DMDefinition<?> dm, final String filePath, final String rootElement)
+    {
+	File file = new File(filePath);
+
+	Document document = null;
+	Element root = null;
+	if(!file.exists())
+	{
+	    file.getParentFile().mkdirs();
+	    document = IOUtil.createEmptyDOMDocument();
+	    root = document.createElement(rootElement);
+	    document.appendChild(root);
+	}
+	else
+	{
+	    document = IOUtil.createDOMDocumentFromXMLFile(filePath);
+	    root = document.getDocumentElement();
+	}
+
+	Element element = getElementFromPropertyList(document, dm.getName(), dm.getProperties());
+
+	root.appendChild(element);
+
+	IOUtil.saveDOMDocumentToXMLFile(document, filePath);
+    }
 
     @SuppressWarnings("unchecked")
     public static <T> List<T> getDMDefinitionFromFile(final String filePath, final Class<?> type)
@@ -47,7 +74,7 @@ public class PropertyIO
 	return list;
     }
 
-    public static void saveDMDefinitionToFile(final DMDefinition<?> dm, final String filePath, final String rootElement)
+    public static void removeDMDefinitionToFile(final MovieDM dm, final String filePath) throws Exception
     {
 	File file = new File(filePath);
 
@@ -55,10 +82,7 @@ public class PropertyIO
 	Element root = null;
 	if(!file.exists())
 	{
-	    file.getParentFile().mkdirs();
-	    document = IOUtil.createEmptyDOMDocument();
-	    root = document.createElement(rootElement);
-	    document.appendChild(root);
+	    throw new Exception("File" + filePath+"does not exist!");
 	}
 	else
 	{
@@ -66,9 +90,22 @@ public class PropertyIO
 	    root = document.getDocumentElement();
 	}
 
-	Element element = getElementFromPropertyList(document, dm.getName(), dm.getProperties());
+	Node node = null;
+	for (int i = 0; i < root.getChildNodes().getLength(); i++)
+	{
+	    if(root.getChildNodes().item(i).getNodeType()==Node.ELEMENT_NODE)
+	    {
+		if(((Element)root.getChildNodes().item(i)).getElementsByTagName("IMDbID").item(0).getTextContent().equals(dm.getIMDbID())){
+		    node=root.getChildNodes().item(i);
+		    break;
+		}
+	    }
 
-	root.appendChild(element);
+	}
+
+	node.getParentNode().removeChild(node);
+
+	//	root.removeChild(node);
 
 	IOUtil.saveDOMDocumentToXMLFile(document, filePath);
     }

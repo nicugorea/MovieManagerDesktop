@@ -14,12 +14,10 @@ import javafx.scene.layout.TilePane;
 import javafx.stage.WindowEvent;
 import mmd.common.bases.ControllerBase;
 import mmd.common.enums.SceneNameEnum;
-import mmd.common.enums.StageNameEnum;
 import mmd.common.models.MovieDM;
 import mmd.common.types.GenericData;
 import mmd.persistence.io.PropertyIO;
-import mmd.presentation.scenes.MovieTileVBox;
-import mmd.presentation.scenes.SceneManager;
+import mmd.presentation.controls.MovieTileVBox;
 import mmd.presentation.stages.StageManager;
 import mmd.util.MagicValues;
 import mmd.util.errorhandling.ErrorHandlerUtil;
@@ -55,18 +53,18 @@ public class MainScreenController extends ControllerBase
     @Override
     protected void initName()
     {
-	this.stageName = StageNameEnum.MainWindow;
+	this.stageName = SceneNameEnum.MainScreen;
     }
 
     private void addNewMovieDm()
     {
 	try
 	{
-	    GenericData result = StageManager.getStageData(StageNameEnum.AddMovie);
+	    GenericData result = StageManager.getStageData(SceneNameEnum.AddMovie);
 	    if(result != null)
 	    {
 		MovieDM dm = (MovieDM) result.getDataValue();
-		PropertyIO.saveDMDefinitionToFile(dm, MagicValues.MovieDMPath, MagicValues.MoviesTagName);
+		PropertyIO.addDMDefinitionToFile(dm, MagicValues.MovieDMPath, MagicValues.MoviesTagName);
 		((List<MovieDM>) this.stageData.getDataValue()).add(dm);
 		this.refreshMovieList();
 	    }
@@ -80,13 +78,20 @@ public class MainScreenController extends ControllerBase
     @FXML
     private void onLogoutAccountMenuItemAction(final ActionEvent e)
     {
-	SceneManager.changeScene(SceneNameEnum.LoginScreen);
+	try
+	{
+	    StageManager.changeScene(StageManager.getMainStage(), SceneNameEnum.Login);
+	}
+	catch (Exception ex)
+	{
+	    ErrorHandlerUtil.handleThrowable(ex);
+	}
     }
 
     @FXML
     private void onNewMovieMenuAction(final ActionEvent e)
     {
-	StageManager.showStage(StageNameEnum.AddMovie, new EventHandler<WindowEvent>()
+	StageManager.showStage(SceneNameEnum.AddMovie, new EventHandler<WindowEvent>()
 	{
 
 	    @Override
@@ -107,7 +112,7 @@ public class MainScreenController extends ControllerBase
 	    MovieTileVBox tile = new MovieTileVBox(((List<MovieDM>) this.stageData.getDataValue()).get(i));
 
 	    tile.setOnMouseClicked((e)->{
-		StageManager.showStage(StageNameEnum.MovieDetails, new EventHandler<WindowEvent>()
+		StageManager.showStage(SceneNameEnum.MovieDetails, new EventHandler<WindowEvent>()
 		{
 
 		    @Override

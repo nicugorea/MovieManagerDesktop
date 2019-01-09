@@ -1,4 +1,4 @@
-package mmd.presentation.scenes;
+package mmd.presentation.controls;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

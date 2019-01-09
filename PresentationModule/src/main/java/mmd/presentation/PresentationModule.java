@@ -1,10 +1,11 @@
 package mmd.presentation;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import mmd.common.enums.SceneNameEnum;
 import mmd.persistence.PersistenceModule;
-import mmd.presentation.scenes.SceneManager;
 import mmd.presentation.stages.StageManager;
 import mmd.util.errorhandling.ErrorHandlerUtil;
 import mmd.util.logging.LogLevel;
@@ -25,10 +26,16 @@ public class PresentationModule extends Application
     {
 	try {
 	    PersistenceModule.init();
-	    SceneManager.init(primaryStage);
-	    StageManager.init(primaryStage);
-	    SceneManager.changeScene(SceneNameEnum.MainScreen);
-	    primaryStage.show();
+	    StageManager.init();
+	    StageManager.setMainWindow(StageManager.showStage(SceneNameEnum.Register,new EventHandler<WindowEvent>()
+	    {
+
+		@Override
+		public void handle(final WindowEvent event)
+		{
+		    // TODO: After main Window is closed
+		}
+	    },null));
 	}
 	catch (Throwable e) {
 	    ErrorHandlerUtil.handleThrowable(e);

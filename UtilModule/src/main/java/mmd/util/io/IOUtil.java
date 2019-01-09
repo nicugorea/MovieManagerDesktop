@@ -90,7 +90,7 @@ public class IOUtil
     public static Document createEmptyDOMDocumetWithParentTag(final String name) {
 
 	Document document = createEmptyDOMDocument();
-	document.appendChild(document.createElement(MagicValues.MoviesTagName));
+	document.appendChild(document.createElement(name));
 	return document;
     }
 
