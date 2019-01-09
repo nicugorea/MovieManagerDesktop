@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mmd.common.definitions.DMDefinition;
-import mmd.common.models.Property;
+import mmd.common.types.Property;
 import mmd.util.errorhandling.ErrorHandlerUtil;
 
 public class DMBase<T> implements DMDefinition<T>
@@ -64,7 +64,7 @@ public class DMBase<T> implements DMDefinition<T>
     {
 	try
 	{
-	    return (T) this.getClass().newInstance();
+	    return (T) object;
 	}
 	catch (Throwable e)
 	{

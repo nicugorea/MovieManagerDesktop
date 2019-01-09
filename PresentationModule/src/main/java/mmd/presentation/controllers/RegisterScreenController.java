@@ -8,7 +8,7 @@ import javafx.scene.input.MouseEvent;
 import mmd.authentication.auth.AuthManager;
 import mmd.common.enums.SceneNameEnum;
 import mmd.common.models.UserDM;
-import mmd.presentation.stages.StageManager;
+import mmd.presentation.managers.ViewManager;
 import mmd.util.errorhandling.ErrorHandlerUtil;
 
 public class RegisterScreenController
@@ -73,7 +73,7 @@ public class RegisterScreenController
     {
 	try
 	{
-	    StageManager.changeScene(StageManager.getMainStage(), SceneNameEnum.Login);
+	    ViewManager.changeScene(ViewManager.getMainStage().getStage(), SceneNameEnum.Login);
 	}
 	catch (Exception ex)
 	{
@@ -84,31 +84,23 @@ public class RegisterScreenController
     @FXML
     private void onRegisterBtnClicked(final MouseEvent e)
     {
+	try
+	{
 
-	// if(!this.inputValidation())
-	// {
-	// return;
-	// }
+	    UserDM user = new UserDM();
+	    user.setUsername(this.usernameField.getText());
+	    user.setPassword(this.passwordField.getText());
 
-	UserDM user = new UserDM();
-	user.setUsername(this.usernameField.getText());
-	user.setPassword(this.passwordField.getText());
+	    AuthManager.signUp(user);
+	    if(AuthManager.isAnyUserLoggedIn()) {
+		ViewManager.changeScene(ViewManager.getMainStage().getStage(), SceneNameEnum.MainScreen);
+	    }
 
-	AuthManager.signUp(user);
-
-	// RegistrationResult registrationResult =
-	// AuthenticationHandler.getInstance().register(user,
-	// this.confirmPasswordField.getText());
-	//
-	// if(registrationResult.equals(RegistrationResult.OK))
-	// {
-	// PresentationHandler.getInstance().changeScene(SceneName.MainScreen);
-	// }
-	// else
-	// {
-	// ErrorHandler.handleError(registrationResult, ErrorType.RegistrationError);
-	// }
-
+	}
+	catch (Exception ex)
+	{
+	    ErrorHandlerUtil.handleThrowable(ex);
+	}
     }
 
     private boolean passwordValidation()

@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mmd.common.enums.SceneNameEnum;
 import mmd.persistence.PersistenceModule;
-import mmd.presentation.stages.StageManager;
+import mmd.presentation.managers.ViewManager;
 import mmd.util.errorhandling.ErrorHandlerUtil;
 import mmd.util.logging.LogLevel;
 import mmd.util.logging.LoggingUtil;
@@ -26,8 +26,8 @@ public class PresentationModule extends Application
     {
 	try {
 	    PersistenceModule.init();
-	    StageManager.init();
-	    StageManager.setMainWindow(StageManager.showStage(SceneNameEnum.Register,new EventHandler<WindowEvent>()
+	    ViewManager.init();
+	    ViewManager.showStage(SceneNameEnum.Login,new EventHandler<WindowEvent>()
 	    {
 
 		@Override
@@ -35,7 +35,8 @@ public class PresentationModule extends Application
 		{
 		    // TODO: After main Window is closed
 		}
-	    },null));
+	    },null);
+	    ViewManager.setMainWindow(ViewManager.getStageData(SceneNameEnum.Login).getStage());
 	}
 	catch (Throwable e) {
 	    ErrorHandlerUtil.handleThrowable(e);

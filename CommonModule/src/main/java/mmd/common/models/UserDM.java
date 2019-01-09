@@ -7,7 +7,6 @@ public class UserDM extends DMBase<UserDM>
 {
 
     private String Password;
-    private String UserID;
     private String Username;
 
 
@@ -24,12 +23,6 @@ public class UserDM extends DMBase<UserDM>
     }
 
 
-    public String getUserID()
-    {
-	return this.UserID;
-    }
-
-
     public String getUsername()
     {
 	return this.Username;
@@ -40,13 +33,6 @@ public class UserDM extends DMBase<UserDM>
     {
 	this.Password = password;
     }
-
-
-    public void setUserID(final String userID)
-    {
-	this.UserID = userID;
-    }
-
 
     public void setUsername(final String username)
     {

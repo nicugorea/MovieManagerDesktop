@@ -19,7 +19,7 @@ import mmd.common.enums.SceneNameEnum;
 import mmd.common.models.MovieDM;
 import mmd.common.types.GenericData;
 import mmd.persistence.io.PropertyIO;
-import mmd.presentation.stages.StageManager;
+import mmd.presentation.managers.ViewManager;
 import mmd.util.MagicValues;
 import mmd.util.errorhandling.ErrorHandlerUtil;
 import mmd.util.io.IOUtil;
@@ -55,7 +55,7 @@ public class MovieDetailsController extends ControllerBase
     {
 	try {
 
-	    this.dm=(MovieDM) StageManager.getStageData(SceneNameEnum.MovieDetails).getDataValue();
+	    this.dm=(MovieDM) ViewManager.getStageData(SceneNameEnum.MovieDetails).getData().getDataValue();
 	    this.titleText.setText(this.dm.getTitle());
 	    this.descriptionText.getChildren().add(new Text(this.dm.getDescription()));
 	    this.scoreText.setText(Float.toString(this.dm.getScore()));
@@ -74,8 +74,8 @@ public class MovieDetailsController extends ControllerBase
     public void shutdown(final Event event)
     {
 	super.shutdown(event);
-	StageManager.setStageData(this.getName(), null);
-	StageManager.closeParentStage((Node) event.getSource());
+	ViewManager.setWindowData(this.getName(), null);
+	ViewManager.closeParentStage((Node) event.getSource());
     }
 
     @Override
@@ -91,7 +91,7 @@ public class MovieDetailsController extends ControllerBase
 	try
 	{
 
-	    GenericData data = StageManager.getStageData(SceneNameEnum.MainScreen);
+	    GenericData data = ViewManager.getStageData(SceneNameEnum.MainScreen).getData();
 	    ((List<MovieDM>)data.getDataValue()).remove(this.dm);
 	    PropertyIO.removeDMDefinitionToFile(this.dm, MagicValues.MovieDMPath);
 	    this.shutdown(event);

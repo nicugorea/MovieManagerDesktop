@@ -27,7 +27,7 @@ import mmd.common.enums.FileTypeEnum;
 import mmd.common.enums.SceneNameEnum;
 import mmd.common.models.MovieDM;
 import mmd.common.types.GenericData;
-import mmd.presentation.stages.StageManager;
+import mmd.presentation.managers.ViewManager;
 import mmd.util.errorhandling.ErrorHandlerUtil;
 public class AddMovieController extends ControllerBase
 {
@@ -134,13 +134,13 @@ public class AddMovieController extends ControllerBase
     void cancelClicked(final MouseEvent event)
     {
 
-	StageManager.closeParentStage((Node) event.getSource());
+	ViewManager.closeParentStage((Node) event.getSource());
     }
 
     @FXML
     void openClicked(final MouseEvent event)
     {
-	File file = StageManager.openFile(FileTypeEnum.Image);
+	File file = ViewManager.openFile(FileTypeEnum.Image);
 	this.thumbnailTextFlow.getChildren().clear();
 	this.thumbnailTextFlow.getChildren().add(new Text(file.getName()));
 	this.thumbnailImageView.setImage(new Image(file.toURI().toString()));
@@ -152,7 +152,7 @@ public class AddMovieController extends ControllerBase
     {
 
 	MovieDM dm = this.getDMFromContext();
-	StageManager.setStageData(this.getName(), new GenericData(dm, dm.getClass()));
-	StageManager.closeParentStage((Node) event.getSource());
+	ViewManager.setWindowData(this.getName(), new GenericData(dm, dm.getClass()));
+	ViewManager.closeParentStage((Node) event.getSource());
     }
 }

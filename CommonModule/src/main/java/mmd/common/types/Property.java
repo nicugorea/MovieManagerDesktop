@@ -1,4 +1,4 @@
-package mmd.common.models;
+package mmd.common.types;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;

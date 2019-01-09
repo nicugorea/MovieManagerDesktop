@@ -16,9 +16,10 @@ import mmd.common.bases.ControllerBase;
 import mmd.common.enums.SceneNameEnum;
 import mmd.common.models.MovieDM;
 import mmd.common.types.GenericData;
+import mmd.common.types.WindowData;
 import mmd.persistence.io.PropertyIO;
 import mmd.presentation.controls.MovieTileVBox;
-import mmd.presentation.stages.StageManager;
+import mmd.presentation.managers.ViewManager;
 import mmd.util.MagicValues;
 import mmd.util.errorhandling.ErrorHandlerUtil;
 
@@ -33,8 +34,8 @@ public class MainScreenController extends ControllerBase
     @Override
     public void initialize(final URL location, final ResourceBundle resources)
     {
-	List<MovieDM> data = PropertyIO.getDMDefinitionFromFile(MagicValues.MovieDMPath, MovieDM.class);
-	StageManager.setStageData(this.getName(), new GenericData(data, data.getClass()));
+	List<MovieDM> data = PropertyIO.getDMDefinitionsFromFile(MagicValues.MovieDMPath, MovieDM.class);
+	ViewManager.setWindowData(this.getName(), new GenericData(data, data.getClass()));
 	this.mainTilePane.setAlignment(Pos.CENTER);
 	this.mainTilePane.setPrefColumns(100);
 
@@ -60,10 +61,10 @@ public class MainScreenController extends ControllerBase
     {
 	try
 	{
-	    GenericData result = StageManager.getStageData(SceneNameEnum.AddMovie);
+	    WindowData result = ViewManager.getStageData(SceneNameEnum.AddMovie);
 	    if(result != null)
 	    {
-		MovieDM dm = (MovieDM) result.getDataValue();
+		MovieDM dm = (MovieDM) result.getData().getDataValue();
 		PropertyIO.addDMDefinitionToFile(dm, MagicValues.MovieDMPath, MagicValues.MoviesTagName);
 		((List<MovieDM>) this.stageData.getDataValue()).add(dm);
 		this.refreshMovieList();
@@ -80,7 +81,7 @@ public class MainScreenController extends ControllerBase
     {
 	try
 	{
-	    StageManager.changeScene(StageManager.getMainStage(), SceneNameEnum.Login);
+	    ViewManager.changeScene(ViewManager.getMainStage().getStage(), SceneNameEnum.Login);
 	}
 	catch (Exception ex)
 	{
@@ -91,14 +92,14 @@ public class MainScreenController extends ControllerBase
     @FXML
     private void onNewMovieMenuAction(final ActionEvent e)
     {
-	StageManager.showStage(SceneNameEnum.AddMovie, new EventHandler<WindowEvent>()
+	ViewManager.showStage(SceneNameEnum.AddMovie, new EventHandler<WindowEvent>()
 	{
 
 	    @Override
 	    public void handle(final WindowEvent event)
 	    {
 		MainScreenController.this.addNewMovieDm();
-		MainScreenController.this.setStageData(StageManager.getStageData(MainScreenController.this.getName()));
+		MainScreenController.this.setStageData(ViewManager.getStageData(MainScreenController.this.getName()).getData());
 	    }
 	}, null);
 
@@ -106,13 +107,13 @@ public class MainScreenController extends ControllerBase
 
     private void refreshMovieList() {
 
-	this.stageData=StageManager.getStageData(this.getName());
+	this.stageData=ViewManager.getStageData(this.getName()).getData();
 	this.mainTilePane.getChildren().clear();
 	for (int i = 0; i < ((List<MovieDM>) this.stageData.getDataValue()).size(); i++) {
 	    MovieTileVBox tile = new MovieTileVBox(((List<MovieDM>) this.stageData.getDataValue()).get(i));
 
 	    tile.setOnMouseClicked((e)->{
-		StageManager.showStage(SceneNameEnum.MovieDetails, new EventHandler<WindowEvent>()
+		ViewManager.showStage(SceneNameEnum.MovieDetails, new EventHandler<WindowEvent>()
 		{
 
 		    @Override

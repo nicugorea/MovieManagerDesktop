@@ -4,8 +4,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import mmd.authentication.auth.AuthManager;
 import mmd.common.enums.SceneNameEnum;
-import mmd.presentation.stages.StageManager;
+import mmd.common.models.UserDM;
+import mmd.presentation.managers.ViewManager;
 import mmd.util.errorhandling.ErrorHandlerUtil;
 
 public class LoginScreenController
@@ -19,16 +21,21 @@ public class LoginScreenController
     @FXML
     private void onLoginBtnClicked(final MouseEvent e)
     {
-	//	AuthenticationResult authResult = AuthenticationHandler.getInstance().logIn(this.usernameField.getText(),
-	//	        this.passwordField.getText());
-	//	if(authResult.equals(AuthenticationResult.OK))
-	//	{
-	//	    PresentationHandler.getInstance().changeScene(SceneName.MainScreen);
-	//	}
-	//	else
-	//	{
-	//	    ErrorHandler.handleError(authResult, ErrorType.AuthenticationError);
-	//	}
+	try
+	{
+	    UserDM user = new UserDM();
+	    user.setUsername(this.usernameField.getText());
+	    user.setPassword(this.passwordField.getText());
+	    AuthManager.signIn(user);
+	    if(AuthManager.isAnyUserLoggedIn())
+	    {
+		ViewManager.changeScene(ViewManager.getMainStage().getStage(), SceneNameEnum.MainScreen);
+	    }
+	}
+	catch (Exception ex)
+	{
+	    ErrorHandlerUtil.handleThrowable(ex);
+	}
 
     }
 
@@ -37,7 +44,7 @@ public class LoginScreenController
     {
 	try
 	{
-	    StageManager.changeScene(StageManager.getMainStage(),SceneNameEnum.Register);
+	    ViewManager.changeScene(ViewManager.getMainStage().getStage(),SceneNameEnum.Register);
 	}
 	catch (Exception ex)
 	{

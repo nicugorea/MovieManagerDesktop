@@ -12,7 +12,7 @@ import org.w3c.dom.NodeList;
 
 import mmd.common.definitions.DMDefinition;
 import mmd.common.models.MovieDM;
-import mmd.common.models.Property;
+import mmd.common.types.Property;
 import mmd.util.errorhandling.ErrorHandlerUtil;
 import mmd.util.io.IOUtil;
 
@@ -45,8 +45,7 @@ public class PropertyIO
 	IOUtil.saveDOMDocumentToXMLFile(document, filePath);
     }
 
-    @SuppressWarnings("unchecked")
-    public static <T> List<T> getDMDefinitionFromFile(final String filePath, final Class<?> type)
+    public static <T> List<T> getDMDefinitionsFromFile(final String filePath, final Class<?> type)
     {
 	LinkedList<T> list = new LinkedList<T>();
 	try

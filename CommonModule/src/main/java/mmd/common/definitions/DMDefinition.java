@@ -2,7 +2,7 @@ package mmd.common.definitions;
 
 import java.util.ArrayList;
 
-import mmd.common.models.Property;
+import mmd.common.types.Property;
 
 public interface DMDefinition<T>
 {
