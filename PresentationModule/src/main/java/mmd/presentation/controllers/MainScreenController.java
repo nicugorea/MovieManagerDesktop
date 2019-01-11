@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -12,6 +13,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.TilePane;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.WindowEvent;
 import mmd.common.bases.ControllerBase;
 import mmd.common.enums.FileDialogMode;
@@ -35,6 +37,9 @@ public class MainScreenController extends ControllerBase {
 	@FXML
 	private TilePane mainTilePane;
 
+	@FXML
+	private TextField categoryField;
+
 	@Override
 	public void initialize(final URL location, final ResourceBundle resources) {
 		List<MovieDM> data = PropertyIO.getDMDefinitionsFromFile(MagicValues.MovieDMPath, MovieDM.class);
@@ -47,10 +52,6 @@ public class MainScreenController extends ControllerBase {
 		TreeItem<String> root = new TreeItem<String>("All");
 
 		this.categoryTreeView.setRoot(root);
-		//
-		// root.getChildren().add(new TreeItem("Anime"));
-		// root.getChildren().add(new TreeItem("SF"));
-		// root.getChildren().add(new TreeItem("Fighting"));
 
 	}
 
@@ -92,15 +93,27 @@ public class MainScreenController extends ControllerBase {
 	}
 
 	@FXML
+	private void onAddCategoryClicked(final MouseEvent e) {
+		try {
+			if (!categoryField.getText().isEmpty()) {
+				categoryTreeView.getRoot().getChildren().add(new TreeItem<String>(categoryField.getText()));
+			}
+
+		} catch (Exception ex) {
+			ErrorHandlerUtil.handleThrowable(ex);
+		}
+	}
+
+	@FXML
 	private void onImportMovieDataset(final ActionEvent e) {
 		try {
 			File file = ViewManager.fileDialog(FileTypeEnum.XML, FileDialogMode.Open);
 			if (file != null) {
-				
-			ImportExportData.importMovies(file.getAbsolutePath());
-			ViewManager.setWindowData(SceneNameEnum.MainScreen, new GenericData(
-					PropertyIO.getDMDefinitionsFromFile(MagicValues.MovieDMPath, MovieDM.class), List.class));
-			refreshMovieList();
+
+				ImportExportData.importMovies(file.getAbsolutePath());
+				ViewManager.setWindowData(SceneNameEnum.MainScreen, new GenericData(
+						PropertyIO.getDMDefinitionsFromFile(MagicValues.MovieDMPath, MovieDM.class), List.class));
+				refreshMovieList();
 			}
 		} catch (Exception ex) {
 			ErrorHandlerUtil.handleThrowable(ex);
@@ -133,7 +146,7 @@ public class MainScreenController extends ControllerBase {
 		try {
 			File file = ViewManager.fileDialog(FileTypeEnum.XML, FileDialogMode.Open);
 			if (file != null)
-			ImportExportData.importUsers(file.getAbsolutePath());
+				ImportExportData.importUsers(file.getAbsolutePath());
 		} catch (Exception ex) {
 			ErrorHandlerUtil.handleThrowable(ex);
 		}
@@ -144,7 +157,7 @@ public class MainScreenController extends ControllerBase {
 		try {
 			File file = ViewManager.fileDialog(FileTypeEnum.XML, FileDialogMode.Save);
 			if (file != null)
-			ImportExportData.exportUsers(file.getAbsolutePath());
+				ImportExportData.exportUsers(file.getAbsolutePath());
 		} catch (Exception ex) {
 			ErrorHandlerUtil.handleThrowable(ex);
 		}
