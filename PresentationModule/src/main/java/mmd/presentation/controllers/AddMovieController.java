@@ -23,6 +23,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import mmd.common.bases.ControllerBase;
+import mmd.common.enums.FileDialogMode;
 import mmd.common.enums.FileTypeEnum;
 import mmd.common.enums.SceneNameEnum;
 import mmd.common.models.MovieDM;
@@ -140,7 +141,7 @@ public class AddMovieController extends ControllerBase
     @FXML
     void openClicked(final MouseEvent event)
     {
-	File file = ViewManager.openFile(FileTypeEnum.Image);
+	File file = ViewManager.fileDialog(FileTypeEnum.Image,FileDialogMode.Open);
 	this.thumbnailTextFlow.getChildren().clear();
 	this.thumbnailTextFlow.getChildren().add(new Text(file.getName()));
 	this.thumbnailImageView.setImage(new Image(file.toURI().toString()));

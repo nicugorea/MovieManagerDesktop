@@ -13,16 +13,16 @@
   <children>
     <MenuBar>
       <menus>
-        <Menu mnemonicParsing="false" text="File">
+        <Menu mnemonicParsing="false" text="Data">
           <items>
-            <MenuItem mnemonicParsing="false" text="New" />
-            <MenuItem mnemonicParsing="false" text="Open…" />
+            <MenuItem mnemonicParsing="false" onAction="#onNewMovieDataset" text="New movie dataset" />
+            <MenuItem mnemonicParsing="false" onAction="#onImportMovieDataset" text="Import movie dataset" />
+                  <MenuItem mnemonicParsing="false" onAction="#onExportMovieDataset" text="Export movie dataset" />
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Close" />
-            <MenuItem mnemonicParsing="false" text="Save" />
-            <MenuItem mnemonicParsing="false" text="Save As…" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Quit" />
+                  <MenuItem mnemonicParsing="false" onAction="#onNewUserDataset" text="New user dataset" />
+                  <MenuItem mnemonicParsing="false" onAction="#onImportUserDataset" text="Import user dataset" />
+                  <MenuItem mnemonicParsing="false" onAction="#onExportUserDataset" text="Export user dataset" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
           </items>
         </Menu>
             <Menu mnemonicParsing="false" text="Account">

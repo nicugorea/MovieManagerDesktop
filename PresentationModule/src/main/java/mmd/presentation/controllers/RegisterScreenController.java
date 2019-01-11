@@ -73,7 +73,7 @@ public class RegisterScreenController
     {
 	try
 	{
-	    ViewManager.changeScene(ViewManager.getMainStage().getStage(), SceneNameEnum.Login);
+	    ViewManager.changeScene(ViewManager.getMainWindow().getStage(), SceneNameEnum.Login);
 	}
 	catch (Exception ex)
 	{
@@ -93,7 +93,7 @@ public class RegisterScreenController
 
 	    AuthManager.signUp(user);
 	    if(AuthManager.isAnyUserLoggedIn()) {
-		ViewManager.changeScene(ViewManager.getMainStage().getStage(), SceneNameEnum.MainScreen);
+		ViewManager.changeScene(ViewManager.getMainWindow().getStage(), SceneNameEnum.MainScreen);
 	    }
 
 	}

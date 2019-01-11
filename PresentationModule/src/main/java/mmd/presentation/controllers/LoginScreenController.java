@@ -29,7 +29,7 @@ public class LoginScreenController
 	    AuthManager.signIn(user);
 	    if(AuthManager.isAnyUserLoggedIn())
 	    {
-		ViewManager.changeScene(ViewManager.getMainStage().getStage(), SceneNameEnum.MainScreen);
+		ViewManager.changeScene(ViewManager.getMainWindow().getStage(), SceneNameEnum.MainScreen);
 	    }
 	}
 	catch (Exception ex)
@@ -44,7 +44,7 @@ public class LoginScreenController
     {
 	try
 	{
-	    ViewManager.changeScene(ViewManager.getMainStage().getStage(),SceneNameEnum.Register);
+	    ViewManager.changeScene(ViewManager.getMainWindow().getStage(),SceneNameEnum.Register);
 	}
 	catch (Exception ex)
 	{
