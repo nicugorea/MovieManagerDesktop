@@ -15,8 +15,8 @@ public class CategoryDM extends DMBase<CategoryDM> {
 
 	@Override
 	public CategoryDM newInstance(final Object object) {
-		CategoryDM category = new CategoryDM();
-		category.setCategoryName("Unknown");
+		CategoryDM category = (CategoryDM) object;
+		if (category.getCategoryName()==null) category.setCategoryName("Unknown");
 		return category;
 	}
 

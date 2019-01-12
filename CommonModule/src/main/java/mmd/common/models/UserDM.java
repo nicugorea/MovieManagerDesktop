@@ -40,4 +40,13 @@ public class UserDM extends DMBase<UserDM>
     }
 
 
+	@Override
+	public UserDM newInstance(Object object) {
+		UserDM result = (UserDM) object;
+		if(result.getUsername()==null) result.setUsername("Unknown");
+		if(result.getPassword()==null) result.setPassword("Unknown");
+		return result;
+	}
+
+
 }

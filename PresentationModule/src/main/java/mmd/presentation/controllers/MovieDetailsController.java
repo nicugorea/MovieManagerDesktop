@@ -16,6 +16,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import mmd.common.bases.ControllerBase;
 import mmd.common.enums.SceneNameEnum;
+import mmd.common.models.CategoryDM;
 import mmd.common.models.MovieDM;
 import mmd.common.types.GenericData;
 import mmd.persistence.io.PropertyIO;
@@ -93,7 +94,7 @@ public class MovieDetailsController extends ControllerBase
 
 	    GenericData data = ViewManager.getStageData(SceneNameEnum.MainScreen).getData();
 	    ((List<MovieDM>)data.getDataValue()).remove(this.dm);
-	    PropertyIO.removeDMDefinitionToFile(this.dm, MagicValues.MovieDMPath);
+	    PropertyIO.removeDMDefinitionFromFile(this.dm,MovieDM.class.getDeclaredField("IMDbID"), MagicValues.MovieDMPath);
 	    this.shutdown(event);
 	}
 	catch (Exception e)

@@ -10,183 +10,159 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import mmd.common.bases.DMBase;
 import mmd.common.definitions.DMDefinition;
 import mmd.common.models.MovieDM;
 import mmd.common.types.Property;
 import mmd.util.errorhandling.ErrorHandlerUtil;
 import mmd.util.io.IOUtil;
 
-public class PropertyIO
-{
+public class PropertyIO {
 
-    public static void addDMDefinitionToFile(final DMDefinition<?> dm, final String filePath, final String rootElement)
-    {
-	File file = new File(filePath);
+	public static void addDMDefinitionToFile(final DMDefinition<?> dm, final String filePath,
+			final String rootElement) {
+		File file = new File(filePath);
 
-	Document document = null;
-	Element root = null;
-	if(!file.exists())
-	{
-	    file.getParentFile().mkdirs();
-	    document = IOUtil.createEmptyDOMDocument();
-	    root = document.createElement(rootElement);
-	    document.appendChild(root);
-	}
-	else
-	{
-	    document = IOUtil.createDOMDocumentFromXMLFile(filePath);
-	    root = document.getDocumentElement();
-	}
-
-	Element element = getElementFromPropertyList(document, dm.getName(), dm.getProperties());
-
-	root.appendChild(element);
-
-	IOUtil.saveDOMDocumentToXMLFile(document, filePath);
-    }
-
-    public static <T> List<T> getDMDefinitionsFromFile(final String filePath, final Class<?> type)
-    {
-	LinkedList<T> list = new LinkedList<T>();
-	try
-	{
-
-	    Document document = IOUtil.createDOMDocumentFromXMLFile(filePath);
-
-	    Element root = document.getDocumentElement();
-
-	    NodeList moviesNodes = root.getElementsByTagName(((DMDefinition<T>) type.newInstance()).getName());
-
-	    for (int i = 0; i < moviesNodes.getLength(); i++)
-	    {
-		DMDefinition<T> object = (DMDefinition<T>) ((DMDefinition<T>) type.newInstance()).newInstance(
-			Property.getObjectFromProperties(getPropertyListFromNode(moviesNodes.item(i), type)));
-
-		list.add((T) object);
-	    }
-
-	}
-	catch (Throwable e)
-	{
-	    ErrorHandlerUtil.handleThrowable(e);
-	}
-	return list;
-    }
-
-    public static void removeDMDefinitionToFile(final MovieDM dm, final String filePath) throws Exception
-    {
-	File file = new File(filePath);
-
-	Document document = null;
-	Element root = null;
-	if(!file.exists())
-	{
-	    throw new Exception("File" + filePath+"does not exist!");
-	}
-	else
-	{
-	    document = IOUtil.createDOMDocumentFromXMLFile(filePath);
-	    root = document.getDocumentElement();
-	}
-
-	Node node = null;
-	for (int i = 0; i < root.getChildNodes().getLength(); i++)
-	{
-	    if(root.getChildNodes().item(i).getNodeType()==Node.ELEMENT_NODE)
-	    {
-		if(((Element)root.getChildNodes().item(i)).getElementsByTagName("IMDbID").item(0).getTextContent().equals(dm.getIMDbID())){
-		    node=root.getChildNodes().item(i);
-		    break;
-		}
-	    }
-
-	}
-
-	node.getParentNode().removeChild(node);
-
-	//	root.removeChild(node);
-
-	IOUtil.saveDOMDocumentToXMLFile(document, filePath);
-    }
-
-    private static Element getElementFromPropertyList(final Document root, final String name,
-	    final List<Property> children)
-    {
-	Element result = root.createElement(name);
-	try
-	{
-
-	    for (Property child : children)
-	    {
-		Element element = root.createElement(child.getName());
-		if(child.getValue() != null)
-		{
-		    element.setTextContent(child.getValue());
-		}
-		else
-		{
-		    element = getElementFromPropertyList(root, child.getName(), child.getChildren());
-		}
-		result.appendChild(element);
-	    }
-
-	}
-	catch (Throwable e)
-	{
-	    ErrorHandlerUtil.handleThrowable(e);
-	}
-	return result;
-    }
-
-    private static List<Property> getPropertyListFromNode(final Node node, final Class<?> type)
-    {
-
-	LinkedList<Property> properties = new LinkedList<Property>();
-	try
-	{
-
-	    for (Field field : type.getDeclaredFields())
-	    {
-		Node fieldNode = ((Element) node).getElementsByTagName(field.getName()).item(0);
-
-		if(fieldNode.getChildNodes().getLength() == 1
-			&& fieldNode.getChildNodes().item(0).getNodeType() == Node.TEXT_NODE)
-		{
-		    properties.add(
-			    new Property(field.getName(), fieldNode.getChildNodes().item(0).getTextContent(), type));
-		}
-		else if(fieldNode.getChildNodes().getLength() >= 1
-			&& fieldNode.getChildNodes().item(0).getNodeType() != Node.ELEMENT_NODE)
-		{
-		    properties.add(new Property(field.getName(), fieldNode.getChildNodes().item(0).getNodeName(),
-			    getPropertyListFromNodeList(fieldNode.getChildNodes()), type));
+		Document document = null;
+		Element root = null;
+		if (!file.exists()) {
+			file.getParentFile().mkdirs();
+			document = IOUtil.createEmptyDOMDocument();
+			root = document.createElement(rootElement);
+			document.appendChild(root);
+		} else {
+			document = IOUtil.createDOMDocumentFromXMLFile(filePath);
+			root = document.getDocumentElement();
 		}
 
-	    }
-	}
-	catch (Throwable e)
-	{
-	    ErrorHandlerUtil.handleThrowable(e);
-	}
-	return properties;
-    }
+		Element element = getElementFromPropertyList(document, dm.getName(), dm.getProperties());
 
-    private static LinkedList<Property> getPropertyListFromNodeList(final NodeList list)
-    {
-	LinkedList<Property> result = new LinkedList<Property>();
+		root.appendChild(element);
 
-	for (int i = 0; i < list.getLength(); i++)
-	{
-	    Node node = list.item(i);
-	    if(node.getChildNodes().getLength() == 1
-		    && node.getChildNodes().item(0).getNodeType() == Node.TEXT_NODE)
-	    {
-		result.add(new Property(node.getNodeName(), node.getTextContent(), List.class));
-	    }
-
+		IOUtil.saveDOMDocumentToXMLFile(document, filePath);
 	}
 
-	return result;
-    }
+	public static <T> List<T> getDMDefinitionsFromFile(final String filePath, final Class<?> type) {
+		LinkedList<T> list = new LinkedList<T>();
+		try {
+
+			Document document = IOUtil.createDOMDocumentFromXMLFile(filePath);
+
+			Element root = document.getDocumentElement();
+
+			NodeList moviesNodes = root.getElementsByTagName(((DMDefinition<T>) type.newInstance()).getName());
+
+			for (int i = 0; i < moviesNodes.getLength(); i++) {
+				T object = ((DMDefinition<T>) type.newInstance()).newInstance(
+						Property.getObjectFromProperties(getPropertyListFromNode(moviesNodes.item(i), type)));
+
+				list.add((T) object);
+			}
+
+		} catch (Throwable e) {
+			ErrorHandlerUtil.handleThrowable(e);
+		}
+		return list;
+	}
+
+	public static void removeDMDefinitionFromFile(final DMBase dm, Field field, final String filePath)
+			throws Exception {
+		File file = new File(filePath);
+
+		Document document = null;
+		Element root = null;
+		if (!file.exists()) {
+			throw new Exception("File" + filePath + "does not exist!");
+		} else {
+			document = IOUtil.createDOMDocumentFromXMLFile(filePath);
+			root = document.getDocumentElement();
+		}
+
+		Node node = null;
+		for (int i = 0; i < root.getChildNodes().getLength(); i++) {
+			if (root.getChildNodes().item(i).getNodeType() == Node.ELEMENT_NODE) {
+				boolean old = field.isAccessible();
+				field.setAccessible(true);
+
+				Element elemnt = (Element) root.getChildNodes().item(i);
+				NodeList nodeList = elemnt.getElementsByTagName(field.getName());
+				String value = nodeList.item(0).getTextContent();
+				
+				if (value.equals(field.get(dm))) {
+					node = root.getChildNodes().item(i);
+					break;
+				}
+
+				field.setAccessible(old);
+			}
+
+		}
+
+		node.getParentNode().removeChild(node);
+
+		// root.removeChild(node);
+
+		IOUtil.saveDOMDocumentToXMLFile(document, filePath);
+	}
+
+	private static Element getElementFromPropertyList(final Document root, final String name,
+			final List<Property> children) {
+		Element result = root.createElement(name);
+		try {
+
+			for (Property child : children) {
+				Element element = root.createElement(child.getName());
+				if (child.getValue() != null) {
+					element.setTextContent(child.getValue());
+				} else {
+					element = getElementFromPropertyList(root, child.getName(), child.getChildren());
+				}
+				result.appendChild(element);
+			}
+
+		} catch (Throwable e) {
+			ErrorHandlerUtil.handleThrowable(e);
+		}
+		return result;
+	}
+
+	private static List<Property> getPropertyListFromNode(final Node node, final Class<?> type) {
+
+		LinkedList<Property> properties = new LinkedList<Property>();
+		try {
+
+			for (Field field : type.getDeclaredFields()) {
+				Node fieldNode = ((Element) node).getElementsByTagName(field.getName()).item(0);
+
+				if (fieldNode.getChildNodes().getLength() == 1
+						&& fieldNode.getChildNodes().item(0).getNodeType() == Node.TEXT_NODE) {
+					properties.add(
+							new Property(field.getName(), fieldNode.getChildNodes().item(0).getTextContent(), type));
+				} else if (fieldNode.getChildNodes().getLength() >= 1
+						&& fieldNode.getChildNodes().item(0).getNodeType() != Node.ELEMENT_NODE) {
+					properties.add(new Property(field.getName(), fieldNode.getChildNodes().item(0).getNodeName(),
+							getPropertyListFromNodeList(fieldNode.getChildNodes()), type));
+				}
+
+			}
+		} catch (Throwable e) {
+			ErrorHandlerUtil.handleThrowable(e);
+		}
+		return properties;
+	}
+
+	private static LinkedList<Property> getPropertyListFromNodeList(final NodeList list) {
+		LinkedList<Property> result = new LinkedList<Property>();
+
+		for (int i = 0; i < list.getLength(); i++) {
+			Node node = list.item(i);
+			if (node.getChildNodes().getLength() == 1 && node.getChildNodes().item(0).getNodeType() == Node.TEXT_NODE) {
+				result.add(new Property(node.getNodeName(), node.getTextContent(), List.class));
+			}
+
+		}
+
+		return result;
+	}
 
 }

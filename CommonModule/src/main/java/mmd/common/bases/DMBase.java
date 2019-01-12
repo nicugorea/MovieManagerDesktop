@@ -8,7 +8,7 @@ import mmd.common.definitions.DMDefinition;
 import mmd.common.types.Property;
 import mmd.util.errorhandling.ErrorHandlerUtil;
 
-public class DMBase<T> implements DMDefinition<T>
+public abstract class DMBase<T> implements DMDefinition<T>
 {
 
     @Override
@@ -57,21 +57,6 @@ public class DMBase<T> implements DMDefinition<T>
 	return result;
     }
 
-
-
-    @Override
-    public T newInstance(final Object object)
-    {
-	try
-	{
-	    return (T) object;
-	}
-	catch (Throwable e)
-	{
-	    ErrorHandlerUtil.handleThrowable(e);
-	}
-	return null;
-    }
 
 
 

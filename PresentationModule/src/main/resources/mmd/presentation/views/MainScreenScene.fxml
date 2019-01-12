@@ -13,26 +13,29 @@
   <children>
     <MenuBar>
       <menus>
-        <Menu mnemonicParsing="false" text="Data">
+        <Menu mnemonicParsing="false" text="User">
           <items>
-            <MenuItem mnemonicParsing="false" onAction="#onNewMovieDataset" text="New movie dataset" />
-            <MenuItem mnemonicParsing="false" onAction="#onImportMovieDataset" text="Import movie dataset" />
-                  <MenuItem mnemonicParsing="false" onAction="#onExportMovieDataset" text="Export movie dataset" />
-            <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" onAction="#onNewUserDataset" text="New user dataset" />
                   <MenuItem mnemonicParsing="false" onAction="#onImportUserDataset" text="Import user dataset" />
                   <MenuItem mnemonicParsing="false" onAction="#onExportUserDataset" text="Export user dataset" />
                   <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#onLogoutAccountMenuItemAction" text="Logout" />
           </items>
         </Menu>
-            <Menu mnemonicParsing="false" text="Account">
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#onLogoutAccountMenuItemAction" text="Logout" />
-               </items>
-            </Menu>
             <Menu mnemonicParsing="false" text="Movie">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#onNewMovieMenuAction" text="New" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" onAction="#onNewMovieDataset" text="New movie dataset" />
+            <MenuItem mnemonicParsing="false" onAction="#onImportMovieDataset" text="Import movie dataset" />
+                  <MenuItem mnemonicParsing="false" onAction="#onExportMovieDataset" text="Export movie dataset" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Category">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#onNewCategoryDataset" text="New category dataset" />
+                  <MenuItem mnemonicParsing="false" onAction="#onImportCategoryDataset" text="Import categorydataset" />
+                  <MenuItem mnemonicParsing="false" onAction="#onExportCategoryDataset" text="Export category dataset" />
                </items>
             </Menu>
         <Menu mnemonicParsing="false" text="Help">
@@ -57,6 +60,7 @@
                                     <Button mnemonicParsing="false" onMouseClicked="#onAddCategoryClicked" prefWidth="150.0" text="Add category" />
                                  </children>
                               </HBox>
+                              <Button fx:id="deleteCategoryButton" mnemonicParsing="false" onMouseClicked="#onDeleteCategoryClicked" text="Delete selected category" />
                               <TreeView fx:id="categoryTreeView" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
                            </children>
                         </VBox>

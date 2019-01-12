@@ -16,6 +16,10 @@ public class ImportExportData {
 		IOUtil.copyFile(MagicValues.UserDMPath, path);
 	}
 
+	public static void exportCategories(String path) {
+		IOUtil.copyFile(MagicValues.CategoryDMPath, path);
+	}
+
 	public static void importMovies(String path) {
 		makeBackup(MagicValues.MovieDMPath,MagicValues.MovieDMBackupPath + MagicValues.MovieDMName);
 		IOUtil.copyFile(path, MagicValues.MovieDMPath);
@@ -26,17 +30,28 @@ public class ImportExportData {
 		makeBackup(MagicValues.UserDMPath,MagicValues.UserDMBackupPath + MagicValues.UserDMName);
 		IOUtil.copyFile(path, MagicValues.UserDMPath);
 	}
+	
+	public static void importCategories(String path) {
+		makeBackup(MagicValues.CategoryDMPath,MagicValues.CategoryDMBackupPath + MagicValues.CategoryDMName);
+		IOUtil.copyFile(path, MagicValues.CategoryDMPath);
+	}
 
 	public static void newUsers() {
 		makeBackup(MagicValues.UserDMPath,MagicValues.UserDMBackupPath + MagicValues.UserDMName);
 		IOUtil.saveDOMDocumentToXMLFile(IOUtil.createEmptyDOMDocumetWithParentTag(MagicValues.UsersTagName),
 				MagicValues.UserDMPath);
 	}
-	
+
 	public static void newMovies() {
 		makeBackup(MagicValues.MovieDMPath,MagicValues.MovieDMBackupPath + MagicValues.MovieDMName);
 		IOUtil.saveDOMDocumentToXMLFile(IOUtil.createEmptyDOMDocumetWithParentTag(MagicValues.MoviesTagName),
 				MagicValues.MovieDMPath);
+	}
+
+	public static void newCategories() {
+		makeBackup(MagicValues.CategoryDMPath,MagicValues.CategoryDMBackupPath + MagicValues.CategoryDMName);
+		IOUtil.saveDOMDocumentToXMLFile(IOUtil.createEmptyDOMDocumetWithParentTag(MagicValues.CategoriesTagName),
+				MagicValues.CategoryDMPath);
 	}
 	
 	private static void makeBackup(String from, String nameBase) {

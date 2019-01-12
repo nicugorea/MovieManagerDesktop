@@ -20,6 +20,15 @@ public class PersistenceModule {
 					file.getAbsolutePath());
 		}
 	}
+	
+	private static void createCategoryDMFile() {
+		File file = new File(MagicValues.CategoryDMPath);
+		if (!file.exists()) {
+			file.getParentFile().mkdirs();
+			IOUtil.saveDOMDocumentToXMLFile(IOUtil.createEmptyDOMDocumetWithParentTag(MagicValues.CategoriesTagName),
+					file.getAbsolutePath());
+		}
+	}
 
 	private static void createPath(String path) {
 		File folder = new File(path);
@@ -43,9 +52,11 @@ public class PersistenceModule {
 		try {
 			createMovieDMFile();
 			createUserDMFile();
+			createCategoryDMFile();
 			createMovieDMThumbnailFile();
 			createPath(MagicValues.MovieDMBackupPath);
 			createPath(MagicValues.UserDMBackupPath);
+			createPath(MagicValues.CategoryDMBackupPath);
 
 		} catch (Exception e) {
 			ErrorHandlerUtil.handleThrowable(e);
