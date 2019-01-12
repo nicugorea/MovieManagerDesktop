@@ -6,7 +6,11 @@ import java.net.URL;
 import mmd.util.MagicValues;
 import mmd.util.errorhandling.ErrorHandlerUtil;
 import mmd.util.io.IOUtil;
-
+/**
+ * 
+ * <h1>Persistence module main class</h1>
+ * <p>Here are create all elements that are needed for this module</p> 
+ */
 public class PersistenceModule {
 	public static void init() {
 		createPaths();
@@ -57,6 +61,7 @@ public class PersistenceModule {
 			createPath(MagicValues.MovieDMBackupPath);
 			createPath(MagicValues.UserDMBackupPath);
 			createPath(MagicValues.CategoryDMBackupPath);
+			createPath(MagicValues.ReportsPath);
 
 		} catch (Exception e) {
 			ErrorHandlerUtil.handleThrowable(e);

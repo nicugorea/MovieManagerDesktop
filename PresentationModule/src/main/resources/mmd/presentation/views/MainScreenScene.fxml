@@ -38,6 +38,11 @@
                   <MenuItem mnemonicParsing="false" onAction="#onExportCategoryDataset" text="Export category dataset" />
                </items>
             </Menu>
+            <Menu mnemonicParsing="false" text="Report">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#onGenerateTextReport" text="Generate text report" />
+               </items>
+            </Menu>
         <Menu mnemonicParsing="false" text="Help">
           <items>
             <MenuItem mnemonicParsing="false" text="About" />

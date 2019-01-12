@@ -1,5 +1,6 @@
 package mmd.presentation.controllers;
 
+import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -27,87 +28,95 @@ import mmd.util.io.IOUtil;
 
 public class MovieDetailsController extends ControllerBase
 {
-
-    @FXML
-    private TextFlow categoriesText;
-
-    @FXML
-    private TextFlow descriptionText;
-
-    private MovieDM dm= null;
-
-    @FXML
-    private Text scoreText;
-
-    @FXML
-    private HBox thumbnailHBox;
-
-    @FXML
-    private VBox thumbnailImageview;
-
-    @FXML
-    private ImageView thumbnailImageView;
-
-    @FXML
-    private Text titleText;
-
-    @Override
-    public void initialize(final URL location, final ResourceBundle resources)
-    {
-	try {
-
-	    this.dm=(MovieDM) ViewManager.getStageData(SceneNameEnum.MovieDetails).getData().getDataValue();
-	    this.titleText.setText(this.dm.getTitle());
-	    this.descriptionText.getChildren().add(new Text(this.dm.getDescription()));
-	    this.scoreText.setText(Float.toString(this.dm.getScore()));
-	    this.thumbnailImageView.setImage(new Image(IOUtil.getStringURLOfPath(IOUtil.getImagePath(this.dm.getImgPath()))));
-
-	    this.categoriesText.getChildren().add(new Text(
-		    this.dm.getCategoriesString()));
-	}
-
-	catch (Exception e) {
-	    ErrorHandlerUtil.handleThrowable(e);
-	}
-    }
-
-    @Override
-    public void shutdown(final Event event)
-    {
-	super.shutdown(event);
-	ViewManager.setWindowData(this.getName(), null);
-	ViewManager.closeParentStage((Node) event.getSource());
-    }
-
-    @Override
-    protected void initName()
-    {
-	this.stageName = SceneNameEnum.MovieDetails;
-
-    }
-
-    @FXML
-    void deleteClicked(final MouseEvent event)
-    {
-	try
+	
+	@FXML
+	private TextFlow categoriesText;
+	
+	@FXML
+	private TextFlow descriptionText;
+	
+	private MovieDM dm = null;
+	
+	@FXML
+	private Text scoreText;
+	
+	@FXML
+	private HBox thumbnailHBox;
+	
+	@FXML
+	private VBox thumbnailImageview;
+	
+	@FXML
+	private ImageView thumbnailImageView;
+	
+	@FXML
+	private Text titleText;
+	
+	@Override
+	public void initialize(final URL location, final ResourceBundle resources)
 	{
-
-	    GenericData data = ViewManager.getStageData(SceneNameEnum.MainScreen).getData();
-	    ((List<MovieDM>)data.getDataValue()).remove(this.dm);
-	    PropertyIO.removeDMDefinitionFromFile(this.dm,MovieDM.class.getDeclaredField("IMDbID"), MagicValues.MovieDMPath);
-	    this.shutdown(event);
+		try
+		{
+			
+			this.dm = (MovieDM) ViewManager.getStageData(SceneNameEnum.MovieDetails).getData()
+			        .getDataValue();
+			this.titleText.setText(this.dm.getTitle());
+			this.descriptionText.getChildren().add(new Text(this.dm.getDescription()));
+			this.scoreText.setText(Float.toString(this.dm.getScore()));
+			this.thumbnailImageView.setImage(new Image(
+			        IOUtil.getStringURLOfPath(IOUtil.getImagePath(this.dm.getImgPath()))));
+			
+			this.categoriesText.getChildren().add(new Text(this.dm.getCategoriesString()));
+		}
+		
+		catch (Exception e)
+		{
+			ErrorHandlerUtil.handleThrowable(e);
+		}
 	}
-	catch (Exception e)
+	
+	@Override
+	public void shutdown(final Event event)
 	{
-	    ErrorHandlerUtil.handleThrowable(e);
+		super.shutdown(event);
+		ViewManager.setWindowData(this.getName(), null);
+		ViewManager.closeParentStage((Node) event.getSource());
 	}
-    }
-
-
-    @FXML
-    void okClicked(final MouseEvent event)
-    {
-	this.shutdown(event);
-    }
-
+	
+	@Override
+	protected void initName()
+	{
+		this.stageName = SceneNameEnum.MovieDetails;
+		
+	}
+	
+	@FXML
+	void deleteClicked(final MouseEvent event)
+	{
+		try
+		{
+			GenericData data = ViewManager.getStageData(SceneNameEnum.MainScreen).getData();
+			if (!dm.getImgPath().equals(MagicValues.MovieDefaultThumbnail))
+			{
+				File file = new File(MagicValues.MovieThumbnailPath + dm.getImgPath());
+				if (file.exists()) file.delete();
+			}
+			((List<MovieDM>) data.getDataValue()).remove(this.dm);
+			PropertyIO.removeDMDefinitionFromFile(this.dm, MovieDM.class.getDeclaredField("IMDbID"),
+			        MagicValues.MovieDMPath);
+			
+			this.shutdown(event);
+		}
+		catch (Exception e)
+		{
+			ErrorHandlerUtil.handleThrowable(e);
+		}
+	}
+	
+	@FXML
+	void okClicked(final MouseEvent event)
+	{
+		this.shutdown(event);
+	}
+	
 }

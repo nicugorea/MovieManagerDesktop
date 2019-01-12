@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import mmd.util.MagicValues;
+import mmd.util.UtilModule;
 import mmd.util.io.IOUtil;
 
 public class ImportExportData {
@@ -56,7 +57,7 @@ public class ImportExportData {
 	
 	private static void makeBackup(String from, String nameBase) {
 		IOUtil.copyFile(from, nameBase + "_backup_"
-				+ new SimpleDateFormat("yyyy-MM-dd_HH_mm_ss").format(new Date()) + ".xml");
+				+ UtilModule.getDateNowString() + ".xml");
 	}
 
 }

@@ -2,6 +2,7 @@ package mmd.presentation.controllers;
 
 import java.io.File;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -61,9 +62,10 @@ public class AddMovieController extends ControllerBase
 	private Button openButton;
 	
 	@FXML
-	private Slider scoreSlider;
+	private Text scoreText;
 	
-	private final Spinner<Double> scoreSpinner = new Spinner<Double>();
+	@FXML
+	private Slider scoreSlider;
 	
 	@FXML
 	private VBox scoreVBox;
@@ -83,18 +85,14 @@ public class AddMovieController extends ControllerBase
 	private File tmpThumbnail = null;
 	
 	@Override
-	public void initialize(final URL location,
-	        final ResourceBundle resources)
+	public void initialize(final URL location, final ResourceBundle resources)
 	{
-		this.scoreSpinner.setValueFactory(
-		        new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0,
-		                10.0, 0.0));
-		this.scoreVBox.getChildren().add(this.scoreSpinner);
-		this.allCategoryList
-		        .setCellFactory(TextFieldListCell.forListView());
-		this.selectedCategoryList
-		        .setCellFactory(TextFieldListCell.forListView());
-		List<CategoryDM> categories = PropertyIO.getDMDefinitionsFromFile(MagicValues.CategoryDMPath, CategoryDM.class);
+		
+		setupSlider();
+		this.allCategoryList.setCellFactory(TextFieldListCell.forListView());
+		this.selectedCategoryList.setCellFactory(TextFieldListCell.forListView());
+		List<CategoryDM> categories = PropertyIO
+		        .getDMDefinitionsFromFile(MagicValues.CategoryDMPath, CategoryDM.class);
 		for (CategoryDM categoryDM : categories)
 		{
 			allCategoryList.getItems().add(categoryDM.getCategoryName());
@@ -105,13 +103,24 @@ public class AddMovieController extends ControllerBase
 		setBindingsAndEvents();
 	}
 	
+	private void setupSlider()
+	{
+		scoreSlider.setMin(0);
+		scoreSlider.setMax(10);
+		scoreSlider.setMajorTickUnit(1);
+		scoreSlider.setMinorTickCount(10);
+		scoreSlider.setShowTickLabels(true);
+		scoreSlider.setShowTickMarks(true);
+		scoreSlider.setBlockIncrement(0.1);
+	}
+	
 	private void setBindingsAndEvents()
 	{
-		addCategoryButton.disableProperty().bind(allCategoryList
-		        .getSelectionModel().selectedItemProperty().isNull());
-		removeCategoryButton.disableProperty().bind(selectedCategoryList
-		        .getSelectionModel().selectedItemProperty().isNull());
-		
+		addCategoryButton.disableProperty()
+		        .bind(allCategoryList.getSelectionModel().selectedItemProperty().isNull());
+		removeCategoryButton.disableProperty()
+		        .bind(selectedCategoryList.getSelectionModel().selectedItemProperty().isNull());
+		scoreText.textProperty().bind(scoreSlider.valueProperty().asString("%.1f"));
 	}
 	
 	@Override
@@ -140,20 +149,17 @@ public class AddMovieController extends ControllerBase
 			dm.setIMDbID(this.IMDbIDField.getText());
 		}
 		
-		dm.setScore((float) scoreSlider.getValue());
+		dm.setScore(Float.parseFloat(scoreText.getText()));
 		
 		if (this.selectedCategoryList.getItems().size() > 0)
 		{
-			dm.setCategories(
-			        new LinkedList<String>(selectedCategoryList.getItems()));
+			dm.setCategories(new LinkedList<String>(selectedCategoryList.getItems()));
 		}
 		
 		if (this.tmpThumbnail != null)
 		{
-			String tName = this.IMDbIDField.getText()
-			        + IOUtil.getFileExtension(tmpThumbnail);
-			IOUtil.copyFile(tmpThumbnail.getAbsolutePath(),
-			        MagicValues.MovieThumbnailPath + tName);
+			String tName = this.IMDbIDField.getText() + IOUtil.getFileExtension(tmpThumbnail);
+			IOUtil.copyFile(tmpThumbnail.getAbsolutePath(), MagicValues.MovieThumbnailPath + tName);
 			dm.setImgPath(tName);
 		}
 		
@@ -167,7 +173,7 @@ public class AddMovieController extends ControllerBase
 		{
 			this.selectedCategoryList.getItems()
 			        .add(allCategoryList.getSelectionModel().getSelectedItem());
-
+			
 			this.allCategoryList.getItems()
 			        .remove(allCategoryList.getSelectionModel().getSelectedItem());
 		}
@@ -184,7 +190,7 @@ public class AddMovieController extends ControllerBase
 		{
 			this.allCategoryList.getItems()
 			        .add(selectedCategoryList.getSelectionModel().getSelectedItem());
-
+			
 			this.selectedCategoryList.getItems()
 			        .remove(selectedCategoryList.getSelectionModel().getSelectedItem());
 		}
@@ -204,15 +210,14 @@ public class AddMovieController extends ControllerBase
 	@FXML
 	void openClicked(final MouseEvent event)
 	{
-		File file = ViewManager.fileDialog(FileTypeEnum.Image,
-		        FileDialogMode.Open);
-		this.thumbnailTextFlow.getChildren().clear();
-		this.thumbnailTextFlow.getChildren()
-		        .add(new Text(file.getName()));
-		this.thumbnailImageView
-		        .setImage(new Image(file.toURI().toString()));
-		this.tmpThumbnail = file;
-		
+		File file = ViewManager.fileDialog(FileTypeEnum.Image, FileDialogMode.Open);
+		if (file != null)
+		{
+			this.thumbnailTextFlow.getChildren().clear();
+			this.thumbnailTextFlow.getChildren().add(new Text(file.getName()));
+			this.thumbnailImageView.setImage(new Image(file.toURI().toString()));
+			this.tmpThumbnail = file;
+		}
 	}
 	
 	@FXML
@@ -220,8 +225,7 @@ public class AddMovieController extends ControllerBase
 	{
 		
 		MovieDM dm = this.getDMFromContext();
-		ViewManager.setWindowData(this.getName(),
-		        new GenericData(dm, dm.getClass()));
+		ViewManager.setWindowData(this.getName(), new GenericData(dm, dm.getClass()));
 		ViewManager.closeParentStage((Node) event.getSource());
 	}
 }

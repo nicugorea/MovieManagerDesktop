@@ -8,10 +8,21 @@ import org.xml.sax.ErrorHandler;
 
 import mmd.util.errorhandling.ErrorHandlerUtil;
 
+/**
+ * 
+ * Util for filtering a list 
+ */
 public class FilteringUtil
 {
-	public static <T> List<T> filter(List<T> list, Field field,
-	        Object value)
+	/**
+	 * Filtering a list in a way that field will have the value of the parameter value
+	 * 
+	 * @param list List to be filtered
+	 * @param field Field that have to be checked for filtering
+	 * @param value Value that is required for comparing
+	 * @return Filtered List
+	 */
+	public static <T> List<T> filter(List<T> list, Field field, Object value)
 	{
 		List<T> result = new LinkedList<T>(list);
 		boolean old = field.isAccessible();
@@ -30,8 +41,7 @@ public class FilteringUtil
 					filter = !field.get(o).equals(value);
 				}
 			}
-			catch (IllegalArgumentException
-			        | IllegalAccessException e)
+			catch (IllegalArgumentException | IllegalAccessException e)
 			{
 				ErrorHandlerUtil.handleThrowable(e);
 			}

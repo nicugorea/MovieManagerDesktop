@@ -50,11 +50,11 @@ public class PropertyIO {
 
 			Element root = document.getDocumentElement();
 
-			NodeList moviesNodes = root.getElementsByTagName(((DMDefinition<T>) type.newInstance()).getName());
+			NodeList childNodes = root.getElementsByTagName(((DMDefinition<T>) type.newInstance()).getName());
 
-			for (int i = 0; i < moviesNodes.getLength(); i++) {
+			for (int i = 0; i < childNodes.getLength(); i++) {
 				T object = ((DMDefinition<T>) type.newInstance()).newInstance(
-						Property.getObjectFromProperties(getPropertyListFromNode(moviesNodes.item(i), type)));
+						Property.getObjectFromProperties(getPropertyListFromNode(childNodes.item(i), type)));
 
 				list.add((T) object);
 			}

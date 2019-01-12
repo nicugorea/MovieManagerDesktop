@@ -11,6 +11,11 @@ import mmd.util.errorhandling.ErrorHandlerUtil;
 import mmd.util.logging.LogLevel;
 import mmd.util.logging.LoggingUtil;
 
+/**
+ * 
+ * <h1>Presentation module main class</h1>
+ * <p>Here are create all elements that are needed for this module</p> 
+ */
 public class PresentationModule extends Application
 {
 
