@@ -27,7 +27,8 @@ public class PresentationModule extends Application
 	try {
 	    PersistenceModule.init();
 	    ViewManager.init();
-	    ViewManager.showStage(SceneNameEnum.Login,new EventHandler<WindowEvent>()
+	    SceneNameEnum mainStage = SceneNameEnum.MainScreen;
+	    ViewManager.showStage(mainStage,new EventHandler<WindowEvent>()
 	    {
 
 		@Override
@@ -36,7 +37,7 @@ public class PresentationModule extends Application
 		    // TODO: After main Window is closed
 		}
 	    },null);
-	    ViewManager.setMainWindow(ViewManager.getStageData(SceneNameEnum.Login).getStage());
+	    ViewManager.setMainWindow(ViewManager.getStageData(mainStage).getStage());
 	}
 	catch (Throwable e) {
 	    ErrorHandlerUtil.handleThrowable(e);

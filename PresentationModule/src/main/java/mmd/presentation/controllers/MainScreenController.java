@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -33,6 +34,8 @@ import mmd.presentation.managers.ViewManager;
 import mmd.util.MagicValues;
 import mmd.util.errorhandling.ErrorHandlerUtil;
 import mmd.util.io.IOUtil;
+import mmd.util.sorting.SortingUtil;
+import mmd.util.filtering.FilteringUtil;
 
 public class MainScreenController extends ControllerBase
 {
@@ -52,6 +55,8 @@ public class MainScreenController extends ControllerBase
 	public void initialize(final URL location,
 	        final ResourceBundle resources)
 	{
+		try {
+			
 		List<MovieDM> movies = PropertyIO.getDMDefinitionsFromFile(
 		        MagicValues.MovieDMPath, MovieDM.class);
 		List<CategoryDM> categories = PropertyIO
@@ -59,7 +64,10 @@ public class MainScreenController extends ControllerBase
 		                CategoryDM.class);
 		
 		TreeItem<String> root = new TreeItem<String>("All");
+		root.setExpanded(true);
 		this.categoryTreeView.setRoot(root);
+		
+		
 		ViewManager.setWindowData(this.getName(),
 		        new GenericData(movies, movies.getClass()));
 		this.mainTilePane.setAlignment(Pos.CENTER);
@@ -68,30 +76,11 @@ public class MainScreenController extends ControllerBase
 		this.refreshMovieList();
 		this.refreshCategoryList(categories);
 		
-		deleteCategoryButton.disableProperty().bind(categoryTreeView
-		        .getSelectionModel().selectedItemProperty().isNull());
-		this.categoryTreeView.focusedProperty()
-		        .addListener(new ChangeListener<Boolean>()
-		        {
-			        
-			        @Override
-			        public void changed(
-			                ObservableValue<? extends Boolean> observable,
-			                Boolean oldValue, Boolean newValue)
-			        {
-				        if (!newValue)
-				        {
-					        
-					        // lost focus when clicked on deleteCategory and selected item was null
-					        if (!deleteCategoryButton.isFocused())
-					            MainScreenController.this.categoryTreeView
-					                    .getSelectionModel()
-					                    .clearSelection();
-				        }
-				        
-			        }
-		        });
-		
+		setBindingsAndEvents();
+		}
+		catch(Exception e) {
+			ErrorHandlerUtil.handleThrowable(e);
+		}
 	}
 	
 	@Override
@@ -122,6 +111,67 @@ public class MainScreenController extends ControllerBase
 		{
 			ErrorHandlerUtil.handleThrowable(e);
 		}
+	}
+	
+	private void setBindingsAndEvents() {
+		
+		deleteCategoryButton.disableProperty().bind(categoryTreeView
+		        .getSelectionModel().selectedItemProperty().isNull());
+		
+		this.categoryTreeView.focusedProperty()
+		        .addListener(new ChangeListener<Boolean>()
+		        {
+			        
+			        @Override
+			        public void changed(
+			                ObservableValue<? extends Boolean> observable,
+			                Boolean oldValue, Boolean newValue)
+			        {
+				        if (!newValue)
+				        {
+					        
+					        // lost focus when clicked on deleteCategory and selected item was null
+					        if (!deleteCategoryButton.isFocused())
+					            MainScreenController.this.categoryTreeView
+					                    .getSelectionModel()
+					                    .clearSelection();
+				        }
+				        
+			        }
+		        });
+		
+		this.categoryTreeView.setOnMouseClicked(new EventHandler<MouseEvent>()
+		{
+
+			@Override
+			public void handle(MouseEvent event)
+			{
+				try
+				{
+					
+    				if(event.getClickCount()>=2) {
+    					if(categoryTreeView.getSelectionModel().getSelectedItem()!=null) {
+    						List<MovieDM> movies;
+    						if(categoryTreeView.getSelectionModel().getSelectedItem().getValue().equals("All")){
+    							movies = PropertyIO.getDMDefinitionsFromFile(
+    							        MagicValues.MovieDMPath, MovieDM.class);
+    						}else {
+    						movies = (List<MovieDM>) ViewManager.getStageData(SceneNameEnum.MainScreen).getData().getDataValue();
+    						movies=FilteringUtil.filter(movies, MovieDM.class.getDeclaredField("Categories"), 
+    								categoryTreeView.getSelectionModel().getSelectedItem().getValue());
+    						}
+    						ViewManager.setWindowData(SceneNameEnum.MainScreen,
+    								new GenericData(movies, movies.getClass()));	
+    						MainScreenController.this.refreshMovieList();
+    						}
+    				}
+				}
+				catch (Exception e)
+				{
+					ErrorHandlerUtil.handleThrowable(e);
+				}
+			}
+		});
 	}
 	
 	@FXML

@@ -3,6 +3,7 @@ package mmd.presentation.controllers;
 import java.io.File;
 import java.net.URL;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
@@ -26,134 +27,201 @@ import mmd.common.bases.ControllerBase;
 import mmd.common.enums.FileDialogMode;
 import mmd.common.enums.FileTypeEnum;
 import mmd.common.enums.SceneNameEnum;
+import mmd.common.models.CategoryDM;
 import mmd.common.models.MovieDM;
 import mmd.common.types.GenericData;
+import mmd.persistence.io.PropertyIO;
 import mmd.presentation.managers.ViewManager;
+import mmd.util.MagicValues;
 import mmd.util.errorhandling.ErrorHandlerUtil;
+import mmd.util.io.IOUtil;
+
 public class AddMovieController extends ControllerBase
 {
-
-    @FXML
-    private Button addCategoryButton;
-
-    @FXML
-    private TextField categoryField;
-
-    @FXML
-    private ListView<String> categoryList;
-
-    @FXML
-    private TextArea descriptionField;
-
-    @FXML
-    private TextField IMDbIDField;
-
-    @FXML
-    private Button openButton;
-
-    @FXML
-    private Slider scoreSlider;
-
-    private final Spinner<Double> scoreSpinner = new Spinner<Double>();
-
-    @FXML
-    private VBox scoreVBox;
-
-    @FXML
-    private HBox thumbnailHBox;
-
-    @FXML
-    private ImageView thumbnailImageView;
-
-    @FXML
-    private TextFlow thumbnailTextFlow;
-
-    @FXML
-    private TextField titleField;
-
-    private File tmpThumbnail = null;
-
-    @Override
-    public void initialize(final URL location, final ResourceBundle resources)
-    {
-	this.scoreSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0, 10.0, 0.0));
-	this.scoreVBox.getChildren().add(this.scoreSpinner);
-	this.categoryList.setCellFactory(TextFieldListCell.forListView());
-	//	this.thumbnailImageView.setImage(new Image(MagicValues.MovieThumbnailPath+"/"+MagicValues.MovieDefaultThumbnail));
-    }
-
-    @Override
-    protected void initName()
-    {
-	this.stageName=SceneNameEnum.AddMovie;
-
-    }
-
-    private MovieDM getDMFromContext() {
-	MovieDM dm = new MovieDM().newInstance(new MovieDM());
-
-	if(!this.titleField.getText().isEmpty())
+	
+	@FXML
+	private Button addCategoryButton;
+	
+	@FXML
+	private Button removeCategoryButton;
+	
+	@FXML
+	private ListView<String> allCategoryList;
+	
+	@FXML
+	private ListView<String> selectedCategoryList;
+	
+	@FXML
+	private TextArea descriptionField;
+	
+	@FXML
+	private TextField IMDbIDField;
+	
+	@FXML
+	private Button openButton;
+	
+	@FXML
+	private Slider scoreSlider;
+	
+	private final Spinner<Double> scoreSpinner = new Spinner<Double>();
+	
+	@FXML
+	private VBox scoreVBox;
+	
+	@FXML
+	private HBox thumbnailHBox;
+	
+	@FXML
+	private ImageView thumbnailImageView;
+	
+	@FXML
+	private TextFlow thumbnailTextFlow;
+	
+	@FXML
+	private TextField titleField;
+	
+	private File tmpThumbnail = null;
+	
+	@Override
+	public void initialize(final URL location,
+	        final ResourceBundle resources)
 	{
-	    dm.setTitle(this.titleField.getText());
+		this.scoreSpinner.setValueFactory(
+		        new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0,
+		                10.0, 0.0));
+		this.scoreVBox.getChildren().add(this.scoreSpinner);
+		this.allCategoryList
+		        .setCellFactory(TextFieldListCell.forListView());
+		this.selectedCategoryList
+		        .setCellFactory(TextFieldListCell.forListView());
+		List<CategoryDM> categories = PropertyIO.getDMDefinitionsFromFile(MagicValues.CategoryDMPath, CategoryDM.class);
+		for (CategoryDM categoryDM : categories)
+		{
+			allCategoryList.getItems().add(categoryDM.getCategoryName());
+		}
+		
+// this.thumbnailImageView.setImage(new
+		// Image(MagicValues.MovieThumbnailPath+"/"+MagicValues.MovieDefaultThumbnail));
+		setBindingsAndEvents();
 	}
-
-	if(!this.descriptionField.getText().isEmpty())
+	
+	private void setBindingsAndEvents()
 	{
-	    dm.setDescription(this.descriptionField.getText());
+		addCategoryButton.disableProperty().bind(allCategoryList
+		        .getSelectionModel().selectedItemProperty().isNull());
+		removeCategoryButton.disableProperty().bind(selectedCategoryList
+		        .getSelectionModel().selectedItemProperty().isNull());
+		
 	}
-	if(!this.IMDbIDField.getText().isEmpty())
+	
+	@Override
+	protected void initName()
 	{
-	    dm.setIMDbID(this.IMDbIDField.getText());
+		this.stageName = SceneNameEnum.AddMovie;
+		
 	}
-	dm.setScore(10.0f);
-	if(this.categoryList.getChildrenUnmodifiable().size()>0)
+	
+	private MovieDM getDMFromContext()
 	{
-	    dm.setCategories(new LinkedList<String>());
+		MovieDM dm = new MovieDM().newInstance(new MovieDM());
+		
+		if (!this.titleField.getText().isEmpty())
+		{
+			dm.setTitle(this.titleField.getText());
+		}
+		
+		if (!this.descriptionField.getText().isEmpty())
+		{
+			dm.setDescription(this.descriptionField.getText());
+		}
+		
+		if (!this.IMDbIDField.getText().isEmpty())
+		{
+			dm.setIMDbID(this.IMDbIDField.getText());
+		}
+		
+		dm.setScore((float) scoreSlider.getValue());
+		
+		if (this.selectedCategoryList.getItems().size() > 0)
+		{
+			dm.setCategories(
+			        new LinkedList<String>(selectedCategoryList.getItems()));
+		}
+		
+		if (this.tmpThumbnail != null)
+		{
+			String tName = this.IMDbIDField.getText()
+			        + IOUtil.getFileExtension(tmpThumbnail);
+			IOUtil.copyFile(tmpThumbnail.getAbsolutePath(),
+			        MagicValues.MovieThumbnailPath + tName);
+			dm.setImgPath(tName);
+		}
+		
+		return dm;
 	}
-	if(this.tmpThumbnail!=null)
+	
+	@FXML
+	void addClicked(final MouseEvent event)
 	{
-	    dm.setImgPath(this.tmpThumbnail.getName());
-	}
-	return dm;
-    }
+		try
+		{
+			this.selectedCategoryList.getItems()
+			        .add(allCategoryList.getSelectionModel().getSelectedItem());
 
-    @FXML
-    void addClicked(final MouseEvent event)
-    {
-	try
+			this.allCategoryList.getItems()
+			        .remove(allCategoryList.getSelectionModel().getSelectedItem());
+		}
+		catch (Exception e)
+		{
+			ErrorHandlerUtil.handleThrowable(e);
+		}
+	}
+	
+	@FXML
+	void removeClicked(final MouseEvent event)
 	{
+		try
+		{
+			this.allCategoryList.getItems()
+			        .add(selectedCategoryList.getSelectionModel().getSelectedItem());
 
-	    this.categoryList.getItems().add(this.categoryField.getText());
+			this.selectedCategoryList.getItems()
+			        .remove(selectedCategoryList.getSelectionModel().getSelectedItem());
+		}
+		catch (Exception e)
+		{
+			ErrorHandlerUtil.handleThrowable(e);
+		}
 	}
-	catch (Exception e)
+	
+	@FXML
+	void cancelClicked(final MouseEvent event)
 	{
-	    ErrorHandlerUtil.handleThrowable(e);
+		
+		ViewManager.closeParentStage((Node) event.getSource());
 	}
-    }
-
-    @FXML
-    void cancelClicked(final MouseEvent event)
-    {
-
-	ViewManager.closeParentStage((Node) event.getSource());
-    }
-
-    @FXML
-    void openClicked(final MouseEvent event)
-    {
-	File file = ViewManager.fileDialog(FileTypeEnum.Image,FileDialogMode.Open);
-	this.thumbnailTextFlow.getChildren().clear();
-	this.thumbnailTextFlow.getChildren().add(new Text(file.getName()));
-	this.thumbnailImageView.setImage(new Image(file.toURI().toString()));
-	this.tmpThumbnail = file;
-
-    }
-    @FXML
-    void saveClicked(final MouseEvent event)
-    {
-
-	MovieDM dm = this.getDMFromContext();
-	ViewManager.setWindowData(this.getName(), new GenericData(dm, dm.getClass()));
-	ViewManager.closeParentStage((Node) event.getSource());
-    }
+	
+	@FXML
+	void openClicked(final MouseEvent event)
+	{
+		File file = ViewManager.fileDialog(FileTypeEnum.Image,
+		        FileDialogMode.Open);
+		this.thumbnailTextFlow.getChildren().clear();
+		this.thumbnailTextFlow.getChildren()
+		        .add(new Text(file.getName()));
+		this.thumbnailImageView
+		        .setImage(new Image(file.toURI().toString()));
+		this.tmpThumbnail = file;
+		
+	}
+	
+	@FXML
+	void saveClicked(final MouseEvent event)
+	{
+		
+		MovieDM dm = this.getDMFromContext();
+		ViewManager.setWindowData(this.getName(),
+		        new GenericData(dm, dm.getClass()));
+		ViewManager.closeParentStage((Node) event.getSource());
+	}
 }

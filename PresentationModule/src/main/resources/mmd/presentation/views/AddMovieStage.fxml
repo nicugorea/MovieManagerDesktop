@@ -18,7 +18,8 @@
     <RowConstraints minHeight="-Infinity" prefHeight="40.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="95.0" minHeight="-Infinity" prefHeight="40.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="95.0" minHeight="-Infinity" prefHeight="40.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="-Infinity" prefHeight="40.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="95.0" minHeight="-Infinity" prefHeight="40.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
       <VBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="150.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
@@ -44,20 +45,21 @@
             <TextField fx:id="IMDbIDField" />
          </children>
       </VBox>
-      <VBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.rowSpan="2">
+      <VBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.rowSpan="4">
          <children>
             <AnchorPane>
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textOrigin="CENTER" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Categories" textOrigin="CENTER" />
                </children>
             </AnchorPane>
-            <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="1.0" prefWidth="150.0">
+            <ListView fx:id="allCategoryList" prefHeight="150.0" prefWidth="200.0" />
+            <HBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="1.0" prefWidth="150.0">
                <children>
-                  <TextField fx:id="categoryField" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
                   <Button fx:id="addCategoryButton" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#addClicked" text="Add" />
+                  <Button fx:id="removeCategoryButton" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#removeClicked" text="Remove" />
                </children>
             </HBox>
-            <ListView fx:id="categoryList" prefHeight="150.0" prefWidth="200.0" />
+            <ListView fx:id="selectedCategoryList" prefHeight="150.0" prefWidth="200.0" />
          </children>
       </VBox>
       <VBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="150.0" GridPane.rowIndex="1" GridPane.rowSpan="2">
@@ -70,7 +72,7 @@
             <TextArea fx:id="descriptionField" prefWidth="200.0" />
          </children>
       </VBox>
-      <VBox fx:id="scoreVBox" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" GridPane.rowIndex="4">
+      <VBox fx:id="scoreVBox" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
          <children>
             <AnchorPane>
                <children>
@@ -80,13 +82,8 @@
             <Slider fx:id="scoreSlider" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" />
          </children>
       </VBox>
-      <VBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.rowSpan="2">
+      <VBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" GridPane.rowIndex="4" GridPane.rowSpan="2">
          <children>
-            <AnchorPane>
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thumbnail" textOrigin="CENTER" />
-               </children>
-            </AnchorPane>
             <ImageView fx:id="thumbnailImageView" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </VBox>
@@ -105,7 +102,7 @@
             </HBox>
          </children>
       </VBox>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
          <children>
             <Button mnemonicParsing="false" onMouseClicked="#cancelClicked" text="Cancel" />
             <Button mnemonicParsing="false" onMouseClicked="#saveClicked" text="Save" />

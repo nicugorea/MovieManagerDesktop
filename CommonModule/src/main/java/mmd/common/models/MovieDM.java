@@ -37,7 +37,7 @@ public class MovieDM extends DMBase<MovieDM>
 	    {
 		categoriesSB.append(category+", ");
 	    }
-	    return categoriesSB.substring(0,categoriesSB.length()-3).toString();
+	    return categoriesSB.substring(0,categoriesSB.length()-2).toString();
 	}
 
 	return "";
