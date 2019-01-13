@@ -6,22 +6,44 @@ import mmd.common.models.UserDM;
 import mmd.persistence.io.PropertyIO;
 import mmd.util.MagicValues;
 
-public class AuthIO {
-	public static UserDM getUserByUsername(final String username) throws Exception {
-		List<UserDM> users = PropertyIO.getDMDefinitionsFromFile(MagicValues.UserDMPath, UserDM.class);
-
+/**
+ * Class that contains static methods for operations of input and output with
+ * users
+ */
+public class AuthIO
+{
+	/**
+	 * Method to get an user by its username if exist
+	 * 
+	 * @param username Username to check
+	 * @return Instance of UserDM
+	 * @throws Exception
+	 */
+	public static UserDM getUserByUsername(final String username) throws Exception
+	{
+		List<UserDM> users = PropertyIO.getDMDefinitionsFromFile(MagicValues.UserDMPath,
+		        UserDM.class);
+		
 		UserDM user = null;
-		for (UserDM userDM : users) {
-			if (userDM.getUsername().equals(username)) {
+		for (UserDM userDM : users)
+		{
+			if (userDM.getUsername().equals(username))
+			{
 				user = userDM;
 				break;
 			}
 		}
 		return user;
 	}
-
-	public static void saveUser(final UserDM user) {
+	
+	/**
+	 * Method to save a user
+	 * 
+	 * @param user User to save
+	 */
+	public static void saveUser(final UserDM user)
+	{
 		PropertyIO.addDMDefinitionToFile(user, MagicValues.UserDMPath, MagicValues.UsersTagName);
 	}
-
+	
 }
