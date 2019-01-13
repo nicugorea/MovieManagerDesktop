@@ -7,8 +7,17 @@ import java.util.List;
 
 import mmd.util.errorhandling.ErrorHandlerUtil;
 
+/**
+ * Class that define a Property 
+ */
 public class Property
 {
+	/**
+	 * Constructor of a simple property
+	 * @param name Property name
+	 * @param value Property value
+	 * @param parentClass Class of property parent
+	 */
 	public Property(final String name, final String value, final Class<?> parentClass)
 	{
 		this.Name = name;
@@ -16,6 +25,13 @@ public class Property
 		this.parentClass = parentClass;
 	}
 	
+	/**
+	 * Constructor of property for a List of primitive objects
+	 * @param name Property name
+	 * @param childName List property child name
+	 * @param values List of properties
+	 * @param parentClass Class of property parent
+	 */
 	public Property(final String name, final String childName, final LinkedList<Property> values,
 	        final Class<?> parentClass)
 	{
@@ -26,6 +42,13 @@ public class Property
 		this.Children = values;
 	}
 	
+	/**
+	 * Constructor of property for a List of advanced objects
+	 * @param name Property name
+	 * @param childName List property child name
+	 * @param values List of objects
+	 * @param parentClass Class of property parent
+	 */
 	public Property(final String name, final String childName, final List<?> values,
 	        final Class<?> parentClass)
 	{
@@ -42,7 +65,11 @@ public class Property
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+	/**
+	 * Get Object from List of properties
+	 * @param properties List of properties to be converted
+	 * @return Converted object
+	 */
 	public static <T> T getObjectFromProperties(final List<Property> properties)
 	{
 		
@@ -66,6 +93,11 @@ public class Property
 		return result;
 	}
 	
+	/**
+	 * Set field value of given object using property
+	 * @param property Property that hold value and property name
+	 * @param object Object to set value
+	 */
 	private static void setFieldValue(final Property property, final Object object)
 	{
 		try
@@ -91,6 +123,10 @@ public class Property
 	private Class<?> propertyClass;
 	private String Value;
 	
+	/**
+	 * Add a child property
+	 * @param property Property to add
+	 */
 	public void addChild(final Property property)
 	{
 		if (this.Children == null)
@@ -100,56 +136,100 @@ public class Property
 		this.Children.add(property);
 	}
 	
+	/**
+	 * Get child properties
+	 * @return Children List
+	 */
 	public List<Property> getChildren()
 	{
 		return this.Children;
 	}
 	
+	/**
+	 * Get Field name
+	 * @return Field name
+	 */
 	public String getName()
 	{
 		return this.Name;
 	}
 	
+	/**
+	 * Get Parent class
+	 * @return object class of field
+	 */
 	public Class<?> getParentClass()
 	{
 		return this.parentClass;
 	}
 	
+	/**
+	 * Get filed value class
+	 * @return field value class
+	 */
 	public Class<?> getPropertyClass()
 	{
 		return this.propertyClass;
 	}
 	
+	/**
+	 * Get Property Value
+	 * @return Object
+	 */
 	public String getValue()
 	{
 		return this.Value;
 	}
 	
+	/**
+	 * Check if current property has Children
+	 * @return boolean value if true exist at least one child and false elsewhere
+	 */
 	public boolean haveChildren()
 	{
 		return this.Children != null;
 	}
 	
+	/**
+	 * Set property field name
+	 * @param name Name to set
+	 */
 	public void setName(final String name)
 	{
 		this.Name = name;
 	}
 	
+	/**
+	 * Set Parent class
+	 * @param parentClass Class to set
+	 */
 	public void setParentClass(final Class<?> parentClass)
 	{
 		this.parentClass = parentClass;
 	}
 	
+	/**
+	 * Set field class
+	 * @param propertyClass Class to set
+	 */
 	public void setPropertyClass(final Class<?> propertyClass)
 	{
 		this.propertyClass = propertyClass;
 	}
 	
+	/**
+	 * Set Field value
+	 * @param value Object to set
+	 */
 	public void setValue(final String value)
 	{
 		this.Value = value;
 	}
 	
+	/**
+	 * Create object from current property
+	 * @return Object created from this property
+	 */
 	private Object toObject()
 	{
 		Object object = null;
@@ -186,6 +266,10 @@ public class Property
 		return object;
 	}
 	
+	/**
+	 * Create object from current List Item property
+	 * @return Object created from this property
+	 */
 	private Object toObjectFromItem()
 	{
 		Object object = null;
