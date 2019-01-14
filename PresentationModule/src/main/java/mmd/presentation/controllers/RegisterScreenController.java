@@ -1,17 +1,28 @@
 package mmd.presentation.controllers;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import mmd.authentication.auth.AuthManager;
+import mmd.common.bases.ControllerBase;
 import mmd.common.enums.SceneNameEnum;
 import mmd.common.models.UserDM;
 import mmd.presentation.managers.ViewManager;
 import mmd.util.errorhandling.ErrorHandlerUtil;
 
-public class RegisterScreenController
+/**
+ * Controller for Register Window, there are handled the following:
+ * <ul>
+ * <li>Register a user</li>
+ * <li>Go to login Scene</li>
+ * </ul>
+ */
+public class RegisterScreenController extends ControllerBase
 {
 
     @FXML
@@ -44,30 +55,11 @@ public class RegisterScreenController
     @FXML
     private TextField usernameField;
 
-    private boolean confirmPasswordValidation()
-    {
-
-	return true;
-    }
-
-    private boolean firstNameValidation()
-    {
-
-	return true;
-    }
-
-    private boolean inputValidation()
-    {
-
-	return this.usernameValidation() && this.passwordValidation() && this.confirmPasswordValidation()
-		&& this.firstNameValidation() && this.lastNameValidation();
-    }
-
-    private boolean lastNameValidation()
-    {
-	return true;
-    }
-
+    /**
+	 * Login button clicked event
+	 * 
+	 * @param event {@link MouseEvent}
+	 */
     @FXML
     private void onLoginBtnClicked(final MouseEvent e)
     {
@@ -81,6 +73,11 @@ public class RegisterScreenController
 	}
     }
 
+    /**
+	 * Register button clicked event
+	 * 
+	 * @param event {@link MouseEvent}
+	 */
     @FXML
     private void onRegisterBtnClicked(final MouseEvent e)
     {
@@ -103,16 +100,15 @@ public class RegisterScreenController
 	}
     }
 
-    private boolean passwordValidation()
-    {
+	
+    @Override
+	public void initialize(URL location, ResourceBundle resources) {
+	}
 
-	return true;
-    }
-
-    private boolean usernameValidation()
-    {
-
-	return true;
-    }
+	
+    @Override
+	protected void initName() {
+		this.stageName=SceneNameEnum.Register;
+	}
 
 }

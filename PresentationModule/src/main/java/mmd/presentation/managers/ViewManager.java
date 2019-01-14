@@ -24,13 +24,28 @@ import mmd.common.types.WindowData;
 import mmd.presentation.PresentationModule;
 import mmd.util.errorhandling.ErrorHandlerUtil;
 
+/**
+ * Util to handle all windows , there are operations like : 
+ * <ul>
+ * <li>data transfer</li>
+ * <li>change scene of a stage</li>
+ * <li>show or close window</li>
+ * <li>file dialogs</li>
+ * </ul>
+ */
 public class ViewManager {
+	
 	private static WindowData mainWindow = null;
 
 	private static HashMap<SceneNameEnum, String> scenePathMap = null;
 
 	private static Stack<Tuple<SceneNameEnum, WindowData>> windows = null;
 
+	/**
+	 * Get a window binded data using its stage
+	 * @param stage Window binded stage
+	 * @return Data binded to that stage
+	 */
 	private static Tuple<SceneNameEnum, WindowData> getWindowDataByStage(final Stage stage) {
 		Tuple<SceneNameEnum, WindowData> result = new Tuple<SceneNameEnum, WindowData>(null, null);
 
@@ -45,6 +60,12 @@ public class ViewManager {
 
 	}
 
+	/**
+	 * Change window scene
+	 * @param stage Stage of what scene need to be changed
+	 * @param sceneName Window name
+	 * @throws Exception
+	 */
 	public static void changeScene(final Stage stage, final SceneNameEnum sceneName) throws Exception {
 		if (!scenePathMap.containsKey(sceneName)) {
 			throw new Exception("Scene path for " + sceneName.toString() + " do not exist");
@@ -54,6 +75,10 @@ public class ViewManager {
 
 	}
 
+	/**
+	 * Close a window using one of its child node
+	 * @param element Child of the window to be closed
+	 */
 	public static void closeParentStage(final Node element) {
 		Stage stage = ((Stage) element.getScene().getWindow());
 		FXMLLoader loader = (FXMLLoader) stage.getUserData();
@@ -62,6 +87,11 @@ public class ViewManager {
 
 	}
 
+	/**
+	 * Check if a window exist in window stack
+	 * @param stageName Window Name
+	 * @return boolean value if true window exist false elsewhere
+	 */
 	public static boolean existWindow(final SceneNameEnum stageName) {
 
 		for (Tuple<SceneNameEnum, WindowData> tuple : windows) {
@@ -72,16 +102,31 @@ public class ViewManager {
 		return false;
 	}
 
+	/**
+	 * Get FXML Loader From a file
+	 * @param fileName Path to the file
+	 * @return {@link FXMLLoader}
+	 * @throws IOException Open file error
+	 */
 	public static FXMLLoader getFXMLLoaderFromFile(final String fileName) throws IOException {
 		String scenePath = "views/".concat(fileName).concat(".fxml");
 		FXMLLoader result = new FXMLLoader(PresentationModule.class.getResource(scenePath));
 		return result;
 	}
 
+	/**
+	 * Get main window
+	 * @return {@link WindowData}
+	 */
 	public static WindowData getMainWindow() {
 		return mainWindow;
 	}
 
+	/**
+	 * Get a window binded data
+	 * @param stageName Window Name
+	 * @return Data binded to that window
+	 */
 	public static WindowData getStageData(final SceneNameEnum stageName) {
 		WindowData result = null;
 		try {
@@ -97,6 +142,11 @@ public class ViewManager {
 
 	}
 
+	/**
+	 * Get a window
+	 * @param stageName Window Name
+	 * @return {@link Tuple} of {@link SceneNameEnum} and {@link WindowData}
+	 */
 	public static Tuple<SceneNameEnum, WindowData> getWindow(final SceneNameEnum stageName) {
 		Tuple<SceneNameEnum, WindowData> result = null;
 		if (existWindow(stageName)) {
@@ -118,8 +168,13 @@ public class ViewManager {
 		scenePathMap = new HashMap<SceneNameEnum, String>();
 		registerPaths();
 	}
-
 	
+	/**
+	 * Open a file chooser pop-up
+	 * @param fileType Type of file to chose
+	 * @param mode File Dialog Mode
+	 * @return File or null if didn't chose
+	 */
 	public static File fileDialog(final FileTypeEnum fileType, FileDialogMode mode ) {
 		File result = null;
 		try {
@@ -163,10 +218,19 @@ return result;
 	
 	}
 
+	/**
+	 * Set current Main Window
+	 * @param stage
+	 */
 	public static void setMainWindow(final Stage stage) {
 		mainWindow.setStage(stage);
 	}
 
+	/**
+	 * Set a window binded data
+	 * @param stageName Window Name
+	 * @param data Data to bind
+	 */
 	public static void setWindowData(final SceneNameEnum stageName, final GenericData stageData) {
 		try {
 			if (existWindow(stageName)) {
@@ -179,7 +243,12 @@ return result;
 		}
 
 	}
-
+	
+	/**
+	 * Set a window binded stage
+	 * @param stageName Window Name
+	 * @param stage Stage to bind
+	 */
 	public static void setWindowStage(final SceneNameEnum stageName, final Stage stage) {
 		try {
 			if (existWindow(stageName)) {
@@ -193,19 +262,42 @@ return result;
 
 	}
 
+	/**
+	 * Show a window pop-up
+	 * @param stageName Scene Name
+	 */
 	public static void showStage(final SceneNameEnum stageName) {
 		showStage(stageName, Modality.APPLICATION_MODAL, null, null);
 	}
 
+	
+	/**
+	 * Show a window pop-up
+	 * @param stageName Scene Name
+	 * @param function Event to handle on closing
+	 * @param data Data to bind to this window
+	 */
 	public static void showStage(final SceneNameEnum stageName, final EventHandler<WindowEvent> function,
 			final GenericData data) {
 		showStage(stageName, Modality.APPLICATION_MODAL, function, data);
 	}
-
+	
+	/**
+	 * Show a window pop-up
+	 * @param stageName Scene Name
+	 * @param data Data to bind to this window
+	 */
 	public static void showStage(final SceneNameEnum stageName, final GenericData data) {
 		showStage(stageName, Modality.APPLICATION_MODAL, null, data);
 	}
 
+	/**
+	 * Show a window pop-up
+	 * @param stageName Scene Name
+	 * @param modality Modality of the window
+	 * @param event Event to handle on closing
+	 * @param data Data to bind to this window
+	 */
 	public static void showStage(final SceneNameEnum stageName, final Modality modality,
 			final EventHandler<WindowEvent> event, final GenericData data) {
 		try {
@@ -233,6 +325,10 @@ return result;
 		}
 	}
 
+	/**
+	 * Add a window to Window stack
+	 * @param stageName Window name
+	 */
 	private static void addWindowToStack(final SceneNameEnum stageName) {
 		try {
 			windows.push(new Tuple<SceneNameEnum, WindowData>(stageName, new WindowData(null, null)));
@@ -242,12 +338,14 @@ return result;
 
 	}
 
+	/**
+	 * Register to scenePathMap {@link HashMap} fxml file names
+	 */
 	private static void registerPaths() {
 		scenePathMap.put(SceneNameEnum.AddMovie, "AddMovieStage");
 		scenePathMap.put(SceneNameEnum.MainScreen, "MainScreenScene");
 		scenePathMap.put(SceneNameEnum.MovieDetails, "MovieDetailsStage");
 		scenePathMap.put(SceneNameEnum.Login, "LoginScreenScene");
 		scenePathMap.put(SceneNameEnum.Register, "RegisterScreenScene");
-
 	}
 }

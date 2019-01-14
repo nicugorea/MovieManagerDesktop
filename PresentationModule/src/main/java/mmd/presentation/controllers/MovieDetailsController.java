@@ -26,97 +26,102 @@ import mmd.util.MagicValues;
 import mmd.util.errorhandling.ErrorHandlerUtil;
 import mmd.util.io.IOUtil;
 
-public class MovieDetailsController extends ControllerBase
-{
-	
+/**
+ * Controller for Movie Details Window, there are handled the following:
+ * <ul>
+ * <li>Display movie information</li>
+ * <li>Delete it</li>
+ * </ul>
+ */
+public class MovieDetailsController extends ControllerBase {
+
 	@FXML
 	private TextFlow categoriesText;
-	
+
 	@FXML
 	private TextFlow descriptionText;
-	
+
 	private MovieDM dm = null;
-	
+
 	@FXML
 	private Text scoreText;
-	
+
 	@FXML
 	private HBox thumbnailHBox;
-	
+
 	@FXML
 	private VBox thumbnailImageview;
-	
+
 	@FXML
 	private ImageView thumbnailImageView;
-	
+
 	@FXML
 	private Text titleText;
-	
+
 	@Override
-	public void initialize(final URL location, final ResourceBundle resources)
-	{
-		try
-		{
-			
-			this.dm = (MovieDM) ViewManager.getStageData(SceneNameEnum.MovieDetails).getData()
-			        .getDataValue();
+	public void initialize(final URL location, final ResourceBundle resources) {
+		try {
+
+			this.dm = (MovieDM) ViewManager.getStageData(SceneNameEnum.MovieDetails).getData().getDataValue();
 			this.titleText.setText(this.dm.getTitle());
 			this.descriptionText.getChildren().add(new Text(this.dm.getDescription()));
 			this.scoreText.setText(Float.toString(this.dm.getScore()));
-			this.thumbnailImageView.setImage(new Image(
-			        IOUtil.getStringURLOfPath(IOUtil.getImagePath(this.dm.getImgPath()))));
-			
+			this.thumbnailImageView
+					.setImage(new Image(IOUtil.getStringURLOfPath(IOUtil.getImagePath(this.dm.getImgPath()))));
+
 			this.categoriesText.getChildren().add(new Text(this.dm.getCategoriesString()));
 		}
-		
-		catch (Exception e)
-		{
+
+		catch (Exception e) {
 			ErrorHandlerUtil.handleThrowable(e);
 		}
 	}
-	
+
 	@Override
-	public void shutdown(final Event event)
-	{
+	public void shutdown(final Event event) {
 		super.shutdown(event);
 		ViewManager.setWindowData(this.getName(), null);
 		ViewManager.closeParentStage((Node) event.getSource());
 	}
-	
+
 	@Override
-	protected void initName()
-	{
+	protected void initName() {
 		this.stageName = SceneNameEnum.MovieDetails;
-		
+
 	}
-	
+
+	/**
+	 * Delete button clicked event
+	 * 
+	 * @param event {@link MouseEvent}
+	 */
 	@FXML
-	void deleteClicked(final MouseEvent event)
-	{
-		try
-		{
+	void deleteClicked(final MouseEvent event) {
+		try {
 			GenericData data = ViewManager.getStageData(SceneNameEnum.MainScreen).getData();
-			if (!dm.getImgPath().equals(MagicValues.MovieDefaultThumbnail))
-			{
+			if (!dm.getImgPath().equals(MagicValues.MovieDefaultThumbnail)) {
 				File file = new File(MagicValues.MovieThumbnailPath + dm.getImgPath());
-				if (file.exists()) file.delete();
+				if (file.exists())
+					file.delete();
 			}
 			((List<MovieDM>) data.getDataValue()).remove(this.dm);
 			PropertyIO.removeDMDefinitionFromFile(this.dm, MovieDM.class.getDeclaredField("IMDbID"),
-			        MagicValues.MovieDMPath);
-			
+					MagicValues.MovieDMPath);
+
 			this.shutdown(event);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			ErrorHandlerUtil.handleThrowable(e);
 		}
 	}
-	
+
+	/**
+	 * OK button clicked event
+	 * 
+	 * @param event {@link MouseEvent}
+	 */
 	@FXML
-	void okClicked(final MouseEvent event)
-	{
+	void okClicked(final MouseEvent event) {
 		this.shutdown(event);
 	}
-	
+
 }
