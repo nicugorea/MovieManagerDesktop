@@ -1,5 +1,9 @@
 package mmd.util;
 
+import java.net.URL;
+
+import mmd.util.io.IOUtil;
+
 /**
  * 
  * Constants used in all project
@@ -31,7 +35,9 @@ public class MagicValues
 	public final static String CategoryDMBackupPath = CategoriesDataPath + "data/backup/";
 	
 	public final static String ReportsPath = AppDataPath + "reports/";
-	public static final String ReportTxtPath = ReportsPath + "report_"
+	public final static String ReportTxtPath = ReportsPath + "report_"
 	        + UtilModule.getDateNowString() + ".txt";
+
+	public final static URL TileStyleFile = IOUtil.getResourcePath("mmd/presentation/css/MovieTile.css");
 	
 }

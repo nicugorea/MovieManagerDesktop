@@ -35,6 +35,7 @@ import mmd.util.errorhandling.ErrorHandlerUtil;
  */
 public class ViewManager {
 	
+	
 	private static WindowData mainWindow = null;
 
 	private static HashMap<SceneNameEnum, String> scenePathMap = null;

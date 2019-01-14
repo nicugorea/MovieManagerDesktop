@@ -80,6 +80,7 @@
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
          <children>
             <Button mnemonicParsing="false" onMouseClicked="#deleteClicked" text="Delete" />
+            <Button mnemonicParsing="false" onMouseClicked="#editClicked" text="Edit" />
             <Button mnemonicParsing="false" onMouseClicked="#okClicked" text="OK" />
          </children>
       </HBox>

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -15,11 +16,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.WindowEvent;
 import mmd.common.bases.ControllerBase;
 import mmd.common.enums.SceneNameEnum;
 import mmd.common.models.CategoryDM;
 import mmd.common.models.MovieDM;
 import mmd.common.types.GenericData;
+import mmd.common.types.WindowData;
 import mmd.persistence.io.PropertyIO;
 import mmd.presentation.managers.ViewManager;
 import mmd.util.MagicValues;
@@ -109,6 +112,32 @@ public class MovieDetailsController extends ControllerBase {
 					MagicValues.MovieDMPath);
 
 			this.shutdown(event);
+		} catch (Exception e) {
+			ErrorHandlerUtil.handleThrowable(e);
+		}
+	}
+
+	/**
+	 * Edit button clicked event
+	 * 
+	 * @param event {@link MouseEvent}
+	 */
+	@FXML
+	void editClicked(final MouseEvent event) {
+		try {
+			GenericData data = ViewManager.getStageData(getName()).getData();
+			ViewManager.closeParentStage((Node) event.getSource());
+			ViewManager.showStage(SceneNameEnum.AddMovie, new EventHandler<WindowEvent>() {
+
+				@Override
+				public void handle(WindowEvent arg0) {
+					WindowData newData = ViewManager.getStageData(SceneNameEnum.AddMovie);
+					if (newData != null) {
+						ViewManager.showStage(SceneNameEnum.MovieDetails, newData.getData());
+					}
+				}
+			}, data);
+
 		} catch (Exception e) {
 			ErrorHandlerUtil.handleThrowable(e);
 		}

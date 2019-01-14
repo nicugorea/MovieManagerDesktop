@@ -39,12 +39,18 @@ public class MovieTileVBox extends VBox {
 	 * @param dm {@link MovieDM} to extract information
 	 */
 	public MovieTileVBox(final MovieDM dm) {
-		super();
-		this.dm = dm;
-		this.createMainVBox();
-		super.getChildren().add(this.createPrimaryRegion());
-		super.getChildren().add(this.createActionBar());
 
+		super();
+		try {
+			super.getStylesheets().add(MagicValues.TileStyleFile.toURI().toString());
+			super.getStyleClass().add("movieTile");
+			this.dm = dm;
+			this.createMainVBox();
+			super.getChildren().add(this.createPrimaryRegion());
+			super.getChildren().add(this.createActionBar());
+		} catch (Exception e) {
+			ErrorHandlerUtil.handleThrowable(e);
+		}
 	}
 
 	private final int CONTENT_MARGIN = 6;

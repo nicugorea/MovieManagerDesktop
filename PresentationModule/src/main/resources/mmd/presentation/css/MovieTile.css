@@ -1,0 +1,15 @@
+.movieTile{
+   -fx-font-family: url("../fonts/Roboto/Roboto-Regular.ttf");
+}
+
+.movieTile:hover{
+   
+    -fx-scale-y: 1.05;
+    -fx-scale-x: 1.05;
+}
+
+.movieTile:pressed{
+    -fx-scale-y: 0.95;
+    -fx-scale-x: 0.95;
+   
+}

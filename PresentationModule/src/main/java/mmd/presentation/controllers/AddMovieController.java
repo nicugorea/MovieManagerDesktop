@@ -89,6 +89,8 @@ public class AddMovieController extends ControllerBase {
 
 	private File tmpThumbnail = null;
 
+	private MovieDM dm = null;
+
 	@Override
 	public void initialize(final URL location, final ResourceBundle resources) {
 
@@ -103,6 +105,9 @@ public class AddMovieController extends ControllerBase {
 		// this.thumbnailImageView.setImage(new
 		// Image(MagicValues.MovieThumbnailPath+"/"+MagicValues.MovieDefaultThumbnail));
 		setBindingsAndEvents();
+		if (ViewManager.getStageData(this.getName()).getData() != null) {
+			loadData(ViewManager.getStageData(this.getName()).getData());
+		}
 	}
 
 	/**
@@ -235,9 +240,38 @@ public class AddMovieController extends ControllerBase {
 	 */
 	@FXML
 	void saveClicked(final MouseEvent event) {
+		try {
 
-		MovieDM dm = this.getDMFromContext();
-		ViewManager.setWindowData(this.getName(), new GenericData(dm, dm.getClass()));
-		ViewManager.closeParentStage((Node) event.getSource());
+			MovieDM newdm = this.getDMFromContext();
+			ViewManager.setWindowData(this.getName(), new GenericData(newdm, newdm.getClass()));
+			if (dm != null) {
+				PropertyIO.removeDMDefinitionFromFile(dm, MovieDM.class.getDeclaredField("IMDbID"),
+						MagicValues.MovieDMPath);
+				PropertyIO.addDMDefinitionToFile(newdm, MagicValues.MovieDMPath, MagicValues.MoviesTagName);
+
+				ViewManager.getWindow(SceneNameEnum.MainScreen).getSecond().getData()
+						.setDataValue(PropertyIO.getDMDefinitionsFromFile(MagicValues.MovieDMPath, MovieDM.class));
+				;
+			}
+			ViewManager.closeParentStage((Node) event.getSource());
+		} catch (Exception e) {
+			ErrorHandlerUtil.handleThrowable(e);
+		}
+	}
+
+	/**
+	 * Load data into fields from Movie Data Model
+	 * 
+	 * @param data
+	 */
+	public void loadData(GenericData data) {
+		try {
+			dm = (MovieDM) data.getDataValue();
+			this.titleField.setText(dm.getTitle());
+			this.descriptionField.setText(dm.getDescription());
+			this.scoreSlider.setValue(dm.getScore());
+		} catch (Exception e) {
+			ErrorHandlerUtil.handleThrowable(e);
+		}
 	}
 }
