@@ -17,6 +17,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mmd.common.bases.ControllerBase;
 import mmd.common.enums.SceneNameEnum;
@@ -91,7 +92,15 @@ public class MovieDetailsController extends ControllerBase
 	{
 		super.shutdown(event);
 		ViewManager.setWindowData(this.getName(), null);
-		ViewManager.closeParentStage((Node) event.getSource());
+		Node node = null;
+		if (event.getEventType().equals(WindowEvent.WINDOW_HIDING))
+		{
+			node = ((Stage) event.getSource()).getScene().getRoot();
+		}
+		else {
+			node = (Node) event.getSource();
+		}
+		ViewManager.closeParentStage(node);
 	}
 	
 	@Override
@@ -141,7 +150,8 @@ public class MovieDetailsController extends ControllerBase
 		{
 			WindowData wData = ViewManager.getWindow(this.getName()).getSecond();
 			ViewManager.changeScene(wData.getStage(), SceneNameEnum.AddMovie);
-			AddMovieController controller = ((FXMLLoader) wData.getStage().getUserData()).getController();
+			AddMovieController controller = ((FXMLLoader) wData.getStage().getUserData())
+			        .getController();
 			controller.loadData(wData.getData());
 		}
 		catch (Exception e)
