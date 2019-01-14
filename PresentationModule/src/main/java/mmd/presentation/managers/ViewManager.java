@@ -71,8 +71,12 @@ public class ViewManager {
 		if (!scenePathMap.containsKey(sceneName)) {
 			throw new Exception("Scene path for " + sceneName.toString() + " do not exist");
 		}
-		getWindowDataByStage(stage).setFirst(sceneName);
-		stage.setScene(new Scene(getFXMLLoaderFromFile(scenePathMap.get(sceneName)).load()));
+		Tuple<SceneNameEnum, WindowData> window = getWindowDataByStage(stage); 
+		window.setFirst(sceneName);
+		FXMLLoader loader = getFXMLLoaderFromFile(scenePathMap.get(sceneName));
+		
+		stage.setScene(new Scene(loader.load()));
+		stage.setUserData(loader);
 
 	}
 
