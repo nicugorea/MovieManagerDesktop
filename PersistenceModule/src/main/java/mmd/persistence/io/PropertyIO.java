@@ -17,8 +17,21 @@ import mmd.common.types.Property;
 import mmd.util.errorhandling.ErrorHandlerUtil;
 import mmd.util.io.IOUtil;
 
+/**
+ * Util for input and output of Properties
+ */
 public class PropertyIO {
 
+	/**
+	 * Add an element to a XML File
+	 * <p>
+	 * If file does not exist, create a new one with specified root
+	 * </p>
+	 * 
+	 * @param dm          Element to add
+	 * @param filePath    Path to the file
+	 * @param rootElement Root tag
+	 */
 	public static void addDMDefinitionToFile(final DMDefinition<?> dm, final String filePath,
 			final String rootElement) {
 		File file = new File(filePath);
@@ -42,6 +55,13 @@ public class PropertyIO {
 		IOUtil.saveDOMDocumentToXMLFile(document, filePath);
 	}
 
+	/**
+	 * Get a list of specified data model from specified file
+	 * 
+	 * @param filePath Path to file
+	 * @param type     Type of data model
+	 * @return List of data model
+	 */
 	public static <T> List<T> getDMDefinitionsFromFile(final String filePath, final Class<?> type) {
 		LinkedList<T> list = new LinkedList<T>();
 		try {
@@ -65,6 +85,14 @@ public class PropertyIO {
 		return list;
 	}
 
+	/**
+	 * Remove an element from a XML File
+	 * 
+	 * @param dm
+	 * @param dm       Element to remove
+	 * @param filePath Path to the file
+	 * @throws Exception If file does not exist
+	 */
 	public static void removeDMDefinitionFromFile(final DMBase dm, Field field, final String filePath)
 			throws Exception {
 		File file = new File(filePath);
@@ -87,7 +115,7 @@ public class PropertyIO {
 				Element elemnt = (Element) root.getChildNodes().item(i);
 				NodeList nodeList = elemnt.getElementsByTagName(field.getName());
 				String value = nodeList.item(0).getTextContent();
-				
+
 				if (value.equals(field.get(dm))) {
 					node = root.getChildNodes().item(i);
 					break;
@@ -105,6 +133,14 @@ public class PropertyIO {
 		IOUtil.saveDOMDocumentToXMLFile(document, filePath);
 	}
 
+	/**
+	 * Create a DOM Element from a List of properties
+	 * 
+	 * @param root     DOM Document to get element from
+	 * @param name     Tag name of the new element
+	 * @param children List of properties to generate child elements of new element
+	 * @return
+	 */
 	private static Element getElementFromPropertyList(final Document root, final String name,
 			final List<Property> children) {
 		Element result = root.createElement(name);
@@ -126,6 +162,13 @@ public class PropertyIO {
 		return result;
 	}
 
+	/**
+	 * Get List of properties from DOM Element(Node)
+	 * 
+	 * @param node Element to be converted
+	 * @param type Node class
+	 * @return List of properties generated from Node
+	 */
 	private static List<Property> getPropertyListFromNode(final Node node, final Class<?> type) {
 
 		LinkedList<Property> properties = new LinkedList<Property>();
@@ -151,6 +194,12 @@ public class PropertyIO {
 		return properties;
 	}
 
+	/**
+	 * Create a list of property from a list of Node
+	 * 
+	 * @param list List of nodes to be generated
+	 * @return List of properties
+	 */
 	private static LinkedList<Property> getPropertyListFromNodeList(final NodeList list) {
 		LinkedList<Property> result = new LinkedList<Property>();
 

@@ -6,34 +6,28 @@ import java.net.URL;
 import mmd.util.MagicValues;
 import mmd.util.errorhandling.ErrorHandlerUtil;
 import mmd.util.io.IOUtil;
+
 /**
  * 
  * <h1>Persistence module main class</h1>
- * <p>Here are create all elements that are needed for this module</p> 
+ * <p>
+ * Here are create all elements that are needed for this module
+ * </p>
  */
 public class PersistenceModule {
+
+	/**
+	 * Method to initialize this module
+	 */
 	public static void init() {
 		createPaths();
 	}
 
-	private static void createMovieDMFile() {
-		File file = new File(MagicValues.MovieDMPath);
-		if (!file.exists()) {
-			file.getParentFile().mkdirs();
-			IOUtil.saveDOMDocumentToXMLFile(IOUtil.createEmptyDOMDocumetWithParentTag(MagicValues.MoviesTagName),
-					file.getAbsolutePath());
-		}
-	}
-	
-	private static void createCategoryDMFile() {
-		File file = new File(MagicValues.CategoryDMPath);
-		if (!file.exists()) {
-			file.getParentFile().mkdirs();
-			IOUtil.saveDOMDocumentToXMLFile(IOUtil.createEmptyDOMDocumetWithParentTag(MagicValues.CategoriesTagName),
-					file.getAbsolutePath());
-		}
-	}
-
+	/**
+	 * Create a folder if it's not created already
+	 * 
+	 * @param path
+	 */
 	private static void createPath(String path) {
 		File folder = new File(path);
 		if (!folder.exists()) {
@@ -41,6 +35,9 @@ public class PersistenceModule {
 		}
 	}
 
+	/**
+	 * Create if there is no file the default movie image
+	 */
 	private static void createMovieDMThumbnailFile() {
 		File file = new File(MagicValues.MovieThumbnailPath + "/" + MagicValues.MovieDefaultThumbnail);
 		if (!file.exists()) {
@@ -52,11 +49,14 @@ public class PersistenceModule {
 		}
 	}
 
+	/**
+	 * Create all necessary files and folders
+	 */
 	private static void createPaths() {
 		try {
-			createMovieDMFile();
-			createUserDMFile();
-			createCategoryDMFile();
+			createDMFile(MagicValues.MovieDMPath, MagicValues.MoviesTagName);
+			createDMFile(MagicValues.CategoryDMPath, MagicValues.CategoriesTagName);
+			createDMFile(MagicValues.UserDMPath, MagicValues.UsersTagName);
 			createMovieDMThumbnailFile();
 			createPath(MagicValues.MovieDMBackupPath);
 			createPath(MagicValues.UserDMBackupPath);
@@ -68,12 +68,18 @@ public class PersistenceModule {
 		}
 	}
 
-	private static void createUserDMFile() {
-		File file = new File(MagicValues.UserDMPath);
+	/**
+	 * Create if there is no file the XML File that contains a Data model
+	 * 
+	 * @param path Path to file
+	 * @param tag  XML Root tag
+	 */
+	private static void createDMFile(String path, String tag) {
+		File file = new File(path);
 		if (!file.exists()) {
 			file.getParentFile().mkdirs();
-			IOUtil.saveDOMDocumentToXMLFile(IOUtil.createEmptyDOMDocumetWithParentTag(MagicValues.UsersTagName),
-					file.getAbsolutePath());
+			IOUtil.saveDOMDocumentToXMLFile(IOUtil.createEmptyDOMDocumetWithParentTag(tag), file.getAbsolutePath());
 		}
 	}
+
 }
