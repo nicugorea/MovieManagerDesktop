@@ -9,9 +9,9 @@
 
 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="552.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mmd.presentation.controllers.RegisterScreenController">
    <children>
-      <HBox alignment="CENTER" prefHeight="100.0">
+      <HBox alignment="CENTER">
          <children>
-            <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
+            <VBox alignment="CENTER_LEFT" fillWidth="false" HBox.hgrow="NEVER">
                <children>
                   <Label styleClass="big-text" text="Username">
                      <VBox.margin>
@@ -24,7 +24,7 @@
                         <String fx:value="textField" />
                      </styleClass>
                   </TextField>
-                  <Label fx:id="usernameErrorLabel" textFill="#e17171">
+                  <Label fx:id="usernameErrorLabel" textFill="#e17171" wrapText="true">
                      <font>
                         <Font name="Josefin Sans Light" size="15.0" />
                      </font>
@@ -40,7 +40,7 @@
                         <String fx:value="textField" />
                      </styleClass>
                   </PasswordField>
-                  <Label fx:id="passwordErrorLabel" textFill="#e17171">
+                  <Label fx:id="passwordErrorLabel" textFill="#e17171" wrapText="true">
                      <font>
                         <Font name="Josefin Sans Light" size="15.0" />
                      </font>
@@ -56,7 +56,7 @@
                         <String fx:value="textField" />
                      </styleClass>
                   </PasswordField>
-                  <Label fx:id="confirmPasswordErrorLabel" textFill="#e17171">
+                  <Label fx:id="confirmPasswordErrorLabel" textFill="#e17171" wrapText="true">
                      <font>
                         <Font name="Josefin Sans Light" size="15.0" />
                      </font>

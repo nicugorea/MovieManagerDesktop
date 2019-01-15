@@ -12,7 +12,7 @@ public class AuthManager
 	 * An instance of UserDM that is used to keep current logged user
 	 */
 	private static UserDM localUser = null;
-
+	
 	/**
 	 * Method to check if and user with given username exist
 	 * 
@@ -45,7 +45,8 @@ public class AuthManager
 	/**
 	 * Method to check if any user is logged in
 	 * 
-	 * @return boolean value that tell if true a user is logged in or false if no user is logged in
+	 * @return boolean value that tell if true a user is logged in or false if no
+	 *         user is logged in
 	 */
 	public static boolean isAnyUserLoggedIn()
 	{
@@ -103,11 +104,13 @@ public class AuthManager
 	 * 
 	 * @param user User to sign up
 	 */
-	public static void signUp(final UserDM user)
+	public static boolean signUp(final UserDM user)
 	{
+		boolean result = false;
 		try
 		{
-			if (!existUsername(user.getUsername()))
+			result = !existUsername(user.getUsername());
+			if (result)
 			{
 				AuthIO.saveUser(user);
 			}
@@ -116,6 +119,7 @@ public class AuthManager
 		{
 			ErrorHandlerUtil.handleThrowable(e);
 		}
+		return result;
 		
 	}
 	

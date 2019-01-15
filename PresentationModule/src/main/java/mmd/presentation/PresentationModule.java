@@ -39,6 +39,8 @@ public class PresentationModule extends Application {
 			PersistenceModule.init();
 			ViewManager.init();
 			SceneNameEnum mainStage = SceneNameEnum.Login;
+
+			LoggingUtil.getLogger().log(LogLevel.DEBUG, "Before show stage");
 			ViewManager.showStage(mainStage, Modality.WINDOW_MODAL,new EventHandler<WindowEvent>() {
 
 				/**
@@ -49,7 +51,10 @@ public class PresentationModule extends Application {
 					// TODO: After main Window is closed
 				}
 			}, null);
+
+			LoggingUtil.getLogger().log(LogLevel.DEBUG, "Ater show stage");
 			ViewManager.setMainWindow(ViewManager.getStageData(mainStage).getStage());
+			
 		} catch (Throwable e) {
 			ErrorHandlerUtil.handleThrowable(e);
 		}

@@ -27,6 +27,8 @@ import mmd.common.types.WindowData;
 import mmd.presentation.PresentationModule;
 import mmd.util.MagicValues;
 import mmd.util.errorhandling.ErrorHandlerUtil;
+import mmd.util.logging.LogLevel;
+import mmd.util.logging.LoggingUtil;
 
 /**
  * Util to handle all windows , there are operations like :
@@ -385,6 +387,8 @@ public class ViewManager
 			stage.initModality(modality);
 			if (mainWindow != null)
 			{
+
+				LoggingUtil.getLogger().log(LogLevel.DEBUG, "main window not null");
 				stage.initOwner(mainWindow.getStage());
 			}
 			
@@ -407,6 +411,8 @@ public class ViewManager
 			setWindowStage(stageName, stage);
 			
 			stage.show();
+
+			LoggingUtil.getLogger().log(LogLevel.DEBUG, "Stage show");
 		}
 		catch (Throwable e)
 		{

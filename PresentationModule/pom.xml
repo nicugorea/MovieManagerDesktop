@@ -42,7 +42,8 @@
 				<version>8.8.3</version>
 				<configuration>
 					<vendor>Nicolae Gorea</vendor>
-					<mainClass>mmd.presentation.Main</mainClass>
+					<appName>Movie Manager Desktop</appName>
+					<mainClass>mmd.presentation.PresentationModule</mainClass>
 					<nativeInstallers />
 				</configuration>
 			</plugin>
