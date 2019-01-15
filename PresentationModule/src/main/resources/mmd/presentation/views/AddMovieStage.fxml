@@ -7,29 +7,32 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mmd.presentation.controllers.AddMovieController">
+<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mmd.presentation.controllers.AddMovieController">
   <columnConstraints>
     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="0.0" />
     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints minHeight="-Infinity" prefHeight="40.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="-Infinity" prefHeight="40.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="-Infinity" prefHeight="40.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="95.0" minHeight="-Infinity" prefHeight="40.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="95.0" minHeight="-Infinity" prefHeight="40.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="95.0" minHeight="-Infinity" prefHeight="40.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="100.0" minHeight="-Infinity" prefHeight="60.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="100.0" minHeight="-Infinity" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="100.0" minHeight="-Infinity" prefHeight="60.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="100.0" minHeight="-Infinity" prefHeight="60.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="95.0" minHeight="-Infinity" prefHeight="60.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="40.0" minHeight="-Infinity" prefHeight="60.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
       <VBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="150.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
          <children>
             <AnchorPane>
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Title" textOrigin="CENTER" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Title" textOrigin="CENTER" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
-            <TextField fx:id="titleField" />
+            <TextField fx:id="titleField" styleClass="textField">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin></TextField>
          </children>
          <GridPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -39,37 +42,55 @@
          <children>
             <AnchorPane>
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="IMDb ID" textOrigin="CENTER" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="IMDb ID" textOrigin="CENTER" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
-            <TextField fx:id="IMDbIDField" />
+            <TextField fx:id="IMDbIDField" styleClass="textField">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin></TextField>
          </children>
       </VBox>
       <VBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.rowSpan="4">
          <children>
             <AnchorPane>
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Categories" textOrigin="CENTER" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Categories" textOrigin="CENTER" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
-            <ListView fx:id="allCategoryList" prefHeight="150.0" prefWidth="200.0" />
+            <ListView fx:id="allCategoryList" prefHeight="150.0" prefWidth="200.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin></ListView>
             <HBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="1.0" prefWidth="150.0">
                <children>
-                  <Button fx:id="addCategoryButton" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#addClicked" text="Add" />
-                  <Button fx:id="removeCategoryButton" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#removeClicked" text="Remove" />
+                  <Button fx:id="addCategoryButton" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#addClicked" text="Add">
+                     <HBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </HBox.margin></Button>
+                  <Button fx:id="removeCategoryButton" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#removeClicked" text="Remove">
+                     <HBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </HBox.margin></Button>
                </children>
             </HBox>
-            <ListView fx:id="selectedCategoryList" prefHeight="150.0" prefWidth="200.0" />
+            <ListView fx:id="selectedCategoryList" prefHeight="150.0" prefWidth="200.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin></ListView>
          </children>
       </VBox>
-      <VBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="150.0" GridPane.rowIndex="1" GridPane.rowSpan="2">
+      <VBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="150.0" GridPane.rowIndex="1" GridPane.rowSpan="3">
          <children>
             <AnchorPane>
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Description" textOrigin="CENTER" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Description" textOrigin="CENTER" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
-            <TextArea fx:id="descriptionField" prefWidth="200.0" />
+            <TextArea fx:id="descriptionField" prefWidth="200.0" styleClass="textField">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin></TextArea>
          </children>
       </VBox>
       <VBox fx:id="scoreVBox" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
@@ -79,16 +100,22 @@
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Score" textOrigin="CENTER" />
                </children>
             </AnchorPane>
-            <Slider fx:id="scoreSlider" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" />
+            <Slider fx:id="scoreSlider" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin></Slider>
             <Text fx:id="scoreText" strokeType="OUTSIDE" strokeWidth="0.0" />
          </children>
+         <padding>
+            <Insets top="20.0" />
+         </padding>
       </VBox>
-      <VBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" GridPane.rowIndex="4" GridPane.rowSpan="2">
+      <VBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" GridPane.rowIndex="5" GridPane.rowSpan="2">
          <children>
             <ImageView fx:id="thumbnailImageView" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </VBox>
-      <VBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" GridPane.rowIndex="3">
+      <VBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" GridPane.rowIndex="4">
          <children>
             <AnchorPane>
                <children>
@@ -105,9 +132,21 @@
       </VBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
          <children>
-            <Button mnemonicParsing="false" onMouseClicked="#cancelClicked" text="Cancel" />
-            <Button mnemonicParsing="false" onMouseClicked="#saveClicked" text="Save" />
+            <Button mnemonicParsing="false" onMouseClicked="#cancelClicked" text="Cancel">
+               <HBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </HBox.margin></Button>
+            <Button mnemonicParsing="false" onMouseClicked="#saveClicked" text="Save">
+               <HBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </HBox.margin></Button>
          </children>
+         <padding>
+            <Insets top="10.0" />
+         </padding>
       </HBox>
    </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
 </GridPane>

@@ -2,6 +2,7 @@ package mmd.util;
 
 import java.net.URL;
 
+import javafx.scene.image.Image;
 import mmd.util.io.IOUtil;
 
 /**
@@ -37,7 +38,10 @@ public class MagicValues
 	public final static String ReportsPath = AppDataPath + "reports/";
 	public final static String ReportTxtPath = ReportsPath + "report_"
 	        + UtilModule.getDateNowString() + ".txt";
+	
+	public static final Image ApplicationIcon = new Image(IOUtil.getResourcePath("mmd/presentation/img/mmd_icon.png").toString());
+	public static final Image ApplicationLogo = new Image(IOUtil.getResourcePath("mmd/presentation/img/mmd_logo.png").toString());
 
-	public final static URL TileStyleFile = IOUtil.getResourcePath("mmd/presentation/css/MovieTile.css");
+	public static final URL MainStyleFile = IOUtil.getResourcePath("mmd/presentation/css/style.css");
 	
 }

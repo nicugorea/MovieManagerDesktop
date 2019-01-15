@@ -1,0 +1,17 @@
+@font-face {
+	font-family: 'Roboto';
+	src: url('../fonts/Roboto/Roboto-Regular.ttf');
+}
+
+* {
+	-fx-font-family: Roboto;
+	-fx-color-dark-primary: #00796B;
+	-fx-color-light-primary: #B2DFDB;
+	-fx-color-primary: #009688;
+	-fx-color-text-icons: #FFFFFF;
+	-fx-color-accent: #009688;
+	-fx-color-primary-text: #212121;
+	-fx-color-divider-text: #BDBDBD;
+	-fx-color-secondary-text: #757575;
+	-fx-color-danger-primary: #F44336;
+}

@@ -17,6 +17,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.TreeItem;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.TilePane;
 import javafx.scene.input.MouseEvent;
@@ -65,6 +67,9 @@ public class MainScreenController extends ControllerBase {
 	@FXML
 	private TextField categoryField;
 
+	@FXML
+	private ImageView logoImageView;
+
 	@Override
 	public void initialize(final URL location, final ResourceBundle resources) {
 		try {
@@ -81,6 +86,7 @@ public class MainScreenController extends ControllerBase {
 			this.mainTilePane.setAlignment(Pos.CENTER);
 			this.mainTilePane.setPrefColumns(100);
 
+			logoImageView.setImage(MagicValues.ApplicationLogo);
 			this.refreshMovieList();
 			this.refreshCategoryList(categories);
 
@@ -169,11 +175,14 @@ public class MainScreenController extends ControllerBase {
 	private void onDeleteCategoryClicked(final MouseEvent e) {
 		try {
 			TreeItem<String> category = categoryTreeView.getSelectionModel().getSelectedItem();
-			CategoryDM dm = new CategoryDM();
-			dm.setCategoryName(category.getValue());
-			PropertyIO.removeDMDefinitionFromFile(dm, CategoryDM.class.getDeclaredField("CategoryName"),
-					MagicValues.CategoryDMPath);
-			categoryTreeView.getRoot().getChildren().remove(category);
+			if (!category.getValue().equals("All")) {
+
+				CategoryDM dm = new CategoryDM();
+				dm.setCategoryName(category.getValue());
+				PropertyIO.removeDMDefinitionFromFile(dm, CategoryDM.class.getDeclaredField("CategoryName"),
+						MagicValues.CategoryDMPath);
+				categoryTreeView.getRoot().getChildren().remove(category);
+			}
 		} catch (Exception ex) {
 			ErrorHandlerUtil.handleThrowable(ex);
 		}
@@ -202,10 +211,13 @@ public class MainScreenController extends ControllerBase {
 	private void onAddCategoryClicked(final MouseEvent e) {
 		try {
 			if (!categoryField.getText().isEmpty()) {
-				categoryTreeView.getRoot().getChildren().add(new TreeItem<String>(categoryField.getText()));
-				CategoryDM dm = new CategoryDM();
-				dm.setCategoryName(categoryField.getText());
-				PropertyIO.addDMDefinitionToFile(dm, MagicValues.CategoryDMPath, MagicValues.CategoriesTagName);
+				if (!categoryTreeView.getRoot().getChildren().contains(categoryField.getText())) {
+					categoryTreeView.getRoot().getChildren().add(new TreeItem<String>(categoryField.getText()));
+					CategoryDM dm = new CategoryDM();
+					dm.setCategoryName(categoryField.getText());
+					PropertyIO.addDMDefinitionToFile(dm, MagicValues.CategoryDMPath, MagicValues.CategoriesTagName);
+					categoryField.setText("");
+				}
 			}
 
 		} catch (Exception ex) {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
@@ -9,7 +10,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mmd.presentation.controllers.MainScreenController">
+<VBox prefHeight="400.0" prefWidth="640.0" styleClass="menuBar" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mmd.presentation.controllers.MainScreenController">
   <children>
     <MenuBar>
       <menus>
@@ -52,20 +53,43 @@
     </MenuBar>
       <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
          <children>
-            <SplitPane dividerPositions="0.29797979797979796" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <SplitPane dividerPositions="0.29797979797979796" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <items>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                <AnchorPane minHeight="0.0" minWidth="230.0">
                      <children>
-                        <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <VBox prefHeight="200.0" prefWidth="230.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <HBox>
+                              <ImageView fx:id="logoImageView" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                 <VBox.margin>
+                                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                 </VBox.margin></ImageView>
+                              <GridPane>
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints vgrow="SOMETIMES" />
+                                    <RowConstraints vgrow="SOMETIMES" />
+                                  <RowConstraints vgrow="SOMETIMES" />
+                                </rowConstraints>
                                  <children>
-                                    <TextField fx:id="categoryField" maxWidth="1.7976931348623157E308" />
-                                    <Button mnemonicParsing="false" onMouseClicked="#onAddCategoryClicked" prefWidth="150.0" text="Add category" />
+                                    <TextField fx:id="categoryField" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="230.0" styleClass="textField">
+                                       <GridPane.margin>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </GridPane.margin></TextField>
+                                    <Button minWidth="200.0" mnemonicParsing="false" onMouseClicked="#onAddCategoryClicked" prefWidth="230.0" styleClass="button-primary-raised" text="Add category" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </GridPane.margin>
+                                    </Button>
+                                    <Button fx:id="deleteCategoryButton" minWidth="200.0" mnemonicParsing="false" onMouseClicked="#onDeleteCategoryClicked" prefWidth="230.0" styleClass="button-danger-raised" text="Delete selected category" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </GridPane.margin>
+                                    </Button>
                                  </children>
-                              </HBox>
-                              <Button fx:id="deleteCategoryButton" mnemonicParsing="false" onMouseClicked="#onDeleteCategoryClicked" text="Delete selected category" />
-                              <TreeView fx:id="categoryTreeView" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                              </GridPane>
+                              <TreeView fx:id="categoryTreeView" prefHeight="200.0" prefWidth="200.0" styleClass="element" VBox.vgrow="ALWAYS" />
                            </children>
                         </VBox>
                      </children>

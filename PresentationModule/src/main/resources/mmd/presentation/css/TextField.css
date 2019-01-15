@@ -1,0 +1,18 @@
+@import url(common.css);
+
+.textField {
+	-fx-background-color: transparent;
+	-fx-background-radius: 0;
+	-fx-border-width: 0px 0px 2px 0px;
+	-fx-border-color: -fx-color-secondary-text;
+	-fx-background-color: -fx-color-text-icons;
+	-fx-opacity: 0.4;
+}
+
+.textField:focused {
+	-fx-text-fill: -fx-color-primary;
+	-fx-border-color: -fx-color-primary;
+	-fx-background-radius: 4px 4px 0px 0px;
+	-fx-effect: dropshadow(gaussian, -fx-color-primary-text, 10, 0.0, 1, 2);
+	-fx-opacity: 1;
+}

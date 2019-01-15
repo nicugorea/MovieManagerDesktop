@@ -1,0 +1,48 @@
+@import url(common.css);
+
+.button-primary-outline {
+	-fx-cursor: hand;
+	-fx-border-color: -fx-color-primary;
+	-fx-text-fill: -fx-color-primary;
+	-fx-background-color: transparent;
+	-fx-font-size: 14px;
+	-fx-border-width: 2px;
+	-fx-border-radius: 4px;
+	-fx-padding: 0 14px;
+}
+
+.button-primary-raised {
+	-fx-cursor: hand;
+	-fx-border-color: -fx-color-primary;
+	-fx-text-fill: -fx-color-text-icons;
+	-fx-background-color: -fx-color-primary;
+	-fx-font-size: 14px;
+	-fx-effect: dropshadow(gaussian , -fx-color-primary-text, 10, 0.0, 1, 2);
+	-fx-border-width: 2px;
+	-fx-border-radius: 4px;
+	-fx-padding: 0 14px;
+}
+
+
+.button-danger-raised {
+	-fx-cursor: hand;
+	-fx-border-color: -fx-color-danger-primary;
+	-fx-text-fill: -fx-color-text-icons;
+	-fx-background-color: -fx-color-danger-primary;
+	-fx-font-size: 14px;
+	-fx-effect: dropshadow(gaussian , -fx-color-primary-text, 10, 0.0, 1, 2);
+	-fx-border-width: 2px;
+	-fx-border-radius: 4px;
+	-fx-padding: 0 14px;
+}
+
+.button-danger-outline {
+	-fx-cursor: hand;
+	-fx-border-color: -fx-color-danger-primary;
+	-fx-text-fill: -fx-color-danger-primary;
+	-fx-background-color: transparent;
+	-fx-font-size: 14px;
+	-fx-border-width: 2px;
+	-fx-border-radius: 4px;
+	-fx-padding: 0 14px;
+}

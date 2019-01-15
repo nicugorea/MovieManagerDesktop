@@ -42,7 +42,6 @@ public class MovieTileVBox extends VBox {
 
 		super();
 		try {
-			super.getStylesheets().add(MagicValues.TileStyleFile.toURI().toString());
 			super.getStyleClass().add("movieTile");
 			this.dm = dm;
 			this.createMainVBox();
@@ -63,6 +62,8 @@ public class MovieTileVBox extends VBox {
 	private final int TILE_RADIUS = 8;
 
 	private final int TILE_WIDTH = 240;
+
+	private final int DESCRIPTION_LENGTH = 50;
 
 	/**
 	 * Get Movie Data Model of this Tile
@@ -118,11 +119,15 @@ public class MovieTileVBox extends VBox {
 	private VBox createPrimaryBottomRegion() {
 		VBox element = new VBox();
 		element.setAlignment(Pos.TOP_LEFT);
-		Text description = new Text(this.dm.getDescription());
+		Text description = new Text();
+		description.getStyleClass().add("movieDescription");
+		if (dm.getDescription().length() >= DESCRIPTION_LENGTH) {
+			description.setText(dm.getDescription().substring(0, DESCRIPTION_LENGTH) + "...");
+		} else {
+			description.setText(this.dm.getDescription());
+		}
 
 		description.setWrappingWidth(this.TILE_WIDTH - 2 * this.CONTENT_MARGIN);
-		description.setFont(Font.font("Roboto", FontWeight.NORMAL, 14));
-		description.setFill(Paint.valueOf("#0000008a"));
 		element.getChildren().add(description);
 
 		return element;
@@ -160,17 +165,21 @@ public class MovieTileVBox extends VBox {
 		element.setAlignment(Pos.TOP_CENTER);
 
 		Text title = new Text(this.dm.getTitle());
+		title.getStyleClass().add("movieTitle");
 		title.setWrappingWidth(this.TILE_WIDTH - 2 * this.CONTENT_MARGIN);
-		title.setFont(Font.font("Seagoe UI Light", FontWeight.MEDIUM, 20));
-		title.setFill(Paint.valueOf("#000000"));
 
 		Text categories = new Text();
+		categories.getStyleClass().add("movieCategories");
 		categories.setText(this.dm.getCategoriesString());
 		categories.setWrappingWidth(this.TILE_WIDTH - 2 * this.CONTENT_MARGIN);
-		categories.setFont(Font.font("Seagoe UI Light", FontWeight.MEDIUM, 14));
-		categories.setFill(Paint.valueOf("#0000008a"));
+
+		Text score = new Text();
+		score.getStyleClass().add("movieScore");
+		score.setText("Score: " + Float.toString(this.dm.getScore()));
+		score.setWrappingWidth(this.TILE_WIDTH - 2 * this.CONTENT_MARGIN);
 
 		element.getChildren().add(title);
+		element.getChildren().add(score);
 		element.getChildren().add(categories);
 		return element;
 
