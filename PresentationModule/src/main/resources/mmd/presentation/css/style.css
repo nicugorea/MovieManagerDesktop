@@ -7,3 +7,12 @@
 @import url(Button.css);
 
 @import url(TextField.css);
+
+.bordered-element {
+	-fx-background-radius: 5px;
+	-fx-background-color: #fff;
+}
+
+.big-text{
+	-fx-font-size:20px;	
+}

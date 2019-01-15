@@ -38,7 +38,7 @@ public class PresentationModule extends Application {
 		try {
 			PersistenceModule.init();
 			ViewManager.init();
-			SceneNameEnum mainStage = SceneNameEnum.MainScreen;
+			SceneNameEnum mainStage = SceneNameEnum.Login;
 			ViewManager.showStage(mainStage, Modality.WINDOW_MODAL,new EventHandler<WindowEvent>() {
 
 				/**
