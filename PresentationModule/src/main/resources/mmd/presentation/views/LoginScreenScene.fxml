@@ -9,9 +9,9 @@
 
 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="552.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mmd.presentation.controllers.LoginScreenController">
    <children>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+      <HBox alignment="CENTER">
          <children>
-            <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0">
+            <VBox alignment="CENTER_LEFT" fillWidth="false" HBox.hgrow="NEVER">
                <children>
                   <Label styleClass="big-text" text="Username">
                      <VBox.margin>
@@ -24,6 +24,11 @@
                         <String fx:value="big-text" />
                      </styleClass>
                   </TextField>
+                  <Label fx:id="usernameErrorLabel" textFill="#e17171" wrapText="true">
+                     <font>
+                        <Font name="Josefin Sans Light" size="15.0" />
+                     </font>
+                  </Label>
                   <Label styleClass="big-text" text="Password">
                      <VBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -35,32 +40,33 @@
                         <String fx:value="big-text" />
                      </styleClass>
                   </PasswordField>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                  <Label fx:id="passwordErrorLabel" textFill="#e17171" wrapText="true">
+                     <font>
+                        <Font name="Josefin Sans Light" size="15.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
                      <children>
-                        <HBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onRegisterBtnClicked" text="Register">
-                                 <HBox.margin>
-                                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                                 </HBox.margin>
-                                 <styleClass>
-                                    <String fx:value="button-primary-outline" />
-                                    <String fx:value="big-text" />
-                                 </styleClass>
-                              </Button>
-                              <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onLoginBtnClicked" text="Log in">
-                                 <HBox.margin>
-                                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                                 </HBox.margin>
-                                 <styleClass>
-                                    <String fx:value="button-primary-raised" />
-                                    <String fx:value="big-text" />
-                                 </styleClass>
-                              </Button>
-                           </children>
-                        </HBox>
+                        <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onRegisterBtnClicked" text="Register">
+                           <HBox.margin>
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                           </HBox.margin>
+                           <styleClass>
+                              <String fx:value="button-primary-outline" />
+                              <String fx:value="big-text" />
+                           </styleClass>
+                        </Button>
+                        <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onLoginBtnClicked" text="Log in">
+                           <HBox.margin>
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                           </HBox.margin>
+                           <styleClass>
+                              <String fx:value="button-primary-raised" />
+                              <String fx:value="big-text" />
+                           </styleClass>
+                        </Button>
                      </children>
-                  </AnchorPane>
+                  </HBox>
                </children>
             </VBox>
          </children>
