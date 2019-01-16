@@ -95,21 +95,27 @@ public class AddMovieController extends ControllerBase
 	@Override
 	public void initialize(final URL location, final ResourceBundle resources)
 	{
-		
-		setupSlider();
-		this.allCategoryList.setCellFactory(TextFieldListCell.forListView());
-		this.selectedCategoryList.setCellFactory(TextFieldListCell.forListView());
-		List<CategoryDM> categories = PropertyIO
-		        .getDMDefinitionsFromFile(MagicValues.CategoryDMPath, CategoryDM.class);
-		for (CategoryDM categoryDM : categories)
+		try
 		{
-			allCategoryList.getItems().add(categoryDM.getCategoryName());
+			
+			setupSlider();
+			this.allCategoryList.setCellFactory(TextFieldListCell.forListView());
+			this.selectedCategoryList.setCellFactory(TextFieldListCell.forListView());
+			List<CategoryDM> categories = PropertyIO
+			        .getDMDefinitionsFromFile(MagicValues.CategoryDMPath, CategoryDM.class);
+			for (CategoryDM categoryDM : categories)
+			{
+				allCategoryList.getItems().add(categoryDM.getCategoryName());
+			}
+			
+			this.thumbnailImageView.setImage(new Image(IOUtil.getStringURLOfPath(
+			        MagicValues.MovieThumbnailPath + MagicValues.MovieDefaultThumbnail)));
+			setBindingsAndEvents();
 		}
-		
-		// this.thumbnailImageView.setImage(new
-		// Image(MagicValues.MovieThumbnailPath+"/"+MagicValues.MovieDefaultThumbnail));
-		setBindingsAndEvents();
-		
+		catch (Exception e)
+		{
+			ErrorHandlerUtil.handleThrowable(e);
+		}
 	}
 	
 	/**
@@ -181,6 +187,10 @@ public class AddMovieController extends ControllerBase
 			String tName = this.IMDbIDField.getText() + IOUtil.getFileExtension(tmpThumbnail);
 			IOUtil.copyFile(tmpThumbnail.getAbsolutePath(), MagicValues.MovieThumbnailPath + tName);
 			dm.setImgPath(tName);
+		}
+		else if (this.dm != null)
+		{
+			dm.setImgPath(this.dm.getImgPath());
 		}
 		
 		return dm;
@@ -303,6 +313,17 @@ public class AddMovieController extends ControllerBase
 			this.titleField.setText(dm.getTitle());
 			this.descriptionField.setText(dm.getDescription());
 			this.scoreSlider.setValue(dm.getScore());
+			tmpThumbnail = new File(IOUtil.getImagePath(dm.getImgPath()));
+			this.thumbnailImageView.setImage(new Image(tmpThumbnail.toURI().toURL().toString()));
+			this.IMDbIDField.setText(dm.getIMDbID());
+			for (String category : dm.getCategories())
+			{
+				if (this.allCategoryList.getItems().contains(category))
+				{
+					this.allCategoryList.getItems().remove(category);
+				}
+				this.selectedCategoryList.getItems().add(category);
+			}
 		}
 		catch (Exception e)
 		{

@@ -45,7 +45,7 @@ public class LoggingUtil
 			this.logger.addHandler(fileHandler);
 			
 			this.logger.addHandler(consoleHandler);
-			this.logger.setLevel(Level.ALL);
+			this.logger.setLevel(Level.WARNING);
 		}
 		catch (Throwable e)
 		{
